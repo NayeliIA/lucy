@@ -1,0 +1,67 @@
+#IA_logo{
+    width: 10%;
+    bottom: 0%;
+    position: absolute;
+    left: 8%;
+    z-index: 1;
+}
+#sanmina{
+    width: 7%;
+    bottom: 0%;
+    position: absolute;
+    right: 8%;
+    z-index: 2;
+}
+#tesla {
+    width: 11%;
+    bottom: 0%;
+    position: absolute;
+    left: 45%;
+    z-index: 3;
+}
+
+#canvasCamara{
+    position: absolute;
+    top: 35%;
+    left: 15%;
+    /*box-shadow: 5px 5px grey; */
+    z-index: 6;
+  }
+
+  #bar_div{
+    position: absolute;
+    top: 10%;
+    right: 2%;
+    z-index: 7;
+    
+}
+#bar{  /* Descripcion de canvas tamaño  */ 
+    /*max-width: 500px;*/
+    width: 900px;
+    height: 800px;
+    
+} 
+
+#linea_div{
+    position: absolute;
+    bottom: 15%;
+    right: 2%;
+}
+#linea {
+    width: 900px;
+    height: 800px;
+}
+#output{
+    font-size: 300%; 
+    text-shadow: rgb(154, 154, 215) 0.1em 0.1em 0.2em;
+    font-family: 'Lucida Sans';
+    font-weight: bold;
+}
+p{
+    margin-left: 10%;
+    top: 10%;
+}
+div.row{
+    margin-left: 43%;
+    top: 14%;
+}
