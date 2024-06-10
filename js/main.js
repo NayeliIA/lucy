@@ -1,7 +1,5 @@
 
 
-
-
 let statusx // Resultado de analisis pass(1)/Fail(0) se utiliza en la funcion logresult()
 let logsave = [] //Array que utilizamos en la funcion logresult() y  almacena resumen
 let logsave2 = []
@@ -14,8 +12,8 @@ let criterio // Esta variable se utiliza como criterio de pase para % de TIM x c
 let ruido
 let latapona
 let resultado
-let pn // = 'LFTM1135558-18-A'//'LFTM1135558-18-A' = 'LFTM1135558-55-A' //= 'LFTM1135558-16-B' 
-let snr //= "soyserial"
+let pn = 'LFTM1135558-03-D' // = 'LFTM1135558-18-A'//'LFTM1135558-18-A' = 'LFTM1135558-55-A' //= 'LFTM1135558-16-B' 
+let snr //= 'LFTM1135558-03-D'
 let snfile  //= "ACTUAL"
 let turno_pass_qty1
 let turno_fail_qty1
@@ -23,8 +21,14 @@ let turno_pass_qty2
 let turno_fail_qty2
 let turno_pass_qtyD
 let bar
+let bar1
+let porcentajeMayor = 7
+let cantidadFallo = 0
+let contadorValores = [0, 0]
+let turno_pass_qty3
 let mondayPass
 let mondayFail
+let point
 let TuesdayPass
 let TuesdayFail
 let WednesdayPass
@@ -134,72 +138,212 @@ image.src = '/img/caricatura.png'
 image.onload = function () { //se usa para ejecutar una función de JavaScript tan pronto como una página haya cargado
     contextcanvasCamara.drawImage(image, 0, 0, image.width, image.height, 0, 0, contextcanvasCamara.canvas.width, contextcanvasCamara.canvas.height);
 }
-/*
+
 window.onload = async function () { //en cuanto se recag
     return new Promise(async resolve => {
         await abrir()
-if(day == 'Monday'){
-        await agrupapasst2('1', 'pass','Monday', fecha)
-        await agrupapasst2('2', 'pass','Monday', fecha)
-        await agrupapasst2('3', 'pass','Monday', fecha)
-        await agrupapasst2('1', 'fail','Monday', fecha)
-        await agrupapasst2('2', 'fail','Monday', fecha)
-        await agrupapasst2('3', 'fail','Monday', fecha)
-} if (day == 'Tuesday'){
-        await agrupapasst2('1', 'pass','Tuesday', fecha)
-        await agrupapasst2('2', 'pass','Tuesday', fecha)
-        await agrupapasst2('3', 'pass','Tuesday', fecha)
-        await agrupapasst2('1', 'fail','Tuesday', fecha)
-        await agrupapasst2('2', 'fail','Tuesday', fecha)
-        await agrupapasst2('3', 'fail','Tuesday', fecha)
-} if (day == 'Wednesday'){
-        await agrupapasst2('1', 'pass','Wednesday', fecha)
-        await agrupapasst2('2', 'pass','Wednesday', fecha)
-        await agrupapasst2('3', 'pass','Wednesday', fecha)
-        await agrupapasst2('1', 'fail','Wednesday', fecha)
-        await agrupapasst2('2', 'fail','Wednesday', fecha)
-        await agrupapasst2('3', 'fail','Wednesday', fecha)
-} if (day == 'Thursday'){
-        await agrupapasst2('1', 'pass','Thursday', fecha)
-        await agrupapasst2('2', 'pass','Thursday', fecha)
-        await agrupapasst2('3', 'pass','Thursday', fecha)
-        await agrupapasst2('1', 'fail','Thursday', fecha)
-        await agrupapasst2('2', 'fail','Thursday', fecha)
-        await agrupapasst2('3', 'fail','Thursday', fecha)
-} if (day == 'Friday'){
-        await agrupapasst2('1', 'pass','Friday', fecha)
-        await agrupapasst2('2', 'pass','Friday', fecha)
-        await agrupapasst2('3', 'pass','Friday', fecha)
-        await agrupapasst2('1', 'fail','Friday', fecha)
-        await agrupapasst2('2', 'fail','Friday', fecha)
-        await agrupapasst2('3', 'fail','Friday', fecha)
-}if (day == 'Saturday'){
-        await agrupapasst2('1', 'pass','Saturday', fecha)
-        await agrupapasst2('2', 'pass','Saturday', fecha)
-        await agrupapasst2('3', 'pass','Saturday', fecha)
-        await agrupapasst2('1', 'fail','Saturday', fecha)
-        await agrupapasst2('2', 'fail','Saturday', fecha)
-        await agrupapasst2('3', 'fail','Saturday', fecha)
-}if (day == 'Sunday'){
-        await agrupapasst2('1', 'pass','Sunday', fecha)
-        await agrupapasst2('2', 'pass','Sunday', fecha)
-        await agrupapasst2('3', 'pass','Sunday', fecha)
-        await agrupapasst2('1', 'fail','Sunday', fecha)
-        await agrupapasst2('2', 'fail','Sunday', fecha)
-        await agrupapasst2('3', 'fail','Sunday', fecha)
+        if (day == 'Monday') {
+            await agrupapasst2('1', 'pass', 'Monday', fecha)
+            await agrupapasst2('2', 'pass', 'Monday', fecha)
+            await agrupapasst2('3', 'pass', 'Monday', fecha)
+            await agrupapasst2('1', 'fail', 'Monday', fecha)
+            await agrupapasst2('2', 'fail', 'Monday', fecha)
+            await agrupapasst2('3', 'fail', 'Monday', fecha)
+        } if (day == 'Tuesday') {
+            await agrupapasst2('1', 'pass', 'Tuesday', fecha)
+            await agrupapasst2('2', 'pass', 'Tuesday', fecha)
+            await agrupapasst2('3', 'pass', 'Tuesday', fecha)
+            await agrupapasst2('1', 'fail', 'Tuesday', fecha)
+            await agrupapasst2('2', 'fail', 'Tuesday', fecha)
+            await agrupapasst2('3', 'fail', 'Tuesday', fecha)
+        } if (day == 'Wednesday') {
+            await agrupapasst2('1', 'pass', 'Wednesday', fecha)
+            await agrupapasst2('2', 'pass', 'Wednesday', fecha)
+            await agrupapasst2('3', 'pass', 'Wednesday', fecha)
+            await agrupapasst2('1', 'fail', 'Wednesday', fecha)
+            await agrupapasst2('2', 'fail', 'Wednesday', fecha)
+            await agrupapasst2('3', 'fail', 'Wednesday', fecha)
+        } if (day == 'Thursday') {
+            await agrupapasst2('1', 'pass', 'Thursday', fecha)
+            await agrupapasst2('2', 'pass', 'Thursday', fecha)
+            await agrupapasst2('3', 'pass', 'Thursday', fecha)
+            await agrupapasst2('1', 'fail', 'Thursday', fecha)
+            await agrupapasst2('2', 'fail', 'Thursday', fecha)
+            await agrupapasst2('3', 'fail', 'Thursday', fecha)
+        } if (day == 'Friday') {
+            await agrupapasst2('1', 'pass', 'Friday', fecha)
+            await agrupapasst2('2', 'pass', 'Friday', fecha)
+            await agrupapasst2('3', 'pass', 'Friday', fecha)
+            await agrupapasst2('1', 'fail', 'Friday', fecha)
+            await agrupapasst2('2', 'fail', 'Friday', fecha)
+            await agrupapasst2('3', 'fail', 'Friday', fecha)
+        } if (day == 'Saturday') {
+            await agrupapasst2('1', 'pass', 'Saturday', fecha)
+            await agrupapasst2('2', 'pass', 'Saturday', fecha)
+            await agrupapasst2('3', 'pass', 'Saturday', fecha)
+            await agrupapasst2('1', 'fail', 'Saturday', fecha)
+            await agrupapasst2('2', 'fail', 'Saturday', fecha)
+            await agrupapasst2('3', 'fail', 'Saturday', fecha)
+        } if (day == 'Sunday') {
+            await agrupapasst2('1', 'pass', 'Sunday', fecha)
+            await agrupapasst2('2', 'pass', 'Sunday', fecha)
+            await agrupapasst2('3', 'pass', 'Sunday', fecha)
+            await agrupapasst2('1', 'fail', 'Sunday', fecha)
+            await agrupapasst2('2', 'fail', 'Sunday', fecha)
+            await agrupapasst2('3', 'fail', 'Sunday', fecha)
+        }
+
+
+        if (point == 1) {
+            await agrupta('1', 'fail', 'Monday', 'TA1')
+            await agrupta('2', 'fail', 'Monday', 'TA1')
+            await agrupta('3', 'fail', 'Monday', 'TA1')
+            await agrupta('1', 'fail', 'Tuesday', 'TA1')
+            await agrupta('2', 'fail', 'Tuesday', 'TA1')
+            await agrupta('3', 'fail', 'Tuesday', 'TA1')
+            await agrupta('1', 'fail', 'Wednesday', 'TA1')
+            await agrupta('2', 'fail', 'Wednesday', 'TA1')
+            await agrupta('3', 'fail', 'Wednesday', 'TA1')
+            await agrupta('1', 'fail', 'Thursday', 'TA1')
+            await agrupta('2', 'fail', 'Thursday', 'TA1')
+            await agrupta('3', 'fail', 'Thursday', 'TA1')
+            await agrupta('1', 'fail', 'Friday', 'TA1')
+            await agrupta('2', 'fail', 'Friday', 'TA1')
+            await agrupta('3', 'fail', 'Friday', 'TA1')
+            await agrupta('1', 'fail', 'Saturday', 'TA1')
+            await agrupta('2', 'fail', 'Saturday', 'TA1')
+            await agrupta('3', 'fail', 'Saturday', 'TA1')
+            await agrupta('1', 'fail', 'Sunday', 'TA1')
+            await agrupta('2', 'fail', 'Sunday', 'TA1')
+            await agrupta('3', 'fail', 'Sunday', 'TA1')
+
+
+        } if (point == 2) {
+            await agrupta('1', 'fail', 'Monday', 'TA2')
+            await agrupta('2', 'fail', 'Monday', 'TA2')
+            await agrupta('3', 'fail', 'Monday', 'TA2')
+            await agrupta('1', 'fail', 'Tuesday', 'TA2')
+            await agrupta('2', 'fail', 'Tuesday', 'TA2')
+            await agrupta('3', 'fail', 'Tuesday', 'TA2')
+            await agrupta('1', 'fail', 'Wednesday', 'TA2')
+            await agrupta('2', 'fail', 'Wednesday', 'TA2')
+            await agrupta('3', 'fail', 'Wednesday', 'TA2')
+            await agrupta('1', 'fail', 'Thursday', 'TA2')
+            await agrupta('2', 'fail', 'Thursday', 'TA2')
+            await agrupta('3', 'fail', 'Thursday', 'TA2')
+            await agrupta('1', 'fail', 'Friday', 'TA2')
+            await agrupta('2', 'fail', 'Friday', 'TA2')
+            await agrupta('3', 'fail', 'Friday', 'TA2')
+            await agrupta('1', 'fail', 'Saturday', 'TA2')
+            await agrupta('2', 'fail', 'Saturday', 'TA2')
+            await agrupta('3', 'fail', 'Saturday', 'TA2')
+            await agrupta('1', 'fail', 'Sunday', 'TA2')
+            await agrupta('2', 'fail', 'Sunday', 'TA2')
+            await agrupta('3', 'fail', 'Sunday', 'TA2')
+        } if (point == 3) {
+            await agrupta('1', 'fail', 'Monday', 'TA3')
+            await agrupta('2', 'fail', 'Monday', 'TA3')
+            await agrupta('3', 'fail', 'Monday', 'TA3')
+            await agrupta('1', 'fail', 'Tuesday', 'TA3')
+            await agrupta('2', 'fail', 'Tuesday', 'TA3')
+            await agrupta('3', 'fail', 'Tuesday', 'TA3')
+            await agrupta('1', 'fail', 'Wednesday', 'TA3')
+            await agrupta('2', 'fail', 'Wednesday', 'TA3')
+            await agrupta('3', 'fail', 'Wednesday', 'TA3')
+            await agrupta('1', 'fail', 'Thursday', 'TA3')
+            await agrupta('2', 'fail', 'Thursday', 'TA3')
+            await agrupta('3', 'fail', 'Thursday', 'TA3')
+            await agrupta('1', 'fail', 'Friday', 'TA3')
+            await agrupta('2', 'fail', 'Friday', 'TA3')
+            await agrupta('3', 'fail', 'Friday', 'TA3')
+            await agrupta('1', 'fail', 'Saturday', 'TA3')
+            await agrupta('2', 'fail', 'Saturday', 'TA3')
+            await agrupta('3', 'fail', 'Saturday', 'TA3')
+            await agrupta('1', 'fail', 'Sunday', 'TA3')
+            await agrupta('2', 'fail', 'Sunday', 'TA3')
+            await agrupta('3', 'fail', 'Sunday', 'TA3')
+        } if (point == 4) {
+            await agrupta('1', 'fail', 'Monday', 'TA4')
+            await agrupta('2', 'fail', 'Monday', 'TA4')
+            await agrupta('3', 'fail', 'Monday', 'TA4')
+            await agrupta('1', 'fail', 'Tuesday', 'TA4')
+            await agrupta('2', 'fail', 'Tuesday', 'TA4')
+            await agrupta('3', 'fail', 'Tuesday', 'TA4')
+            await agrupta('1', 'fail', 'Wednesday', 'TA4')
+            await agrupta('2', 'fail', 'Wednesday', 'TA4')
+            await agrupta('3', 'fail', 'Wednesday', 'TA4')
+            await agrupta('1', 'fail', 'Thursday', 'TA4')
+            await agrupta('2', 'fail', 'Thursday', 'TA4')
+            await agrupta('3', 'fail', 'Thursday', 'TA4')
+            await agrupta('1', 'fail', 'Friday', 'TA4')
+            await agrupta('2', 'fail', 'Friday', 'TA4')
+            await agrupta('3', 'fail', 'Friday', 'TA4')
+            await agrupta('1', 'fail', 'Saturday', 'TA4')
+            await agrupta('2', 'fail', 'Saturday', 'TA4')
+            await agrupta('3', 'fail', 'Saturday', 'TA4')
+            await agrupta('1', 'fail', 'Sunday', 'TA4')
+            await agrupta('2', 'fail', 'Sunday', 'TA4')
+            await agrupta('3', 'fail', 'Sunday', 'TA4')
+        } if (point == 5) {
+            await agrupta('1', 'fail', 'Monday', 'TA5')
+            await agrupta('2', 'fail', 'Monday', 'TA5')
+            await agrupta('3', 'fail', 'Monday', 'TA5')
+            await agrupta('1', 'fail', 'Tuesday', 'TA5')
+            await agrupta('2', 'fail', 'Tuesday', 'TA5')
+            await agrupta('3', 'fail', 'Tuesday', 'TA5')
+            await agrupta('1', 'fail', 'Wednesday', 'TA5')
+            await agrupta('2', 'fail', 'Wednesday', 'TA5')
+            await agrupta('3', 'fail', 'Wednesday', 'TA5')
+            await agrupta('1', 'fail', 'Thursday', 'TA5')
+            await agrupta('2', 'fail', 'Thursday', 'TA5')
+            await agrupta('3', 'fail', 'Thursday', 'TA5')
+            await agrupta('1', 'fail', 'Friday', 'TA5')
+            await agrupta('2', 'fail', 'Friday', 'TA5')
+            await agrupta('3', 'fail', 'Friday', 'TA5')
+            await agrupta('1', 'fail', 'Saturday', 'TA5')
+            await agrupta('2', 'fail', 'Saturday', 'TA5')
+            await agrupta('3', 'fail', 'Saturday', 'TA5')
+            await agrupta('1', 'fail', 'Sunday', 'TA5')
+            await agrupta('2', 'fail', 'Sunday', 'TA5')
+            await agrupta('3', 'fail', 'Sunday', 'TA5')
+
+        } if (point == 6) {
+            await agrupta('1', 'fail', 'Monday', 'TA6')
+            await agrupta('2', 'fail', 'Monday', 'TA6')
+            await agrupta('3', 'fail', 'Monday', 'TA6')
+            await agrupta('1', 'fail', 'Tuesday', 'TA6')
+            await agrupta('2', 'fail', 'Tuesday', 'TA6')
+            await agrupta('3', 'fail', 'Tuesday', 'TA6')
+            await agrupta('1', 'fail', 'Wednesday', 'TA6')
+            await agrupta('2', 'fail', 'Wednesday', 'TA6')
+            await agrupta('3', 'fail', 'Wednesday', 'TA6')
+            await agrupta('1', 'fail', 'Thursday', 'TA6')
+            await agrupta('2', 'fail', 'Thursday', 'TA6')
+            await agrupta('3', 'fail', 'Thursday', 'TA6')
+            await agrupta('1', 'fail', 'Friday', 'TA6')
+            await agrupta('2', 'fail', 'Friday', 'TA6')
+            await agrupta('3', 'fail', 'Friday', 'TA6')
+            await agrupta('1', 'fail', 'Saturday', 'TA6')
+            await agrupta('2', 'fail', 'Saturday', 'TA6')
+            await agrupta('3', 'fail', 'Saturday', 'TA6')
+            await agrupta('1', 'fail', 'Sunday', 'TA6')
+            await agrupta('2', 'fail', 'Sunday', 'TA6')
+            await agrupta('3', 'fail', 'Sunday', 'TA6')
+        }
+        await numsem()
+
+        resolve('resolved')
+    })
 }
-await numsem() 
-resolve('resolved')})}
 
 
-
-/**************************************************** Muestra hora local 
+/*************************************************** Muestra hora local */
 const d = new Date();
 let hora = d.getHours();
 document.getElementById("demo").innerHTML = hora;
-//console.log(hora)
+console.log(hora)
 
-/**************************************************** Muestra dia de calendario 
+/**************************************************** Muestra dia de calendario */
 const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 const dia = new Date();
 let day = weekday[dia.getDay()];
@@ -215,7 +359,7 @@ document.getElementById("demo").innerHTML = num;
 //console.log(num)
 //mes
 
-const months= ["January","February","March","April","May","June","July","August","September","October","November","December"];
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const m = new Date();
 let month = months[m.getMonth()];
 
@@ -223,40 +367,40 @@ let month = months[m.getMonth()];
 const y = new Date();
 let year = y.getFullYear();
 
-let fecha = year+"-"+month+"-"+num
+let fecha = year + "-" + month + "-" + num
 //console.log(fecha)
 
 
-function getweek(date){
-    var onejan = new Date (date.getFullYear(),0,1)
-    return Math.ceil((((date - onejan) / 86400000) + onejan.getDay()+1)/7)
-   
+function getweek(date) {
+    var onejan = new Date(date.getFullYear(), 0, 1)
+    return Math.ceil((((date - onejan) / 86400000) + onejan.getDay() + 1) / 7)
+
 }
 var date = new Date(fecha);
 let semana = getweek(date);
-//console.log(semana);
+//console.log("soy semana" +semana);
 
 
 const fechaActual = new Date()
 const diaSemana = fechaActual.getDay()
 
-async function numsem(){
-if((diaSemana == 0 ||diaSemana == 1 ||diaSemana == 2 ||diaSemana == 3 ||diaSemana == 4 ||diaSemana == 5 ||diaSemana == 6 && (getweek(date)) == getweek(date))){
-await agrupardias('pass', 'Monday', semana)
-await agrupardias('fail', 'Monday', semana)
-await agrupardias('pass', 'Tuesday', semana)
-await agrupardias('fail', 'Tuesday', semana)
-await agrupardias('pass', 'Wednesday', semana)
-await agrupardias('fail', 'Wednesday', semana)
-await agrupardias('pass', 'Thursday', semana)
-await agrupardias('fail', 'Thursday', semana)
-await agrupardias('fail', 'Friday', semana)
-await agrupardias('pass', 'Friday', semana)
-await agrupardias('pass', 'Saturday', semana)
-await agrupardias('fail', 'Saturday',  semana)
-await agrupardias('pass', 'Sunday', semana)
-await agrupardias('fail', 'Sunday',  semana)
-}
+async function numsem() { //para graficar por semana
+    if ((diaSemana == 0 || diaSemana == 1 || diaSemana == 2 || diaSemana == 3 || diaSemana == 4 || diaSemana == 5 || diaSemana == 6 && (getweek(date)) == getweek(date))) {
+        await agrupardias('pass', 'Monday', semana)
+        await agrupardias('fail', 'Monday', semana)
+        await agrupardias('pass', 'Tuesday', semana)
+        await agrupardias('fail', 'Tuesday', semana)
+        await agrupardias('pass', 'Wednesday', semana)
+        await agrupardias('fail', 'Wednesday', semana)
+        await agrupardias('pass', 'Thursday', semana)
+        await agrupardias('fail', 'Thursday', semana)
+        await agrupardias('fail', 'Friday', semana)
+        await agrupardias('pass', 'Friday', semana)
+        await agrupardias('pass', 'Saturday', semana)
+        await agrupardias('fail', 'Saturday', semana)
+        await agrupardias('pass', 'Sunday', semana)
+        await agrupardias('fail', 'Sunday', semana)
+    }
 }
 
 //************************ GRAFICA LINEAL  
@@ -276,8 +420,8 @@ async function iniciar() {
                 datasets: [{
                     label: 'PASS',
                     data: [],//[56,28,30,15,36,20,40,45, 34], 
-                    backgroundColor: '#66FF66',
-                    borderColor: '#66FF66',
+                    backgroundColor: '#5a8c83',
+                    borderColor: '#5a8c83',
                     borderWidth: 1
                 }, {
                     label: 'FAIL',
@@ -311,7 +455,8 @@ async function iniciar() {
 }
 iniciar()
 
-/***************************** GRAFICA BARRAS 
+
+/***************************** GRAFICA BARRAS */
 
 async function iniciar2() {
     return new Promise(async resolve => {
@@ -333,8 +478,8 @@ async function iniciar2() {
                 datasets: [{
                     label: 'PASS',
                     data: [],//[variable, 19, 3, 5, 2, 3],
-                    backgroundColor: '#66FF66',
-                    borderColor: '#66FF66',
+                    backgroundColor: '#5a8c83',
+                    borderColor: '#5a8c83',
                     borderWidth: 1
                 }, {
                     label: 'FAIL',
@@ -361,12 +506,13 @@ async function iniciar2() {
                 }
             }
         });
-       // console.log(bar)
+        // console.log(bar)
         resolve('resolved');
     })
 }
 
 iniciar2()
+
 
 //*************************Socket block */
 
@@ -383,9 +529,9 @@ socket.on('Timsequence_start', function (infoplc) {//pg migrated
         snfile = infoplc.toString().substr(25, 15)
         pn = infoplc.toString().substr(41, 16)
         console.log("Start test sequence");
-        if(pn == 'LFTM1135558-64-A'){
+        if (pn == 'LFTM1135558-64-A' || pn == 'LFTM1135558-03-D') {
             sequence2()
-        }else{ testsequence()}//Activa bandera para continuar}
+        } else  { testsequence() }//Activa bandera para continuar}
         // console.log(typeof(data))
         //console.log(infoplc)
         //console.log(pn)
@@ -395,9 +541,13 @@ socket.on('Timsequence_start', function (infoplc) {//pg migrated
     }
 });
 //---------------------------------- Matriz que imprime en log y manda cadena al PLC/
+
+
 function plc_response(logsave) {
     return new Promise(async resolve => {
+
         porcentajeArray =
+
             "" + snr + "\nCuadrante :1\n" +
             "TA1-:  " + "status :" + logsave[1] + ", " + "percent -->  " + porcentajeArray[1] * 100 + "(%) " + `IA Inspection : ${IAdesition[1] == 0 ? 'Fail' : (IAdesition[1] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
             "TA2-:  " + "status :" + logsave[2] + ", " + "percent -->  " + porcentajeArray[2] * 100 + "(%) " + `IA Inspection : ${IAdesition[2] == 0 ? 'Fail' : (IAdesition[2] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
@@ -417,27 +567,28 @@ function plc_response(logsave) {
             "TA6-: " + "status :" + logsave[12] + ", " + "percent -->  " + porcentajeArray[6] * 100 + "(%)" + `IA Inspection : ${IAdesition[6] == 0 ? 'Fail' : (IAdesition[6] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
             "TA7-: " + "status :" + logsave[13] + ", " + "percent -->  " + porcentajeArray[7] * 100 + "(%)" + `IA Inspection : ${IAdesition[7] == 0 ? 'Fail' : (IAdesition[7] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
             "TA8-: " + "status :" + logsave[14] + ", " + "percent -->  " + porcentajeArray[8] * 100 + "(%)" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[8] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "TB3-: " + "status :" + logsave[15] + ", " + "percent -->  " + porcentajeArray[25] * 100 + "(%)\n\n" + //`IA Inspection : ${IAdesition[25] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
+            "TB3-: " + "status :" + logsave[15] + ", " + "percent -->  " + porcentajeArray[25] * 100 + "(%)\n\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[25] == 1 ? 'Pass' : 'On hold')} ` + "\n" +//`IA Inspection : ${IAdesition[25] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
+
             // Cuadrante 4
             "\nCuadrante :4\n" +
-            "TA17-: " + "status :" + logsave[16] + ", " + "percent -->  " + porcentajeArray[17] * 100 + "(%)\n" + //`IA Inspection : ${IAdesition[17] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA18-: " + "status :" + logsave[17] + ", " + "percent -->  " + porcentajeArray[18] * 100 + "(%)\n" + //`IA Inspection: ${IAdesition[18] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TG1-:  " + "status :" + logsave[18] + ", " + "percent -->  " + porcentajeArray[27] * 100 + "(%)\n" + //`IA Inspection: ${IAdesition[27] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
+            "TA17-: " + "status :" + logsave[16] + ", " + "percent -->  " + porcentajeArray[17] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[17] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //`IA Inspection : ${IAdesition[17] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+            "TA18-: " + "status :" + logsave[17] + ", " + "percent -->  " + porcentajeArray[18] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[18] == 1 ? 'Pass' : 'On hold')} ` + "\n" +//`IA Inspection: ${IAdesition[18] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+            "TG1-:  " + "status :" + logsave[18] + ", " + "percent -->  " + porcentajeArray[27] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[27] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //`IA Inspection: ${IAdesition[27] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
             // Cuadrante 5 
             "\nCuadrante :5\n" +
-            "TA15-: " + "status :" + logsave[19] + ", " + "percent -->  " + porcentajeArray[15] * 100 + "(%)\n" +// `IA Inspection : ${IAdesition[15] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA16-: " + "status :" + logsave[20] + ", " + "percent -->  " + porcentajeArray[16] * 100 + "(%)\n" + //`IA Inspection : ${IAdesition[16] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA19-: " + "status :" + logsave[21] + ", " + "percent -->  " + porcentajeArray[19] * 100 + "(%)\n" + //`IA Inspection : ${IAdesition[19] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA20-: " + "status :" + logsave[22] + ", " + "percent -->  " + porcentajeArray[20] * 100 + "(%)\n" +
-            "TB4-:  " + "status :" + logsave[23] + ", " + "percent -->  " + porcentajeArray[26] * 100 + "(%)\n" +
+            "TA15-: " + "status :" + logsave[19] + ", " + "percent -->  " + porcentajeArray[15] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[15] == 1 ? 'Pass' : 'On hold')} ` + "\n" +// `IA Inspection : ${IAdesition[15] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+            "TA16-: " + "status :" + logsave[20] + ", " + "percent -->  " + porcentajeArray[16] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[16] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //`IA Inspection : ${IAdesition[16] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+            "TA19-: " + "status :" + logsave[21] + ", " + "percent -->  " + porcentajeArray[19] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[19] == 1 ? 'Pass' : 'On hold')} ` + "\n" +//`IA Inspection : ${IAdesition[19] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+            "TA20-: " + "status :" + logsave[22] + ", " + "percent -->  " + porcentajeArray[20] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[20] == 1 ? 'Pass' : 'On hold')} ` + "\n" +
+            "TB4-:  " + "status :" + logsave[23] + ", " + "percent -->  " + porcentajeArray[26] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[26] == 1 ? 'Pass' : 'On hold')} ` + "\n" +
             // Cuadrante 6
             "\nCuadrante :6\n" +
-            "TA13-: " + "status :" + logsave[24] + ", " + "percent -->  " + porcentajeArray[13] * 100 + "(%)\n" + // `IA Inspection : ${IAdesition[13] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA14-: " + "status :" + logsave[25] + ", " + "percent -->  " + porcentajeArray[14] * 100 + "(%)\n" + //`IA Inspection : ${IAdesition[14] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
+            "TA13-: " + "status :" + logsave[24] + ", " + "percent -->  " + porcentajeArray[13] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[13] == 1 ? 'Pass' : 'On hold')} ` + "\n" +// `IA Inspection : ${IAdesition[13] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+            "TA14-: " + "status :" + logsave[25] + ", " + "percent -->  " + porcentajeArray[14] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[14] == 1 ? 'Pass' : 'On hold')} ` + "\n" +//`IA Inspection : ${IAdesition[14] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
             // Cuadrante 7
             "\nCuadrante :7\n" +
-            "TA21-: " + "status :" + logsave[26] + ", " + "percent -->  " + porcentajeArray[21] * 100 + "(%)\n" + //`IA Inspection : ${IAdesition[21] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TC-:   " + "status :" + logsave[27] + ", " + "percent -->  " + porcentajeArray[22] * 100 + "(%)" +  `IA Inspection : ${IAdesition[22] == 0 ? 'Fail' : (IAdesition[22] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
+            "TA21-: " + "status :" + logsave[26] + ", " + "percent -->  " + porcentajeArray[21] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[21] == 1 ? 'Pass' : 'On hold')} ` + "\n" +//`IA Inspection : ${IAdesition[21] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+            "TC-:   " + "status :" + logsave[27] + ", " + "percent -->  " + porcentajeArray[22] * 100 + "(%)" + `IA Inspection : ${IAdesition[22] == 0 ? 'Fail' : (IAdesition[22] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
             "#"
 
 
@@ -493,35 +644,52 @@ function plc_response(logsave) {
 }
 //funcion onload
 
+
 //----------------Main test sequence----------//
+let seconds = new Date()
+
+
+
 async function testsequence() {
+    segundos = seconds.getSeconds() - seconds.getSeconds()
+    console.log("segundos inicial: " + segundos)
+    console.log("soy pn" + pn)
     cuadranteArray = []// Reinicia valor para retrabajar cuadrante
     porcentajeArray = []// Reinicia valor para retrabajar cuadrante
     canbughide()
     for (point = 1; point < 4; point++) {
+        console.log("soy punto " + point)
         await open_cam(point)
         await captureimage()
         await recorTA(point)
         await stopcam()
     }
-   
-    if (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A') { 
+
+    // await tiempofinal()
+
+    if (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A') {
         await evalTP()
         plc_responseNew(logsave)
         //console.log("Entre a evalTP")
-    }else if(pn == 'LFTM1135558-64-A'){
+    } else if (pn == 'LFTM1135558-64-A' || pn == 'LFTM1135558-03-D') {
         await evaluaciondos()
-        await plc_responsep2(logsave2)
-    }else {
+        await plc_responsep2(logsave)
+        console.log("entre a nuevo numero")
+    } else {
         await Evaluacion() //Esta funcion se esta usando pero no existe en el codigo que deberia de hacer ?
         await plc_response(logsave)//incluye la funcion para guardar el log txt
+        console.log("entre a antiguo")
     }
     //await plc_response(logsave)
     if (resultado == true) {
         renombra(snfile)
     }
-    setTimeout(function fire() { location.reload() }, 2000);// temporizador para limpiar pantalla
+    segundosfin = seconds.getSeconds()
+    console.log("segundos final: " + segundosfin)
+
+    //setTimeout(function fire() { location.reload() }, 2000);// temporizador para limpiar pantalla
 }
+
 
 function serialnumber(sn) {
     return new Promise(async resolve => {
@@ -551,13 +719,13 @@ function st(st) {
 
 //-----------------Funciones de procesamiento  ( Coordenadas de areas a inspeccionar )-----------//
 let camid
-let TA1x =  1551//1535
-let TA1y =  71//129
-let TA2x =  1417//1401 //1420
+let TA1x = 1551//1535
+let TA1y = 71//129
+let TA2x = 1417//1401 //1420
 let TA2y = 61 //126 //65
 let TA11x = 1313// 1290
-let TA11y =493// 556
-let TA12x =1532 //1519
+let TA11y = 493// 556
+let TA12x = 1532 //1519
 let TA12y = 534//601
 let TA3x = 1085//1062
 let TA3y = 70//127
@@ -606,10 +774,11 @@ let TB3y = 97//155
 let TB4x = 1008
 let TB4y = 459
 
-async function recorTA(point) {
+async function recorTA32(point) {
     return new Promise(async resolve => {
         switch (point) {
             //TA1
+
             case 1:
                 /**** INICIO DE CAMARA 1 */
                 //Cuadrante 1
@@ -617,50 +786,28 @@ async function recorTA(point) {
                 contextcanvasClen1.drawImage(fullimage, TA1x, TA1y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
                 await Analiza(canvasClen1, 1)
                 logresult(1, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(1,statusx)
-                }
 
                 //TA2
                 contextcanvasGlen1.drawImage(fullimage, TA2x, TA2y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
                 await Analiza(canvasGlen1, 2)
                 logresult(2, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(2,statusx)
-                }
 
                 //TA11
                 contextcanvasGlen1.drawImage(fullimage, TA11x, TA11y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
                 await Analiza(canvasGlen1, 11)
                 logresult(3, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(3,statusx)
-                }
 
                 //TA12
                 contextcanvasMlen1.drawImage(fullimage, TA12x, TA12y, 118, 312, 0, 0, contextcanvasMlen1.canvas.width, contextcanvasMlen1.canvas.height)
                 await Analiza(canvasMlen1, 12)
                 logresult(4, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(4,statusx)
-                }
+
 
                 //TB1
                 contextcanvasTB.drawImage(fullimage, TB1x, TB1y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
                 await Analiza(canvasTB, 23)
                 logresult(5, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(5,statusx)
-                }
-                if(pn === 'LFTM1135558-64-A'){
-                    await evaluaciondos(1)
-                }
-                
-                //TP1
-                if (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A') {
-                    await recortaTP1()
-                }
-                
+
                 await Evaluacion(1)
 
                 contextcanvasnuevo.drawImage(fullimage, 1243, 35, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
@@ -675,50 +822,248 @@ async function recorTA(point) {
                 contextcanvasClen1.drawImage(fullimage, TA3x, TA3y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
                 await Analiza(canvasClen1, 3)
                 logresult(6, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(6,statusx)
-                }
-    
+
+
                 //TA4
-                contextcanvasGlen1.drawImage(fullimage, TA4x, TA4y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+                contextcanvasGlen1.drawImage(fullimage, 949, 74, 113, 312, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
                 await Analiza(canvasGlen1, 4)
                 logresult(7, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(7,statusx)
-                }
+
 
                 //TA9
                 contextcanvasGlen1.drawImage(fullimage, TA9x, TA9y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
                 await Analiza(canvasGlen1, 9)
                 logresult(8, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(8,statusx)
-                }
+
 
                 //TA10
                 contextcanvasGlen1.drawImage(fullimage, TA10x, TA10y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
                 await Analiza(canvasGlen1, 10)
                 logresult(9, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(9,statusx)
-                }
+
 
                 //TB2
                 contextcanvasTB.drawImage(fullimage, TB2x, TB2y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
                 await Analiza(canvasTB, 24)
                 logresult(10, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(10,statusx)
+
+
+                await Evaluacion(2)
+                // Puntos de rotacion 
+                contextcanvasnuevo.drawImage(fullimage, 705, 29, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
+                contextcanvaspasteC2.translate(934, 519) //Punto donde va comenzar a realizar la translacion de la imagen
+                contextcanvaspasteC2.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
+                contextcanvaspasteC2.drawImage(canvasnuevo, 0, 0, 1868, 1038, -400, -519, 1868, 1038) // Canvas donde se coloca la imagen ya rotada
+                //Imagen rotada C2
+                contextcanvasCamara.drawImage(canvaspasteC2, 415, 400, 934, 515, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
+
+                resolve('resolved')
+                await snapshot(point)
+                await pause()
+                break
+            //***INICIO CUADRANTE 2** */
+            case 2:
+
+                contextcanvasClen2.drawImage(fullimage, TA18x, TA18y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
+                await Analiza(canvasClen2, 18)
+                logresult(16, statusx)
+
+                contextcanvasClen2.drawImage(fullimage, TA17x, TA17y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
+                await Analiza(canvasClen2, 17)
+                logresult(17, statusx)
+
+                contextcanvasTGlen2.drawImage(fullimage, TATGx, TATGy, 298, 99, 0, 0, contextcanvasTGlen2.canvas.width, contextcanvasTGlen2.canvas.height)
+                await Analiza(canvasTGlen2, 27)
+                logresult(18, statusx)
+                await Evaluacion(4)
+                contextcanvasnuevo4.drawImage(fullimage, 5, 1, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
+                contextcanvaspaste4.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
+                contextcanvaspaste4.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
+                contextcanvaspaste4.drawImage(canvasnuevo4, 0, 0, 1677, 2138, -1069, -605, 1677, 2138) // Canvas donde se coloca la imagen ya rotada 
+                // Imagen rotada
+                contextcanvasCamara.drawImage(canvaspaste4, 464, 1069, 1067, 605, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
+                await pause()
+
+                //TA16
+                contextcanvasClen2.drawImage(fullimage, TA16x, TA16y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
+                await Analiza(canvasClen2, 16)
+                logresult(19, statusx)
+
+
+                //TA15
+                contextcanvasClen2.drawImage(fullimage, TA15x, TA15y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
+                await Analiza(canvasClen2, 15)
+                logresult(20, statusx)
+
+                //TA19 418,149
+                contextcanvasGlen2.drawImage(fullimage, TA19x, TA19y, 418, 149, 0, 0, contextcanvasGlen2.canvas.width, contextcanvasGlen2.canvas.height)
+                await Analiza(canvasGlen2, 19)
+                logresult(21, statusx)
+
+
+                //TA20 418,149
+                contextcanvasGlen2.drawImage(fullimage, TA20x, TA20y, 418, 149, 0, 0, contextcanvasGlen2.canvas.width, contextcanvasGlen2.canvas.height)
+                await Analiza(canvasGlen2, 20)
+                logresult(22, statusx)
+
+
+                //TB4
+                contextcanvasTB4.drawImage(fullimage, TB4x, TB4y, 66, 52, 0, 0, contextcanvasTB4.canvas.width, contextcanvasTB4.canvas.height)
+                await Analiza(canvasTB4, 26)
+                logresult(23, statusx)
+
+                await Evaluacion(5)
+                /* contextcanvasnuevo4.drawImage(fullimage, 695, 3, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
+                 contextcanvaspasteC5.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
+                 contextcanvaspasteC5.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
+                 contextcanvaspasteC5.drawImage(canvasnuevo4, 0, 0, 1677, 2138, -1069, -605, 1677, 2138) // Canvas donde se coloca la imagen ya rotada 
+                 //Imagen rotada
+                 contextcanvasCamara.drawImage(canvaspasteC5, 464, 1069, 1067, 605, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
+                 await pause()*/
+
+                // await Evaluacion(6)
+                contextcanvasnuevo4.drawImage(fullimage, 1315, 7, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
+                contextcanvaspasteC6.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
+                contextcanvaspasteC6.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
+                contextcanvaspasteC6.drawImage(canvasnuevo4, 0, 0, 1677, 2138, -1069, -605, 1677, 2138) // Canvas donde se coloca la imagen ya rotada 
+                //Imagen rotada 
+                contextcanvasCamara.drawImage(canvaspasteC6, 464, 1069, 1067, 605, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
+
+                resolve('resolved')
+                await snapshot(point)
+                await pause()
+                break
+            /** INICIO CUADRANTE 3 */
+            case 3:
+                contextcanvasflalen3.drawImage(fullimage, TA21x, TA21y, 561, 77, 0, 0, contextcanvasflalen3.canvas.width, contextcanvasflalen3.canvas.height)
+                await Analiza(canvasflalen3, 21)
+                logresult(26, statusx)
+                if (pn === 'LFTM1135558-64-A') {
+                    arrylogresult(19, statusx)
                 }
-                if(pn === 'LFTM1135558-64-A'){
-                    await evaluaciondos(2)
+                contextcanvasgolen3.drawImage(fullimage, TA22x, TA22y, 675, 326, 0, 0, contextcanvasgolen3.canvas.width, contextcanvasgolen3.canvas.height)
+                await Analiza(canvasgolen3, 22)
+                logresult(27, statusx)
+
+
+                await Evaluacion(7)
+                contextcanvasnuevo7.drawImage(fullimage, 297, 8, 986, 1066, 0, 0, contextcanvasnuevo7.canvas.width, contextcanvasnuevo7.canvas.height) // Canvas donde con imagen vertical original 
+                contextcanvaspaste7.translate(1066, 986) //Punto donde va comenzar a realizar la translacion de la imagen
+                contextcanvaspaste7.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
+                contextcanvaspaste7.drawImage(canvasnuevo7, 0, 0, 1974, 2134, -1067, -987, 1974, 2134) // Canvas donde se coloca la imagen ya rotada 
+                //Imagen rotada
+                contextcanvasCamara.drawImage(fullimage, 0, 0, 1920, 1080, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
+                resolve('resolved')
+                await snapshot(point)
+                break
+            default:
+        }
+    })
+}//Fin de switch
+
+async function recorTA(point) {
+    return new Promise(async resolve => {
+        switch (point) {
+            //TA1
+
+            case 1:
+                /**** INICIO DE CAMARA 1 */
+                //Cuadrante 1
+                //TA1
+                contextcanvasClen1.drawImage(fullimage, TA1x, TA1y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
+                await Analiza(canvasClen1, 1)
+                logresult(1, statusx)
+                if (pn === 'LFTM1135558-64-A') {
+                    arrylogresult(1, statusx)
                 }
+
+                //TA2
+                contextcanvasGlen1.drawImage(fullimage, TA2x, TA2y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+                await Analiza(canvasGlen1, 2)
+                logresult(2, statusx)
+                if (pn === 'LFTM1135558-64-A') {
+                    arrylogresult(2, statusx)
+                }
+
+                //TA11
+                contextcanvasGlen1.drawImage(fullimage, TA11x, TA11y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+                await Analiza(canvasGlen1, 11)
+                logresult(3, statusx)
+                if (pn === 'LFTM1135558-64-A') {
+                    arrylogresult(3, statusx)
+                }
+
+                //TA12
+                contextcanvasMlen1.drawImage(fullimage, TA12x, TA12y, 118, 312, 0, 0, contextcanvasMlen1.canvas.width, contextcanvasMlen1.canvas.height)
+                await Analiza(canvasMlen1, 12)
+                logresult(4, statusx)
+                if (pn === 'LFTM1135558-64-A') {
+                    arrylogresult(4, statusx)
+                }
+
+                //TB1
+                contextcanvasTB.drawImage(fullimage, TB1x, TB1y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
+                await Analiza(canvasTB, 23)
+                logresult(5, statusx)
+                if (pn === 'LFTM1135558-64-A') {
+                    arrylogresult(5, statusx)
+                }
+                if (pn === 'LFTM1135558-64-A') {
+                    await evaluaciondos(1)
+                }
+
+                //TP1
+                if (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A') {
+                    await recortaTP1()
+                }
+
+
+                await Evaluacion(1)
+
+
+
+                contextcanvasnuevo.drawImage(fullimage, 1243, 35, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
+                contextcanvaspaste.translate(934, 519) //Punto donde va comenzar a realizar la translacion de la imagen
+                contextcanvaspaste.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
+                contextcanvaspaste.drawImage(canvasnuevo, 0, 0, 1868, 1038, -400, -519, 1868, 1038) // Canvas donde se coloca la imagen ya rotada 
+                //Imagen rotada C1
+                contextcanvasCamara.drawImage(canvaspaste, 415, 400, 934, 515, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
+                await pause()
+
+                //Cuadrante 2 , imagen 1
+                contextcanvasClen1.drawImage(fullimage, TA3x, TA3y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
+                await Analiza(canvasClen1, 3)
+                logresult(6, statusx)
+
+
+                //TA4
+                contextcanvasGlen1.drawImage(fullimage, TA4x, TA4y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+                await Analiza(canvasGlen1, 4)
+                logresult(7, statusx)
+
+
+                //TA9
+                contextcanvasGlen1.drawImage(fullimage, TA9x, TA9y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+                await Analiza(canvasGlen1, 9)
+                logresult(8, statusx)
+
+
+                //TA10
+                contextcanvasGlen1.drawImage(fullimage, TA10x, TA10y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+                await Analiza(canvasGlen1, 10)
+                logresult(9, statusx)
+
+
+                //TB2
+                contextcanvasTB.drawImage(fullimage, TB2x, TB2y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
+                await Analiza(canvasTB, 24)
+                logresult(10, statusx)
 
 
                 if (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A') {
                     await recortaTP2()
                 }
-                
+
                 await Evaluacion(2)
                 // Puntos de rotacion 
                 contextcanvasnuevo.drawImage(fullimage, 705, 29, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
@@ -751,7 +1096,7 @@ async function recorTA(point) {
                 contextcanvasTB.drawImage(fullimage, TB3x, TB3y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
                 await Analiza(canvasTB, 25)
                 logresult(15, statusx)
-                
+
 
                 if (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A') {
                     await recortaTP3()
@@ -775,24 +1120,24 @@ async function recorTA(point) {
                 contextcanvasClen2.drawImage(fullimage, TA18x, TA18y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
                 await Analiza(canvasClen2, 18)
                 logresult(16, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(11,statusx)
+                if (pn === 'LFTM1135558-64-A') {
+                    arrylogresult(11, statusx)
                 }
 
                 contextcanvasClen2.drawImage(fullimage, TA17x, TA17y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
                 await Analiza(canvasClen2, 17)
                 logresult(17, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(12,statusx)
+                if (pn === 'LFTM1135558-64-A') {
+                    arrylogresult(12, statusx)
                 }
 
                 contextcanvasTGlen2.drawImage(fullimage, TATGx, TATGy, 298, 99, 0, 0, contextcanvasTGlen2.canvas.width, contextcanvasTGlen2.canvas.height)
                 await Analiza(canvasTGlen2, 27)
                 logresult(18, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(13,statusx)
+                if (pn === 'LFTM1135558-64-A') {
+                    arrylogresult(13, statusx)
                 }
-                if(pn === 'LFTM1135558-64-A'){
+                if (pn === 'LFTM1135558-64-A') {
                     await evaluaciondos(3)
                 }
 
@@ -809,45 +1154,30 @@ async function recorTA(point) {
                 contextcanvasClen2.drawImage(fullimage, TA16x, TA16y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
                 await Analiza(canvasClen2, 16)
                 logresult(19, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(14,statusx)
-                }
+
 
                 //TA15
                 contextcanvasClen2.drawImage(fullimage, TA15x, TA15y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
                 await Analiza(canvasClen2, 15)
                 logresult(20, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(15,statusx)
-                }
 
                 //TA19 418,149
                 contextcanvasGlen2.drawImage(fullimage, TA19x, TA19y, 418, 149, 0, 0, contextcanvasGlen2.canvas.width, contextcanvasGlen2.canvas.height)
                 await Analiza(canvasGlen2, 19)
                 logresult(21, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(16,statusx)
-                }
+
 
                 //TA20 418,149
                 contextcanvasGlen2.drawImage(fullimage, TA20x, TA20y, 418, 149, 0, 0, contextcanvasGlen2.canvas.width, contextcanvasGlen2.canvas.height)
                 await Analiza(canvasGlen2, 20)
                 logresult(22, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(17,statusx)
-                }
+
 
                 //TB4
                 contextcanvasTB4.drawImage(fullimage, TB4x, TB4y, 66, 52, 0, 0, contextcanvasTB4.canvas.width, contextcanvasTB4.canvas.height)
                 await Analiza(canvasTB4, 26)
                 logresult(23, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(18,statusx)
-                }
-                if(pn === 'LFTM1135558-64-A'){
-                    await evaluaciondos(4)
-                }
-            
+
                 await Evaluacion(5)
                 contextcanvasnuevo4.drawImage(fullimage, 695, 3, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
                 contextcanvaspasteC5.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
@@ -861,12 +1191,12 @@ async function recorTA(point) {
                 contextcanvasClen2.drawImage(fullimage, TA14x, TA14y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
                 await Analiza(canvasGlen2, 14)
                 logresult(24, statusx)
-            
+
                 //TA13
                 contextcanvasClen2.drawImage(fullimage, TA13x, TA13y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
                 await Analiza(canvasClen2, 13)
                 logresult(25, statusx)
-    
+
                 await Evaluacion(6)
                 contextcanvasnuevo4.drawImage(fullimage, 1315, 7, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
                 contextcanvaspasteC6.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
@@ -883,18 +1213,13 @@ async function recorTA(point) {
                 contextcanvasflalen3.drawImage(fullimage, TA21x, TA21y, 561, 77, 0, 0, contextcanvasflalen3.canvas.width, contextcanvasflalen3.canvas.height)
                 await Analiza(canvasflalen3, 21)
                 logresult(26, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(19,statusx)
+                if (pn === 'LFTM1135558-64-A') {
+                    arrylogresult(19, statusx)
                 }
                 contextcanvasgolen3.drawImage(fullimage, TA22x, TA22y, 675, 326, 0, 0, contextcanvasgolen3.canvas.width, contextcanvasgolen3.canvas.height)
                 await Analiza(canvasgolen3, 22)
                 logresult(27, statusx)
-                if (pn === 'LFTM1135558-64-A'){
-                    arrylogresult(20,statusx)
-                }
-                if(pn === 'LFTM1135558-64-A'){
-                    await evaluaciondos(5)
-                }
+
 
                 await Evaluacion(7)
                 contextcanvasnuevo7.drawImage(fullimage, 297, 8, 986, 1066, 0, 0, contextcanvasnuevo7.canvas.width, contextcanvasnuevo7.canvas.height) // Canvas donde con imagen vertical original 
@@ -959,20 +1284,20 @@ function Analiza(canvasx, point) {
         if ((point == 30) && (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A')) { rmin = 95, rmax = 210, gmin = 105, gmax = 215, bmin = 90, bmax = 200, criterio = .995, latapona = 400 }//TP3
 
         // Cuadrante 4n
-        if (point == 17) { rmin = 135, rmax = 188, gmin = 149, gmax = 207, bmin = 126, bmax = 185, criterio = .995, latapona = 9500 } // TA17 Actualizado 
-        if (point == 18) { rmin = 143, rmax = 182, gmin = 165, gmax = 208, bmin = 138, bmax = 180, criterio = .995, latapona = 45000 } // TA18 Actualizado
-        if (point == 27) { rmin = 119, rmax = 186, gmin = 150, gmax = 210, bmin = 135, bmax = 184, criterio = .995, latapona = 23000 } // TA27 
+        if (point == 17) { rmin = 135, rmax = 188, gmin = 149, gmax = 207, bmin = 126, bmax = 185, criterio = .995, latapona = 0 } // TA17 Actualizado 
+        if (point == 18) { rmin = 143, rmax = 182, gmin = 165, gmax = 208, bmin = 138, bmax = 180, criterio = .995, latapona = 0 } // TA18 Actualizado
+        if (point == 27) { rmin = 119, rmax = 186, gmin = 150, gmax = 210, bmin = 135, bmax = 184, criterio = .995, latapona = 0 } // TA27 
         // Cuadrante 5
-        if (point == 15) { rmin = 138, rmax = 211, gmin = 151, gmax = 245, bmin = 125, bmax = 218, criterio = .995, latapona = 4000 } // TA15 Actualizado
-        if (point == 16) { rmin = 103, rmax = 211, gmin = 140, gmax = 245, bmin = 120, bmax = 212, criterio = .995, latapona = 3000 } // TA16 Actualizado
-        if (point == 19) { rmin = 140, rmax = 156, gmin = 158, gmax = 173, bmin = 132, bmax = 145, criterio = .995, latapona = 46200 } // TA19 Actualizado
-        if (point == 20) { rmin = 109, rmax = 211, gmin = 121, gmax = 231, bmin = 101, bmax = 204, criterio = .995, latapona = 6000 } // TA20 Actualizado
-        if (point == 26) { rmin = 115, rmax = 191, gmin = 165, gmax = 215, bmin = 140, bmax = 189, criterio = .995, latapona = 3300 } //TB4
+        if (point == 15) { rmin = 138, rmax = 211, gmin = 151, gmax = 245, bmin = 125, bmax = 218, criterio = .995, latapona = 0 } // TA15 Actualizado
+        if (point == 16) { rmin = 103, rmax = 211, gmin = 140, gmax = 245, bmin = 120, bmax = 212, criterio = .995, latapona = 0 } // TA16 Actualizado
+        if (point == 19) { rmin = 140, rmax = 156, gmin = 158, gmax = 173, bmin = 132, bmax = 145, criterio = .995, latapona = 0 } // TA19 Actualizado
+        if (point == 20) { rmin = 109, rmax = 211, gmin = 121, gmax = 231, bmin = 101, bmax = 204, criterio = .995, latapona = 0 } // TA20 Actualizado
+        if (point == 26) { rmin = 115, rmax = 191, gmin = 165, gmax = 215, bmin = 140, bmax = 189, criterio = .995, latapona = 0 } //TB4
         // Cuadrante 6
-        if (point == 13) { rmin = 135, rmax = 146, gmin = 148, gmax = 160, bmin = 122, bmax = 136, criterio = .995, latapona = 42000 } // TA13  Actualizado *
-        if (point == 14) { rmin = 134, rmax = 234, gmin = 148, gmax = 255, bmin = 125, bmax = 231, criterio = .995, latapona = 26000 } // TA14 Actualizado *
+        if (point == 13) { rmin = 135, rmax = 146, gmin = 148, gmax = 160, bmin = 122, bmax = 136, criterio = .995, latapona = 0 } // TA13  Actualizado *
+        if (point == 14) { rmin = 134, rmax = 234, gmin = 148, gmax = 255, bmin = 125, bmax = 231, criterio = .995, latapona = 0 } // TA14 Actualizado *
         // Cuadrante 7
-        if (point == 21) { rmin = 102, rmax = 185, gmin = 105, gmax = 182, bmin = 96, bmax = 143, criterio = .995, latapona = 13800 } // TA21 Rectangulo ch
+        if (point == 21) { rmin = 102, rmax = 185, gmin = 105, gmax = 182, bmin = 96, bmax = 143, criterio = .995, latapona = 0 } // TA21 Rectangulo ch
         if (point == 22) { rmin = 74, rmax = 237, gmin = 68, gmax = 255, bmin = 44, bmax = 215, criterio = 1, latapona = 0 } // TA22 Actualizado
 
         for (let i = 0; i < cdata.data.length; i += 4) { //cdata.data.length
@@ -1144,8 +1469,8 @@ function logresult(pointemp, statusl) {// Guarda valor de cada punto analizado
     logsave[pointemp] = statusl//"TA"+pointemp+","+statusl+"&";
 }
 
-async function arrylogresult(puntota,statusta){
-    logsave2[puntota]=statusta
+async function arrylogresult(puntota, statusta) {
+    logsave2[puntota] = statusta
 }
 
 
@@ -1197,8 +1522,15 @@ function pointstatus(TAx, statusx) {
     }//Fin de if para TB1
 
     if ((TAx == 4) && (statusx == '1')) {
-        cuadroVerde4()
-    } else if ((TAx == 4) && (statusx == '0')) {
+        if (pn == 'LFTM1135558-03-D') {
+            cuadroVerde432();
+        } else {
+            cuadroVerde4();
+        }
+    }
+
+
+    else if ((TAx == 4) && (statusx == '0')) {
         cuadroRojo4()
     }//Fin de if para TB1
 
@@ -1401,6 +1733,14 @@ function cuadroVerde3() {
     contextfullimage.strokeRect(TA3x, TA3y, 118, 299)
 }
 
+function cuadroVerde432() {
+    let fullimage = document.getElementById('CanvasFHD')
+    let contextfullimage = fullimage.getContext('2d')
+
+    contextfullimage.strokeStyle = "#76FF03"
+    contextfullimage.lineWidth = 2
+    contextfullimage.strokeRect(949, 74, 113, 312)
+}
 function cuadroVerde4() {
     let fullimage = document.getElementById('CanvasFHD')
     let contextfullimage = fullimage.getContext('2d')
@@ -1662,6 +2002,14 @@ function cuadroRojo3() {
     contextfullimage.lineWidth = 2
     contextfullimage.strokeRect(TA3x, TA3y, 118, 299)
 }
+function cuadroRojo432() {
+    let fullimage = document.getElementById('CanvasFHD')
+    let contextfullimage = fullimage.getContext('2d')
+
+    contextfullimage.strokeStyle = "#FF0000"
+    contextfullimage.lineWidth = 2
+    contextfullimage.strokeRect(949, 74, 113, 330)
+}
 function cuadroRojo4() {
     let fullimage = document.getElementById('CanvasFHD')
     let contextfullimage = fullimage.getContext('2d')
@@ -1858,7 +2206,9 @@ function Evaluacion(point) { //Evalua la matriz de logsave
     let valtus  //Variable que guarda el valor que se almacena en el Array
     return new Promise(async resolve => {
         switch (point) {
+
             case 1:
+
                 //Cuadrante 1 
                 cuadranteArray[0] = logsave[1]
                 valtus = cuadranteArray.some((e) => e == "0") // funcion para buscar dentro de un array solo un valor 
@@ -1922,7 +2272,9 @@ function Evaluacion(point) { //Evalua la matriz de logsave
                 if (valtus == true) { valtus = "0" } else { valtus = "1" }
                 pointstatus(24, valtus)
                 cuadranteArray = [] //Limpia matriz de trabajo
+
                 break
+
 
             case 3:
                 //Cuadrante 3
@@ -2040,19 +2392,19 @@ function Evaluacion(point) { //Evalua la matriz de logsave
                 //La evaluacion de todo el array se hara hasta el final del ultimo case
                 //logsave[27] = ('1') //Dispensado pendiente de revisar 
                 //turno 1
-                logsave.fill('1') 
-                //bypass()
+                //logsave.fill('1')
+                bypass()
 
                 let resultadofinal = logsave.some((e) => e == "0")
                 //console.log(logsave)
                 //let hora = 23
                 if (resultadofinal == false) {
                     pass()
-                    //passturno() //tiene status
+                    passturno() //tiene status
                     console.log("Unit---> Pass")
                 } else {
                     fail()
-                    //failturno()
+                    failturno()
 
                     console.log("Unit---> Fail")
                 }
@@ -2080,6 +2432,8 @@ function agrupardias(status, day, semana) {
         resolve('resolved');
     })
 }
+
+
 function abrir() {
     return new Promise(async resolve => {
         const socket = io();
@@ -2100,7 +2454,7 @@ function exp() {
 socket.on('qtyP2', function (resulcons) {
     let datosp2 = resulcons.result
     turno_pass_qty2 = parseInt(datosp2.rows[0].count, 10)
-    //console.log(resulcons.result)
+    // console.log(resulcons.result)
     // console.log(parseInt(datosp2.rows[0].count, 10))
 
     //UnidadesPLunesT1(resulcons)
@@ -2108,6 +2462,8 @@ socket.on('qtyP2', function (resulcons) {
     // console.log(bar.data.datasets[resulcons.status === 'pass' ? 0 : 1].data)
     bar.update()
 })
+
+
 //console.log(turno_pass_qty2)
 //console.log(resulcons.status)
 //qtyD segunda grafica, por dias
@@ -2116,7 +2472,7 @@ socket.on('qtyD', function (resulday) {
     let datosday = resulday.result
     turno_pass_qtyD = parseInt(datosday.rows[0].count, 10)
     //console.log(datosday)
-    //console.log(parseInt(datosday.rows[0].count, 10))
+    // console.log(parseInt(datosday.rows[0].count, 10))
     //se mandan llamar las funciones de "funcionyield"
     yieldMonday(resulday)
     yieldTuesday(resulday)
@@ -2171,7 +2527,9 @@ async function open_cam(point) {// Resolve de 2 segundos
         setTimeout(function fire() { resolve('resolved'); }, 2000) //tiempo para el opencam
     })//Cierra Promise principal
 }
-
+console.time("t1")
+// testsequence()
+console.timeEnd("t1")
 function captureimage() {// Resolve de 2 segundos
     return new Promise(async resolve => {
 
@@ -2185,7 +2543,7 @@ function captureimage() {// Resolve de 2 segundos
 
         contexim2.drawImage(video, 0, 0, image.width, image.height);
         //var dataURI = canvas.toDataURL('image/jpeg');
-        setTimeout(function fire(){resolve('resolved');},2000);//Temporal para programacion de secuencia
+        setTimeout(function fire() { resolve('resolved'); }, 2000);//Temporal para programacion de secuencia
         resolve('resolved')
     });
 }
@@ -2293,24 +2651,24 @@ function canbugshow() {
 function bypass() { //vtemp parametro igual a point
     //cuadrante 1
     // logsave[1] = ('1') //ta1
-    logsave[2] = ('1')//ta2
-    logsave[3] = ('1')//ta11
+    //logsave[2] = ('1')//ta2
+    //logsave[3] = ('1')//ta11
     logsave[4] = ('1')//ta12
-    logsave[5] = ('1')//tb1
+    // logsave[5] = ('1')//tb1
     // console.log(logsave)
-    
+
     //cuadrante 2
 
     //logsave[6] = ('1') //TA3
     //logsave[7] = ('1')//TA4
-    logsave[8] = ('1')
-    logsave[9] = ('1')
-    logsave[10] = ('1')
+    //logsave[8] = ('1')
+    //logsave[9] = ('1')
+    //logsave[10] = ('1')
     //cuadrante 3
-    logsave[11] = ('1') //TA5
-   // logsave[12] = ('1') //TA6
-    logsave[13] = ('1')
-    logsave[14] = ('1')
+    //logsave[11] = ('1') //TA5
+    // logsave[12] = ('1') //TA6
+    //logsave[13] = ('1')
+    //logsave[14] = ('1')
     logsave[15] = ('1')
     //cuadrante 4
     logsave[16] = ('1')
@@ -2347,6 +2705,14 @@ async function split(infoplc) { // S&IDM-2007&P1093219-00-G:SBNJ19194020602&LFTM
 
 }
 
+// Antes de cargar los contadores
+if (localStorage.getItem('contadorPass')) {
+    contadorValores[0] = parseInt(localStorage.getItem('contadorPass'));
+}
+
+if (localStorage.getItem('contadorFail')) {
+    contadorValores[1] = parseInt(localStorage.getItem('contadorFail'));
+}
 async function mlinspection(point) {
 
 
@@ -2421,6 +2787,7 @@ async function mlinspection(point) {
                 } else {
                     statusx = "0"
                     console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
+
                 }
 
                 IAdesition[3] = statusx
@@ -2440,12 +2807,24 @@ async function mlinspection(point) {
                 //console.log("Unit pass" , pasa)
                 // console.log("Unit fail", falla)
                 if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
+                    contadorValores[0]++
+                    localStorage.setItem('contadorPass', contadorValores[0])
+                    console.log("soy el contdor pass: " + contadorValores[0])
                     //console.log("Unit pass" , pass)
                     statusx = "1"
                     console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
                 } else {
+                    contadorValores[1]++ //contadorfail
+                    localStorage.setItem('contadorFail', contadorValores[1])
+                    console.log("soy el contador fail: " + contadorValores[1])
                     statusx = "0"
                     console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
+                    if (contadorValores[1] >= porcentajeMayor) { // 3 = 3
+                        alert("Inspección de IA: Reentrenamiento Requerido TA4"); //muestra la alerta
+
+                    }
+
+
                 }
 
                 IAdesition[4] = statusx
@@ -2488,7 +2867,7 @@ async function mlinspection(point) {
                 //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
                 pasa = result[0][0]
                 falla = result[0][1]
-               // console.log("Unit pass", pasa)
+                // console.log("Unit pass", pasa)
                 //console.log("Unit fail", falla)
                 if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
                     //console.log("Unit pass" , pass)
@@ -2528,7 +2907,7 @@ async function mlinspection(point) {
                 IAdesition[7] = statusx
                 break
 
-                case 8://TA8
+            case 8://TA8
 
                 model = new cvstfjs.ClassificationModel();
                 await model.loadModelAsync('../ml/TA8_1/model.json');
@@ -2554,7 +2933,7 @@ async function mlinspection(point) {
                 IAdesition[8] = statusx
                 break
 
-                case 9://TA9
+            case 9://TA9
 
                 model = new cvstfjs.ClassificationModel();
                 await model.loadModelAsync('../ml/TA9_1/model.json');
@@ -2566,7 +2945,7 @@ async function mlinspection(point) {
                 //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
                 pasa = result[0][0]
                 falla = result[0][1]
-               // console.log("Unit pass", pasa)
+                // console.log("Unit pass", pasa)
                 //console.log("Unit fail", falla)
                 if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
                     //console.log("Unit pass" , pass)
@@ -2580,7 +2959,7 @@ async function mlinspection(point) {
                 IAdesition[9] = statusx
                 break
 
-                case 10://TA10
+            case 10://TA10
 
                 model = new cvstfjs.ClassificationModel();
                 await model.loadModelAsync('../ml/TA10/model.json');
@@ -2592,7 +2971,7 @@ async function mlinspection(point) {
                 //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
                 pasa = result[0][0]
                 falla = result[0][1]
-               // console.log("Unit pass", pasa)
+                // console.log("Unit pass", pasa)
                 //console.log("Unit fail", falla)
                 if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
                     //console.log("Unit pass" , pass)
@@ -2606,7 +2985,7 @@ async function mlinspection(point) {
                 IAdesition[10] = statusx
                 break
 
-                case 11://TA11
+            case 11://TA11
 
                 model = new cvstfjs.ClassificationModel();
                 await model.loadModelAsync('../ml/TA11/model.json');
@@ -2618,8 +2997,8 @@ async function mlinspection(point) {
                 //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
                 pasa = result[0][0]
                 falla = result[0][1]
-              //  console.log("Unit pass", pasa)
-               // console.log("Unit fail", falla)
+                //  console.log("Unit pass", pasa)
+                // console.log("Unit fail", falla)
                 if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
                     //console.log("Unit pass" , pass)
                     statusx = "1"
@@ -2632,7 +3011,7 @@ async function mlinspection(point) {
                 IAdesition[11] = statusx
                 break
 
-                case 12://TA12
+            case 12://TA12
 
                 model = new cvstfjs.ClassificationModel();
                 await model.loadModelAsync('../ml/TA11/model.json');
@@ -2658,7 +3037,7 @@ async function mlinspection(point) {
                 IAdesition[12] = statusx
                 break
 
-                case 22://TA22
+            case 22://TA22
 
                 model = new cvstfjs.ClassificationModel();
                 await model.loadModelAsync('../ml/TA22/model.json');
@@ -2685,9 +3064,9 @@ async function mlinspection(point) {
                 break
 
 
-                
+
         }
-     
+
         resolve('resolved')
     })
 }

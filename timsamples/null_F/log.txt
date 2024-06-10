@@ -1,0 +1,60 @@
+
+
+soyserial
+Cuadrante :1
+TA1-:  status :1, percent -->  6.67(%) IA Inspection : Pass 
+TA2-:  status :1, percent -->  95.32000000000001(%) IA Inspection : Pass 
+TA11-: status :1, percent -->  9.879999999999999(%)IA Inspection : Pass 
+TA12-: status :1, percent -->  6.88(%)IA Inspection : Pass 
+TB1-:  status :1, percent -->  100(%) 
+
+
+Cuadrante :2
+TA3-:  status :1,  percent -->  47.760000000000005(%)IA Inspection : Pass 
+TA4-:  status :0,  percent -->  36.75(%)IA Inspection : Fail 
+TA9-:  status :1,  percent -->  6.03(%)IA Inspection : Pass 
+TA10-: status :1,  percent -->  6.04(%)IA Inspection : Pass 
+TB2-:  status :1,  percent -->  100(%)
+
+
+Cuadrante :3
+TA5-: status :1, percent -->  6.660000000000001(%)IA Inspection : Pass 
+TA6-: status :1, percent -->  6.660000000000001(%)IA Inspection : Pass 
+TA7-: status :1, percent -->  6.03(%)IA Inspection : Pass 
+TA8-: status :1, percent -->  43.55(%)IA Inspection : Pass 
+TB3-: status :1, percent -->  100(%)
+
+IA Inspection : On hold 
+
+Cuadrante :4
+TA17-: status :0, percent -->  17.57(%)
+IA Inspection : On hold 
+TA18-: status :0, percent -->  13(%)
+IA Inspection : On hold 
+TG1-:  status :0, percent -->  7.969999999999999(%)
+IA Inspection : On hold 
+
+Cuadrante :5
+TA15-: status :0, percent -->  4.17(%)
+IA Inspection : On hold 
+TA16-: status :0, percent -->  4.17(%)
+IA Inspection : On hold 
+TA19-: status :0, percent -->  3.7699999999999996(%)
+IA Inspection : On hold 
+TA20-: status :0, percent -->  71.63000000000001(%)
+IA Inspection : On hold 
+TB4-:  status :0, percent -->  36.980000000000004(%)
+IA Inspection : On hold 
+
+Cuadrante :6
+TA13-: status :0, percent -->  4.17(%)
+IA Inspection : On hold 
+TA14-: status :0, percent -->  70.19999999999999(%)
+IA Inspection : On hold 
+
+Cuadrante :7
+TA21-: status :0, percent -->  7.960000000000001(%)
+IA Inspection : On hold 
+TC-:   status :0, percent -->  74.11(%)IA Inspection : Fail 
+#
+soyserial&TA1-6.67%,1&TA2-95.32000000000001%,1&TA11-9.879999999999999%,1&TA12-6.88%,1&TB1-100%,1&TA3-47.760000000000005%,1&TA4-36.75%,0&TA9-6.03%,1&TA10-6.04%,1&TB2-100%,1&TA5-6.660000000000001%,1&TA6-6.660000000000001%,1&TA7-6.03%,1&TA8-43.55%,1&TB3-100%,1&TA17-17.57%,0&TA18-13%,0&TG1-7.969999999999999%,0&TA15-4.17%,0&TA16-4.17%,0&TA19-3.7699999999999996%,0&TA20-71.63000000000001%,0&TB4-36.980000000000004%,0&TA13-4.17%,0&TA14-70.19999999999999%,0&TA21-7.960000000000001%,0&TC-74.11%,0#

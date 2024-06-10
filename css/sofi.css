@@ -33,6 +33,7 @@
     top: 10%;
     right: 2%;
     z-index: 7;
+    margin-bottom: 20px;
     
 }
 #bar{  /* Descripcion de canvas tamaño  */ 
@@ -46,14 +47,27 @@
     position: absolute;
     bottom: 15%;
     right: 2%;
+    margin-bottom: 20px;
 }
 #linea {
     width: 900px;
     height: 800px;
 }
+
+#bar_div1{
+    position: absolute;
+    bottom: 42%;
+    right: 2%;
+    top: 35%;
+    margin-bottom: 20px;
+}
+#bar1{
+    width: 900px;
+    height: 800px;
+}
 #output{
     font-size: 300%; 
-    text-shadow: rgb(154, 154, 215) 0.1em 0.1em 0.2em;
+    text-shadow: rgb(243, 217, 103) 0.1em 0.1em 0.2em;
     font-family: 'Lucida Sans';
     font-weight: bold;
 }

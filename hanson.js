@@ -13,6 +13,7 @@ const server = app.listen(8888, () => {
     console.log('Servidor web iniciado')
 })
 
+
 //-----* Filesystem module object
 var fss = require('fs')
 //-----* https module object
@@ -31,10 +32,18 @@ io.on('connection', (socket) => {
 const { Pool } = require('pg')
 postgresdb = new Pool({
     host: 'localhost',
-    user: 'ialab',
-    password: 'ialab',
+    user: 'postgres',
+    password: 'Redsamuraix1.', //Redsamuraix1.
     database: 'sofia',
 })
+/*postgresdb.connect((err, client, release) => {
+    if (err) {
+      console.error('Error al conectar a la base de datos:', err.stack);
+      return;
+    }
+    console.log('Conexión exitosa a la base de datos');
+    release(); // Libera la conexión del pool
+  });*/
 let client
 // release the client
 
@@ -57,22 +66,31 @@ io.on('connection', (socket) => {
         renombraF(snr);
     });
     //Socket BD
-    socket.on('socketconection', async function (turno, status,day,fecha,semana,serial) { //datos del front
+    socket.on('socketconection', async function (turno, status,day,fecha,semana,serial,point) { //datos del front
         await partn(turno, status,day,fecha,semana,serial);
-
-        //console.log("entre al socketconection")
+      
+        console.log("entre al socketconection y partn")
     }); //Close socket
+
+    /*socket.on('socketconection1', async function (turno, status,day,fecha,semana,point) { //datos del front
+        await tasshow(turno, status,day,fecha,semana,point);
+        console.log("entre al socketconection1 y tashow")
+    }); //Close socket*/
 
     //agrupapass t2 se agrego
     socket.on('agrupapasst2', async function (datospf) {
-        agrupapasst2(datospf.turno, datospf.status, datospf.day,datospf.fecha,datospf.semana)
+        agrupapasst2(datospf.turno, datospf.status, datospf.day,datospf.fecha)
         console.log("entre a agrupapass t2")
     });
+
+  
 
     socket.on('agrupardias', async function (datospfd) {
         agrupardias(datospfd.status, datospfd.day,datospfd.semana)
         console.log("entre a agrupar dias")
     });
+
+    
 
 
     //agrupa fail se agrego
@@ -127,7 +145,7 @@ async function savingpic(datauri, serial, sqty) {
 
         //C:/Users/mayra_ayala/Documents/Aquiles/img/
         //C:/Users/gdl3_mds/myapp/timsamples/
-        let filePath = 'C:/Users/gdl3_mds/myapp/projects/timsamples/' + serial + '';//Ruta de las carpetas por serial
+        let filePath = 'C:/Users/nayeli_garcia/Desktop/projects/Lucy/lucy/timsamples/' + serial + '';//Ruta de las carpetas por serial
         let filevalidation = fs.existsSync(filePath);
 
         if (filevalidation) {
@@ -150,8 +168,8 @@ async function savingpic(datauri, serial, sqty) {
 
 //Funcion para renombrar carpeta F 
 async function renombraF(serial) {
-    fs.rename('C:/Users/gdl3_mds/myapp/projects/timsamples/' + serial,
-        'C:/Users/gdl3_mds/myapp/projects/timsamples/' + serial + '_F',
+    fs.rename('C:/Users/nayeli_garcia/Desktop/projects/Lucy/lucy/timsamples/' + serial,
+        'C:/Users/nayeli_garcia/Desktop/projects/Lucy/lucy/timsamples/' + serial + '_F',
         function (err) {
             if (err)
                 console.log('Error de renombramiento');
@@ -162,7 +180,7 @@ function savinglog(sn, logdata,logsave) {
     console.log("entre a la savinglog")
     let datoc = logsave.toString()
     let datoscadena = '\n'+ logdata + datoc + '\n'
-    let logpath = 'C:/Users/gdl3_mds/myapp/projects/timsamples/' + sn + '/log.txt';
+    let logpath = 'C:/Users/nayeli_garcia/Desktop/projects/Lucy/lucy/timsamples/' + sn + '/log.txt';
     console.log(logsave)
     fs.writeFile(logpath,datoscadena, function (err) {
         if (err) throw err;
@@ -179,9 +197,10 @@ async function partn(turno, status, day,fecha,semana,serial) {
         if (err) {
             return console.error('Error executing query', err.stack)
         }
+       
         console.log(result.rows)
-        
     })
+   
     //})
 }
 
@@ -204,6 +223,11 @@ async function agrupardias(status, day,semana) {
         .catch((err) => console.error('Error executing query', err.stack))
 
 }
+
+
+
+
+
 
 async function abrir() {
     // return new Promise(async resolve => {
@@ -237,6 +261,8 @@ io.on('connection', (socket) => {
         plcdatasender(result_matrix)
         console.log(result_matrix)
     })
+    
+
 
 })
 
