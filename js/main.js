@@ -15,6 +15,12 @@ let resultado
 let pn = 'LFTM1135558-03-D' // = 'LFTM1135558-18-A'//'LFTM1135558-18-A' = 'LFTM1135558-55-A' //= 'LFTM1135558-16-B' 
 let snr //= 'LFTM1135558-03-D'
 let snfile  //= "ACTUAL"
+let maxR
+let minR
+let maxG
+let minG
+let maxB
+let minB
 let turno_pass_qty1
 let turno_fail_qty1
 let turno_pass_qty2
@@ -130,6 +136,8 @@ let canvastp2 = document.getElementById('canvastp2')
 let contextcanvastp2 = canvastp2.getContext('2d')
 let canvastp3 = document.getElementById('canvastp3')
 let contextcanvastp3 = canvastp3.getContext('2d')
+
+
 
 let image = new Image() //Carga caricatura
 
@@ -531,7 +539,7 @@ socket.on('Timsequence_start', function (infoplc) {//pg migrated
         console.log("Start test sequence");
         if (pn == 'LFTM1135558-64-A' || pn == 'LFTM1135558-03-D') {
             sequence2()
-        } else  { testsequence() }//Activa bandera para continuar}
+        } else { testsequence() }//Activa bandera para continuar}
         // console.log(typeof(data))
         //console.log(infoplc)
         //console.log(pn)
@@ -785,82 +793,83 @@ async function recorTA32(point) {
                 //TA1
                 contextcanvasClen1.drawImage(fullimage, TA1x, TA1y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
                 await Analiza(canvasClen1, 1)
+
                 logresult(1, statusx)
 
-                //TA2
-                contextcanvasGlen1.drawImage(fullimage, TA2x, TA2y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 2)
-                logresult(2, statusx)
+            //TA2
+            /*  contextcanvasGlen1.drawImage(fullimage, TA2x, TA2y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+              await Analiza(canvasGlen1, 2)
+              logresult(2, statusx)
 
-                //TA11
-                contextcanvasGlen1.drawImage(fullimage, TA11x, TA11y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 11)
-                logresult(3, statusx)
+              //TA11
+              contextcanvasGlen1.drawImage(fullimage, TA11x, TA11y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+              await Analiza(canvasGlen1, 11)
+              logresult(3, statusx)
 
-                //TA12
-                contextcanvasMlen1.drawImage(fullimage, TA12x, TA12y, 118, 312, 0, 0, contextcanvasMlen1.canvas.width, contextcanvasMlen1.canvas.height)
-                await Analiza(canvasMlen1, 12)
-                logresult(4, statusx)
-
-
-                //TB1
-                contextcanvasTB.drawImage(fullimage, TB1x, TB1y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
-                await Analiza(canvasTB, 23)
-                logresult(5, statusx)
-
-                await Evaluacion(1)
-
-                contextcanvasnuevo.drawImage(fullimage, 1243, 35, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspaste.translate(934, 519) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspaste.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspaste.drawImage(canvasnuevo, 0, 0, 1868, 1038, -400, -519, 1868, 1038) // Canvas donde se coloca la imagen ya rotada 
-                //Imagen rotada C1
-                contextcanvasCamara.drawImage(canvaspaste, 415, 400, 934, 515, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
-                await pause()
-
-                //Cuadrante 2 , imagen 1
-                contextcanvasClen1.drawImage(fullimage, TA3x, TA3y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
-                await Analiza(canvasClen1, 3)
-                logresult(6, statusx)
+              //TA12
+              contextcanvasMlen1.drawImage(fullimage, TA12x, TA12y, 118, 312, 0, 0, contextcanvasMlen1.canvas.width, contextcanvasMlen1.canvas.height)
+              await Analiza(canvasMlen1, 12)
+              logresult(4, statusx)
 
 
-                //TA4
-                contextcanvasGlen1.drawImage(fullimage, 949, 74, 113, 312, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 4)
-                logresult(7, statusx)
+              //TB1
+              contextcanvasTB.drawImage(fullimage, TB1x, TB1y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
+              await Analiza(canvasTB, 23)
+              logresult(5, statusx)
+
+              await Evaluacion(1)
+
+              contextcanvasnuevo.drawImage(fullimage, 1243, 35, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
+              contextcanvaspaste.translate(934, 519) //Punto donde va comenzar a realizar la translacion de la imagen
+              contextcanvaspaste.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
+              contextcanvaspaste.drawImage(canvasnuevo, 0, 0, 1868, 1038, -400, -519, 1868, 1038) // Canvas donde se coloca la imagen ya rotada 
+              //Imagen rotada C1
+              contextcanvasCamara.drawImage(canvaspaste, 415, 400, 934, 515, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
+              await pause()
+
+              //Cuadrante 2 , imagen 1
+              contextcanvasClen1.drawImage(fullimage, TA3x, TA3y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
+              await Analiza(canvasClen1, 3)
+              logresult(6, statusx)
 
 
-                //TA9
-                contextcanvasGlen1.drawImage(fullimage, TA9x, TA9y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 9)
-                logresult(8, statusx)
+              //TA4
+              contextcanvasGlen1.drawImage(fullimage, 949, 74, 113, 312, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+              await Analiza(canvasGlen1, 4)
+              logresult(7, statusx)
 
 
-                //TA10
-                contextcanvasGlen1.drawImage(fullimage, TA10x, TA10y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 10)
-                logresult(9, statusx)
+              //TA9
+              contextcanvasGlen1.drawImage(fullimage, TA9x, TA9y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+              await Analiza(canvasGlen1, 9)
+              logresult(8, statusx)
 
 
-                //TB2
-                contextcanvasTB.drawImage(fullimage, TB2x, TB2y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
-                await Analiza(canvasTB, 24)
-                logresult(10, statusx)
+              //TA10
+              contextcanvasGlen1.drawImage(fullimage, TA10x, TA10y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+              await Analiza(canvasGlen1, 10)
+              logresult(9, statusx)
 
 
-                await Evaluacion(2)
-                // Puntos de rotacion 
-                contextcanvasnuevo.drawImage(fullimage, 705, 29, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspasteC2.translate(934, 519) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspasteC2.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspasteC2.drawImage(canvasnuevo, 0, 0, 1868, 1038, -400, -519, 1868, 1038) // Canvas donde se coloca la imagen ya rotada
-                //Imagen rotada C2
-                contextcanvasCamara.drawImage(canvaspasteC2, 415, 400, 934, 515, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
+              //TB2
+              contextcanvasTB.drawImage(fullimage, TB2x, TB2y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
+              await Analiza(canvasTB, 24)
+              logresult(10, statusx)
 
-                resolve('resolved')
-                await snapshot(point)
-                await pause()
-                break
+
+              await Evaluacion(2)
+              // Puntos de rotacion 
+              contextcanvasnuevo.drawImage(fullimage, 705, 29, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
+              contextcanvaspasteC2.translate(934, 519) //Punto donde va comenzar a realizar la translacion de la imagen
+              contextcanvaspasteC2.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
+              contextcanvaspasteC2.drawImage(canvasnuevo, 0, 0, 1868, 1038, -400, -519, 1868, 1038) // Canvas donde se coloca la imagen ya rotada
+              //Imagen rotada C2
+              contextcanvasCamara.drawImage(canvaspasteC2, 415, 400, 934, 515, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
+
+              resolve('resolved')
+              await snapshot(point)
+              await pause()
+              break*/
             //***INICIO CUADRANTE 2** */
             case 2:
 
@@ -961,6 +970,8 @@ async function recorTA32(point) {
     })
 }//Fin de switch
 
+let fallosTA = 0
+let fallos = []
 async function recorTA(point) {
     return new Promise(async resolve => {
         switch (point) {
@@ -971,11 +982,16 @@ async function recorTA(point) {
                 //Cuadrante 1
                 //TA1
                 contextcanvasClen1.drawImage(fullimage, TA1x, TA1y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
+                await rgbauto(canvasClen1)
+                console.log("entre a rgbauto")
                 await Analiza(canvasClen1, 1)
                 logresult(1, statusx)
+                //verificar si esl TA1 fallo
+
                 if (pn === 'LFTM1135558-64-A') {
                     arrylogresult(1, statusx)
                 }
+
 
                 //TA2
                 contextcanvasGlen1.drawImage(fullimage, TA2x, TA2y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
@@ -1049,9 +1065,40 @@ async function recorTA(point) {
 
 
                 //TA10
+                // TA10
                 contextcanvasGlen1.drawImage(fullimage, TA10x, TA10y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
                 await Analiza(canvasGlen1, 10)
                 logresult(9, statusx)
+                console.log("soy statusx " + statusx)
+
+                if (statusx == 0) {
+                    console.log("entre al if")
+                    fallosTA++
+                    actualizarFallos()
+
+                } else {
+                    console.log("entre al else")
+                }
+
+                // Función para actualizar los fallos en el local storage
+                function actualizarFallos() {
+                    let fallos = JSON.parse(localStorage.getItem('fallos'));
+                    if (!fallos) {
+                        fallos = [];
+                    }
+                    fallos.push(fallosTA);
+                    console.log("soy fallossss " + fallos)
+                    localStorage.setItem('fallos', JSON.stringify(fallos));
+                    let fallosCount = fallos.filter(f => f === fallosTA).length;
+                    if (fallosCount >= 2) {
+                        console.log("El TA10 ha fallado mas dos veces,ajustalo!")
+                        document.getElementById("menu").removeAttribute("hidden");
+                    }
+                }
+
+                // Recuperamos los fallos desde el local storage
+                let fallos = JSON.parse(localStorage.getItem('fallos'));
+                console.log(fallos);
 
 
                 //TB2
@@ -1242,26 +1289,116 @@ async function pause() {
     });
 }
 
-function Analiza(canvasx, point) {
-    return new Promise(async resolve => {
+// Función para calcular la media y la desviación estándar de los valores RGB 
+function showInputs() {
+    const inputContainer = document.querySelector('.menu-vertical li:last-child a');
+    const inputFields = [
+        { type: 'text', placeholder: 'Maximo R' },
+        { type: 'text', placeholder: 'Minimo R' },
+        { type: 'text', placeholder: 'Maximo G' },
+        { type: 'text', placeholder: 'Minimo G' },
+        { type: 'text', placeholder: 'Maximo B' },
+        { type: 'text', placeholder: 'Minimo B' },
+    ];
 
+    // Crear inputs y botón
+   /* const inputs = inputFields.map((field) => {
+        const input = document.createElement('input');
+        input.type = field.type;
+        input.placeholder = field.placeholder;
+        return input;
+    });
+    const button = document.createElement('button');
+    button.textContent = 'Enviar';
+
+    // Agregar elementos 
+    inputContainer.after(button);
+    inputs.reverse().forEach((input) => inputContainer.after(input));
+
+    // Agregar evento al botón
+    button.addEventListener('click', () => {
+        maxR = parseInt(inputs[0].value);
+        minR = parseInt(inputs[1].value);
+        maxG = parseInt(inputs[2].value);
+        minG = parseInt(inputs[3].value);
+        maxB = parseInt(inputs[4].value);
+        minB = parseInt(inputs[5].value);
+
+
+        console.log('Se están enviando los siguientes valores a Analiza:');
+        console.log(`MaxR: ${maxR}`);
+        console.log(`MinR: ${minR}`);
+        console.log(`MaxG: ${maxG}`);
+        console.log(`MinG: ${minG}`);
+        console.log(`MaxB: ${maxB}`);
+        console.log(`MinB: ${minB}`);
+
+       
+    });*/
+}
+
+
+
+function Analiza(canvasx, point, maxR, minR, maxG, minG, maxB, minB) {
+    return new Promise(async resolve => {
         let contextcanvasx = canvasx.getContext('2d')
         let cdata = contextcanvasx.getImageData(0, 0, canvasx.width, canvasx.height);
-
-        let malo = 0, bueno = 0
+        // Obtener los valores ajustados de RGB
+        const inputContainer = document.querySelector('.menu-vertical li:last-child a');
+        const inputFields = [
+            { type: 'text', placeholder: 'Maximo R' },
+            { type: 'text', placeholder: 'Minimo R' },
+            { type: 'text', placeholder: 'Maximo G' },
+            { type: 'text', placeholder: 'Minimo G' },
+            { type: 'text', placeholder: 'Maximo B' },
+            { type: 'text', placeholder: 'Minimo B' },
+        ];
+    
+        // Crear inputs y botón
+       const inputs = inputFields.map((field) => {
+            const input = document.createElement('input');
+            input.type = field.type;
+            input.placeholder = field.placeholder;
+            return input;
+        });
+        const button = document.createElement('button');
+        button.textContent = 'Enviar';
+    
+        // Agregar elementos 
+        inputContainer.after(button);
+        inputs.reverse().forEach((input) => inputContainer.after(input));
+        minR = 120
+        // Agregar evento al botón
+        button.addEventListener('click', () => {
+            maxR = parseInt(inputs[0].value);
+            minR = parseInt(inputs[1].value);
+            maxG = parseInt(inputs[2].value);
+            minG = parseInt(inputs[3].value);
+            maxB = parseInt(inputs[4].value);
+            minB = parseInt(inputs[5].value);
+    
+            
+            console.log('Se están enviando los siguientes valores a Analiza:');
+            console.log(`MaxR: ${maxR}`);
+            console.log(`MinR: ${minR}`);
+            console.log(`MaxG: ${maxG}`);
+            console.log(`MinG: ${minG}`);
+            console.log(`MaxB: ${maxB}`);
+            console.log(`MinB: ${minB}`);
+    
+           
+        })
+        
+        let malo = 0, bueno = 0;
+        // let rmin, rmax, gmin, gmax, bmin, bmax
         //Valores del rojo
-        let rmin
-        let rmax
-        //Valores del verde
-        let gmin
-        let gmax
-        //Valores del azul
-        let bmin
-        let bmax
+        const rminInput = document.getElementById('rminInput');
+        const rmaxInput = document.getElementById('rmaxInput');
         //Calibracion del color del Tim por TA     
         // Cuadrante 1  rmin = 74, rmax = 205, gmin = 83, gmax = 240, bmin = 90, bmax = 225,
         //rmin = 255, rmax = 255, gmin = 255, gmax = 255, bmin =255, bmax = 255,
-        if (point == 1) { rmin = 130, rmax = 145, gmin = 130, gmax = 165, bmin = 120, bmax = 145, criterio = 1, latapona = 0 } // TA1 Actualizado * No tapona
+       // R 130,145 G 130,165 B 120, 145 TA1 Actualizado * No tapona
+        if (point == 1) { rmin = 123, rmax = 183, gmin = 137, gmax = 216, bmin = 112, bmax = 185, criterio = 1, latapona = 0 } 
         if (point == 2) { rmin = 123, rmax = 183, gmin = 137, gmax = 216, bmin = 112, bmax = 185, criterio = 1, latapona = 0 }  //TA2 Actualizado *  
         if (point == 11) { rmin = 135, rmax = 175, gmin = 155, gmax = 195, bmin = 135, bmax = 165, criterio = 1, latapona = 0 }  // TA11 Actualizado * //tapona para regular
         if (point == 12) { rmin = 140, rmax = 160, gmin = 158, gmax = 190, bmin = 130, bmax = 162, criterio = 1, latapona = 0 } // TA12 Actualizado //tapona para regular
@@ -1271,7 +1408,8 @@ function Analiza(canvasx, point) {
         if (point == 3) { rmin = 122, rmax = 224, gmin = 134, gmax = 222, bmin = 110, bmax = 197, criterio = 1, latapona = 0 } // TA3 Actualizado  *
         if (point == 4) { rmin = 119, rmax = 188, gmin = 127, gmax = 221, bmin = 104, bmax = 194, criterio = 1, latapona = 0 }  // TA4 Actualizado *
         if (point == 9) { rmin = 108, rmax = 192, gmin = 127, gmax = 237, bmin = 105, bmax = 206, criterio = 1, latapona = 0 }  // TA9 Actuaalizado * 
-        if (point == 10) { rmin = 155, rmax = 182, gmin = 172, gmax = 202, bmin = 145, bmax = 175, criterio = 1, latapona = 0 } // TA10 Actualizado * //tapona para regular
+        if (point == 10) { rmin = minR, rmax = maxR, gmin = minG, gmax = maxG, bmin = minB, bmax = maxB, criterio = 1, latapona = 0, console.log("soy minR"+minR)}  // TA9 Actuaalizado * 
+
         if (point == 24) { rmin = 145, rmax = 216, gmin = 163, gmax = 238, bmin = 135, bmax = 217, criterio = .995, latapona = 1000 }  //TB2
         if ((point == 29) && (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A')) { rmin = 100, rmax = 195, gmin = 120, gmax = 235, bmin = 110, bmax = 210, criterio = .995, latapona = 3000 }//TP2 
 
@@ -1303,9 +1441,13 @@ function Analiza(canvasx, point) {
         for (let i = 0; i < cdata.data.length; i += 4) { //cdata.data.length
             // Matriz para valores 
             R = cdata.data[i + 0]
+            // console.log("soy r", R)
             G = cdata.data[i + 1]
+            // console.log("soy g", G)
             B = cdata.data[i + 2]
+            //console.log("soy b", B)
             A = cdata.data[i + 3]
+            // console.log("soy a", A)
             //console.log(`Pixn: ${ i / 4 }:-->`, R,G,B,A)
 
             if (((R > rmin) && (R < rmax)) && ((G > gmin) && (G < gmax)) && ((B > bmin) && (B < bmax))) {// condicion para verificar cada pixel
@@ -1343,7 +1485,7 @@ function Analiza(canvasx, point) {
 
 
         porcentajefinal = porcentajebueno.toFixed(4);
-        if (porcentajefinal > .995) { porcentajefinal = 1 }  //valor final de pase al 99.6%
+        if (porcentajefinal > .950) { porcentajefinal = 1 }  //valor final de pase al 99.6%
         porcentajeArray[point] = porcentajefinal
         mtxw[point] = porcentajefinal
 
@@ -1358,7 +1500,7 @@ function Analiza(canvasx, point) {
         else {
             statusx = "0"
 
-            if (point == 1 || point == 2 || point == 3 || point == 4 || point == 5 || point == 6 || point == 7 || point == 8 || point == 9 || point == 10 || point == 11 || point == 12 || point == 22) { // se cumple condicion cuando el TA falle y llama a inspectora 
+            if (point == 1 || point == 2 || point == 3 || point == 4 || point == 5 || point == 6 || point == 7 || point == 8 || point == 9 || point == 11 || point == 12 || point == 22) { // se cumple condicion cuando el TA falle y llama a inspectora 
                 await mlinspection(point)
             }
         }
@@ -1366,6 +1508,7 @@ function Analiza(canvasx, point) {
         resolve('resolved')
     })
 }
+
 
 function cuentarojos(canvasx, x, y, w, h) { //cuenta puntos rojos de la coordenada con el tamaño especificado
 
@@ -1474,9 +1617,10 @@ async function arrylogresult(puntota, statusta) {
 }
 
 
-function pointstatus(TAx, statusx) {
+async function pointstatus(TAx, statusx) {
     if ((TAx == 1) && (statusx == '1')) {
         cuadroVerde1()
+
     } else if ((TAx == 1) && (statusx == '0')) {
         cuadroRojo1()
     }//Fin de if para TA1
@@ -2621,7 +2765,7 @@ function switchpic(name) {
 function canbughide() { // funcion para esconder los canvas 
     return new Promise(async resolve => {
         document.getElementById('CanvasFHD').style.visibility = "hidden"
-        document.getElementById('canvasClen1').style.visibility = "hidden"
+        // document.getElementById('canvasClen1').style.visibility = "hidden"
         document.getElementById('canvasMlen1').style.visibility = "hidden"
         document.getElementById('canvasGlen1').style.visibility = "hidden"
         document.getElementById('canvasClen2').style.visibility = "hidden"

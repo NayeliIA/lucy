@@ -6,12 +6,17 @@ require('events').EventEmitter.defaultMaxListeners = 20
 const express = require('express')
 const app = express()
 const fs = require('fs')
+clientesConectados = []
+let isConnected = true
+let disconnected = null
+let startSequence
 //const ImageDataURI = require('image-data-uri')
 app.use(express.static(__dirname))//Carpeta de donde sirve / carpeta raiz public
 
 const server = app.listen(8888, () => {
     console.log('Servidor web iniciado')
 })
+var fecha = Date.now().toString();
 
 
 //-----* Filesystem module object
@@ -24,7 +29,9 @@ var io = require('socket.io')(server)
 
 io.on('connection', (socket) => {
 
-    socket.on('ejemplo', async function () { await socketfunction() })
+    socket.on('ejemplo', async function () {
+        await socketfunction()
+    })
 
 })//close io.on
 
@@ -59,19 +66,19 @@ io.on('connection', (socket) => {
         console.log("recibe", serial, qty);
     });
 
-    socket.on('logsaving', async function (sn, logsaving,logsave) { // Funcion de ejemplo borrar no importante
-        savinglog(sn, logsaving,logsave)
+    socket.on('logsaving', async function (sn, logsaving, logsave) { // Funcion de ejemplo borrar no importante
+        savinglog(sn, logsaving, logsave)
     });
     socket.on('renombrasnr', function (snr) { // conexion con main_script
         renombraF(snr);
     });
-    //Socket BD
+    /*Socket BD
     socket.on('socketconection', async function (turno, status,day,fecha,semana,serial,point) { //datos del front
         await partn(turno, status,day,fecha,semana,serial);
       
         console.log("entre al socketconection y partn")
     }); //Close socket
-
+*/
     /*socket.on('socketconection1', async function (turno, status,day,fecha,semana,point) { //datos del front
         await tasshow(turno, status,day,fecha,semana,point);
         console.log("entre al socketconection1 y tashow")
@@ -79,18 +86,18 @@ io.on('connection', (socket) => {
 
     //agrupapass t2 se agrego
     socket.on('agrupapasst2', async function (datospf) {
-        agrupapasst2(datospf.turno, datospf.status, datospf.day,datospf.fecha)
+        agrupapasst2(datospf.turno, datospf.status, datospf.day, datospf.fecha)
         console.log("entre a agrupapass t2")
     });
 
-  
+
 
     socket.on('agrupardias', async function (datospfd) {
-        agrupardias(datospfd.status, datospfd.day,datospfd.semana)
+        agrupardias(datospfd.status, datospfd.day, datospfd.semana)
         console.log("entre a agrupar dias")
     });
 
-    
+
 
 
     //agrupa fail se agrego
@@ -176,18 +183,19 @@ async function renombraF(serial) {
         });
 }
 
-function savinglog(sn, logdata,logsave) {
+function savinglog(sn, logdata, logsave) {
     console.log("entre a la savinglog")
     let datoc = logsave.toString()
-    let datoscadena = '\n'+ logdata + datoc + '\n'
+    let datoscadena = '\n' + logdata + datoc + '\n'
     let logpath = 'C:/Users/nayeli_garcia/Desktop/projects/Lucy/lucy/timsamples/' + sn + '/log.txt';
     console.log(logsave)
-    fs.writeFile(logpath,datoscadena, function (err) {
+    fs.writeFile(logpath, datoscadena, function (err) {
         if (err) throw err;
     });
 }
 //-----------------------------QUERYS BD------------------------//
 //agregar t1
+/*
 async function partn(turno, status, day,fecha,semana,serial) {
 
     console.log("entre a insertar")
@@ -202,31 +210,27 @@ async function partn(turno, status, day,fecha,semana,serial) {
     })
    
     //})
-}
+}*/
 
-async function agrupapasst2(turno, status, day,fecha) {
+async function agrupapasst2(turno, status, day, fecha) {
     console.log("bd connected")
     let up = "SELECT COUNT (*) FROM unidades WHERE turno = (" + turno + ") AND status = ('" + status + "') AND day = ('" + day + "') AND fecha = ('" + fecha + "') ";
     client
         .query(up)
-        .then((result) => { io.emit('qtyP2', { result, turno, status, day,fecha }); }) 
+        .then((result) => { io.emit('qtyP2', { result, turno, status, day, fecha }); })
         .catch((err) => console.error('Error executing query', err.stack))
 
 }
 
-async function agrupardias(status, day,semana) {
+async function agrupardias(status, day, semana) {
     console.log("bd connected")
-    let upf = "SELECT COUNT (*) FROM unidades WHERE status = ('" + status + "') AND day = ('" + day + "')  AND semana =("+semana+") ";
+    let upf = "SELECT COUNT (*) FROM unidades WHERE status = ('" + status + "') AND day = ('" + day + "')  AND semana =(" + semana + ") ";
     client
         .query(upf)
-        .then((result) => { io.emit('qtyD', { result, status, day,semana}); }) 
+        .then((result) => { io.emit('qtyD', { result, status, day, semana }); })
         .catch((err) => console.error('Error executing query', err.stack))
 
 }
-
-
-
-
 
 
 async function abrir() {
@@ -255,46 +259,77 @@ async function experiment() {
 
 //***************************************************** TCP/IP PLC TESLA
 let plc_endresponse = 0
+//const fs = require('fs'); // Incluimos el módulo 'fs' para operaciones del sistema de archivos
+
 io.on('connection', (socket) => {
 
     socket.on('plc_response', function (result_matrix) {
-        plcdatasender(result_matrix)
-        console.log(result_matrix)
+        if (isConnected) {
+            tcpWrite(result_matrix)
+            console.log("seguimos conectados\n")
+            console.log(result_matrix)
+        } else {
+            console.log("Estamos desconectados del PLC")
+        }
     })
-    
-
 
 })
 
 var net = require('net')
 var tcpipserver = net.createServer(function (connection) {
-    console.log('TCP client connected')
-
+    console.log('Cliente PLC conectado') //mensaje para saber que el cliente esta conectado 
+    clientesConectados.push(connection) //se guardar al array todas las conexiones 
     connection.write('Handshake ok!\r\n')
 
-    connection.on('data', function (data) { io.emit('Timsequence_start', data.toString()); console.log("Analisis in process...") })
-
-    //Responde a PLC cuando termine inspeccion
-    setTimeout(function respuesta() {
-        estadoconexion = connection.readyState
-        console.log("Comunicacion con el plc :" + connection.readyState)
-
-        if (estadoconexion == 'closed') {
-            console.log("Puerto de PLC cerrado reintento en 1min...")
+    connection.on('data', function (data) {
+        console.log("datos recibidos del plc: ", data.toString()) //se imprimen en el servidor los datos que recibe
+        if (data.toString() == "hola") {
+            setTimeout(() => {
+                connection.write("enterado")
+            }, 100)
+        } else {
+            startSequence = 0
+            io.emit('Timsequence_start', data.toString());
         }
-        if (estadoconexion == 'open') {
-            connection.write(plc_endresponse)
-        }
+        console.log("Análisis en proceso...")
+    })
 
-    }, 30000) // tiempo de secuencia completa 40s para responder
+    // Responde a PLC cuando termine inspeccion
+
+    connection.on('end', () => {
+        if (startSequence == 0) {
+            isConnected = false
+            let d = new Date();
+            disconnected = d.getHours();
+            console.log("PLC desconectado.. " + d);
+
+            // Registra la fecha y hora de desconexión en un txt
+            const logFilePath = 'C:/Users/nayeli_garcia/Desktop/projects/Lucy/lucy/logs/registro_desconexion_plc.txt';
+            const logMessage = "PLC desconectado a las "+d.toLocaleString()+"\n"
+
+            fs.appendFile(logFilePath, logMessage, (err) => {
+                if (err) {
+                    console.error('Error al escribir en el archivo de registro:', err);
+                } else {
+                    console.log('Desconexión del PLC registrada con éxito.');
+                }
+            });
+        }
+    })
 })
 
-function plcdatasender(result_matrix) {
-    matrixtostring = result_matrix.toString()
-    plc_endresponse = matrixtostring
-    //console.log(plc_endresponse)
-}
 
 tcpipserver.listen(40000, function () {
-    console.log('PLC Port 40000 listening...')
+    console.log('Puerto PLC 40000 escuchando...')
 })
+
+function tcpWrite(result_matrix) {
+    startSequence = 1
+    clientesConectados.forEach(socket => { //busca la conexion
+        matrixtostring = result_matrix.toString()
+        console.log('hola estamos en la conexion de nuevo para poder escribir ', startSequence)
+        socket.write(matrixtostring)  //envia los datos al plc
+
+    });
+
+}
