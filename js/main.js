@@ -724,7 +724,7 @@ function st(st) {
     })
 }
 document.getElementById('menu').addEventListener('click', function() {
-    document.getElementById('tabla').style.display = 'none';
+    
     let opcionSeleccionada = this.value;
     if (opcionSeleccionada === 'ta1') {
       mostrarTabla();

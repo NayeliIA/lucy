@@ -73,7 +73,7 @@
 table {
     border-collapse: collapse; /* Colapsa los bordes de las celdas */
     border: 1px solid black; /* Borde negro de 1px para toda la tabla */
-    
+   
   }
 
   th, td {
