@@ -18,20 +18,25 @@
 
 <body>
 
-    <nav id="menu" hidden>
-        <ul class="menu-horizontal">
-
-            <li>
-                <a href="#" >RGB Calibration Manual</a>
-                <ul class="menu-vertical">
-                    <li><a href="#" onclick="">TA1</a></li>
-                    <li><a href="#" onclick="">TA2</a></li>
-                    <li><a href="#" onclick="showInputs()">TA10</a></li>
-                </ul>
-            </li>
-            
-        </ul>
-      </nav>
+   <h1> <label for="menu">Menú ajuste:</label> </h1>
+<select id="menu" name="menu">
+<h1> <option value="espacio"></option></h1>
+ <h1> <option value="ta1">TA1</option></h1>
+ <h1> <option value="ta2">TA2</option></h1>
+ <h1><option value="ta3">TA3</option></h1>
+</select>
+<div>
+    <table id="tabla">
+  
+        <th>Buenos</th>
+        <th>Malo</th>
+        <th>Ruido</th>
+        <th>Tapona actual</th>
+        <th>Sugerencia de tapona</th>
+        </tr>
+        <td> 1233</td><td> 1244 </td><td>1000 </td><td> 0</td><td> </td></tr>
+  </table>
+</div>
       
     <!--output para el yield-->
     <p id="output"></p>

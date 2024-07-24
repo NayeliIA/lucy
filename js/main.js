@@ -723,7 +723,19 @@ function st(st) {
         resolve('resolved')
     })
 }
+document.getElementById('menu').addEventListener('click', function() {
+    document.getElementById('tabla').style.display = 'none';
+    let opcionSeleccionada = this.value;
+    if (opcionSeleccionada === 'ta1') {
+      mostrarTabla();
+    } else {
+      document.getElementById('tabla').style.display = 'none';
+    }
+  });
 
+  function mostrarTabla() {
+    document.getElementById('tabla').style.display = 'block';
+  }
 
 //-----------------Funciones de procesamiento  ( Coordenadas de areas a inspeccionar )-----------//
 let camid
@@ -1071,35 +1083,7 @@ async function recorTA(point) {
                 logresult(9, statusx)
                 console.log("soy statusx " + statusx)
 
-                if (statusx == 0) {
-                    console.log("entre al if")
-                    fallosTA++
-                    actualizarFallos()
-
-                } else {
-                    console.log("entre al else")
-                }
-
-                // Función para actualizar los fallos en el local storage
-                function actualizarFallos() {
-                    let fallos = JSON.parse(localStorage.getItem('fallos'));
-                    if (!fallos) {
-                        fallos = [];
-                    }
-                    fallos.push(fallosTA);
-                    console.log("soy fallossss " + fallos)
-                    localStorage.setItem('fallos', JSON.stringify(fallos));
-                    let fallosCount = fallos.filter(f => f === fallosTA).length;
-                    if (fallosCount >= 2) {
-                        console.log("El TA10 ha fallado mas dos veces,ajustalo!")
-                        document.getElementById("menu").removeAttribute("hidden");
-                    }
-                }
-
-                // Recuperamos los fallos desde el local storage
-                let fallos = JSON.parse(localStorage.getItem('fallos'));
-                console.log(fallos);
-
+            
 
                 //TB2
                 contextcanvasTB.drawImage(fullimage, TB2x, TB2y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
@@ -1290,113 +1274,17 @@ async function pause() {
 }
 
 // Función para calcular la media y la desviación estándar de los valores RGB 
-function showInputs() {
-    const inputContainer = document.querySelector('.menu-vertical li:last-child a');
-    const inputFields = [
-        { type: 'text', placeholder: 'Maximo R' },
-        { type: 'text', placeholder: 'Minimo R' },
-        { type: 'text', placeholder: 'Maximo G' },
-        { type: 'text', placeholder: 'Minimo G' },
-        { type: 'text', placeholder: 'Maximo B' },
-        { type: 'text', placeholder: 'Minimo B' },
-    ];
-
-    // Crear inputs y botón
-   /* const inputs = inputFields.map((field) => {
-        const input = document.createElement('input');
-        input.type = field.type;
-        input.placeholder = field.placeholder;
-        return input;
-    });
-    const button = document.createElement('button');
-    button.textContent = 'Enviar';
-
-    // Agregar elementos 
-    inputContainer.after(button);
-    inputs.reverse().forEach((input) => inputContainer.after(input));
-
-    // Agregar evento al botón
-    button.addEventListener('click', () => {
-        maxR = parseInt(inputs[0].value);
-        minR = parseInt(inputs[1].value);
-        maxG = parseInt(inputs[2].value);
-        minG = parseInt(inputs[3].value);
-        maxB = parseInt(inputs[4].value);
-        minB = parseInt(inputs[5].value);
-
-
-        console.log('Se están enviando los siguientes valores a Analiza:');
-        console.log(`MaxR: ${maxR}`);
-        console.log(`MinR: ${minR}`);
-        console.log(`MaxG: ${maxG}`);
-        console.log(`MinG: ${minG}`);
-        console.log(`MaxB: ${maxB}`);
-        console.log(`MinB: ${minB}`);
-
-       
-    });*/
-}
-
-
 
 function Analiza(canvasx, point, maxR, minR, maxG, minG, maxB, minB) {
     return new Promise(async resolve => {
         let contextcanvasx = canvasx.getContext('2d')
         let cdata = contextcanvasx.getImageData(0, 0, canvasx.width, canvasx.height);
         // Obtener los valores ajustados de RGB
-        const inputContainer = document.querySelector('.menu-vertical li:last-child a');
-        const inputFields = [
-            { type: 'text', placeholder: 'Maximo R' },
-            { type: 'text', placeholder: 'Minimo R' },
-            { type: 'text', placeholder: 'Maximo G' },
-            { type: 'text', placeholder: 'Minimo G' },
-            { type: 'text', placeholder: 'Maximo B' },
-            { type: 'text', placeholder: 'Minimo B' },
-        ];
-    
-        // Crear inputs y botón
-       const inputs = inputFields.map((field) => {
-            const input = document.createElement('input');
-            input.type = field.type;
-            input.placeholder = field.placeholder;
-            return input;
-        });
-        const button = document.createElement('button');
-        button.textContent = 'Enviar';
-    
-        // Agregar elementos 
-        inputContainer.after(button);
-        inputs.reverse().forEach((input) => inputContainer.after(input));
-        minR = 120
-        // Agregar evento al botón
-        button.addEventListener('click', () => {
-            maxR = parseInt(inputs[0].value);
-            minR = parseInt(inputs[1].value);
-            maxG = parseInt(inputs[2].value);
-            minG = parseInt(inputs[3].value);
-            maxB = parseInt(inputs[4].value);
-            minB = parseInt(inputs[5].value);
-    
-            
-            console.log('Se están enviando los siguientes valores a Analiza:');
-            console.log(`MaxR: ${maxR}`);
-            console.log(`MinR: ${minR}`);
-            console.log(`MaxG: ${maxG}`);
-            console.log(`MinG: ${minG}`);
-            console.log(`MaxB: ${maxB}`);
-            console.log(`MinB: ${minB}`);
-    
-           
-        })
+       
         
         let malo = 0, bueno = 0;
-        // let rmin, rmax, gmin, gmax, bmin, bmax
-        //Valores del rojo
-        const rminInput = document.getElementById('rminInput');
-        const rmaxInput = document.getElementById('rmaxInput');
-        //Calibracion del color del Tim por TA     
-        // Cuadrante 1  rmin = 74, rmax = 205, gmin = 83, gmax = 240, bmin = 90, bmax = 225,
-        //rmin = 255, rmax = 255, gmin = 255, gmax = 255, bmin =255, bmax = 255,
+        
+      
        // R 130,145 G 130,165 B 120, 145 TA1 Actualizado * No tapona
         if (point == 1) { rmin = 123, rmax = 183, gmin = 137, gmax = 216, bmin = 112, bmax = 185, criterio = 1, latapona = 0 } 
         if (point == 2) { rmin = 123, rmax = 183, gmin = 137, gmax = 216, bmin = 112, bmax = 185, criterio = 1, latapona = 0 }  //TA2 Actualizado *  
@@ -1408,7 +1296,7 @@ function Analiza(canvasx, point, maxR, minR, maxG, minG, maxB, minB) {
         if (point == 3) { rmin = 122, rmax = 224, gmin = 134, gmax = 222, bmin = 110, bmax = 197, criterio = 1, latapona = 0 } // TA3 Actualizado  *
         if (point == 4) { rmin = 119, rmax = 188, gmin = 127, gmax = 221, bmin = 104, bmax = 194, criterio = 1, latapona = 0 }  // TA4 Actualizado *
         if (point == 9) { rmin = 108, rmax = 192, gmin = 127, gmax = 237, bmin = 105, bmax = 206, criterio = 1, latapona = 0 }  // TA9 Actuaalizado * 
-        if (point == 10) { rmin = minR, rmax = maxR, gmin = minG, gmax = maxG, bmin = minB, bmax = maxB, criterio = 1, latapona = 0, console.log("soy minR"+minR)}  // TA9 Actuaalizado * 
+        if (point == 10) { rmin = 113, rmax = 150, gmin = 125, gmax = 170, bmin = 105, bmax = 145, criterio = .995, latapona = 1000 }  // TA9 Actuaalizado * 
 
         if (point == 24) { rmin = 145, rmax = 216, gmin = 163, gmax = 238, bmin = 135, bmax = 217, criterio = .995, latapona = 1000 }  //TB2
         if ((point == 29) && (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A')) { rmin = 100, rmax = 195, gmin = 120, gmax = 235, bmin = 110, bmax = 210, criterio = .995, latapona = 3000 }//TP2 
@@ -1508,7 +1396,6 @@ function Analiza(canvasx, point, maxR, minR, maxG, minG, maxB, minB) {
         resolve('resolved')
     })
 }
-
 
 function cuentarojos(canvasx, x, y, w, h) { //cuenta puntos rojos de la coordenada con el tamaño especificado
 

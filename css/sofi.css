@@ -65,7 +65,21 @@
     width: 900px;
     height: 800px;
 }
+#menu{
+  
+  font-size: large;
+}
 
+table {
+    border-collapse: collapse; /* Colapsa los bordes de las celdas */
+    border: 1px solid black; /* Borde negro de 1px para toda la tabla */
+    
+  }
+
+  th, td {
+    border: 1px solid black; /* Borde negro de 1px para celdas (encabezados y datos) */
+  
+  }
 /*----menu----*/
 nav{
     max-width: 700px;
