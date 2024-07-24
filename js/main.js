@@ -1,358 +1,379 @@
-
-
-let statusx // Resultado de analisis pass(1)/Fail(0) se utiliza en la funcion logresult()
-let logsave = [] //Array que utilizamos en la funcion logresult() y  almacena resumen
-let logsave2 = []
-let cuadranteArray = [] // Array para evaluar pass o fail de cuadrante
-let porcentajeArray = [] // Array que guarda el porcentaje en cada punto 
-let cuadranteArraynew = []
-let mtxw = [] //Array que guarda el porcentaje 
-let IAdesition = []
-let criterio // Esta variable se utiliza como criterio de pase para % de TIM x cada TA
-let ruido
-let latapona
-let resultado
-let pn = 'LFTM1135558-03-D' // = 'LFTM1135558-18-A'//'LFTM1135558-18-A' = 'LFTM1135558-55-A' //= 'LFTM1135558-16-B' 
-let snr //= 'LFTM1135558-03-D'
-let snfile  //= "ACTUAL"
-let maxR
-let minR
-let maxG
-let minG
-let maxB
-let minB
-let turno_pass_qty1
-let turno_fail_qty1
-let turno_pass_qty2
-let turno_fail_qty2
-let turno_pass_qtyD
-let bar
-let bar1
-let porcentajeMayor = 7
-let cantidadFallo = 0
-let contadorValores = [0, 0]
-let turno_pass_qty3
-let mondayPass
-let mondayFail
-let point
-let TuesdayPass
-let TuesdayFail
-let WednesdayPass
-let WednesdayFail
-let ThursdayPass
-let ThursdayFail
-let FridayPass
-let FridayFail
-let SaturdayPass
-let SaturdayFail
-let SundayPass
-let SundayFail
-let Yield
-let model //Variable que se utiliza en mlinspector para cargar el modelo 
-let pasa //Variable utilizada para guardar el resultado pass en la red neuronal
-let falla //Variable utilizada para guardar el resultado fail en la red neuronal
+let statusx; // Resultado de analisis pass(1)/Fail(0) se utiliza en la funcion logresult()
+let logsave = []; //Array que utilizamos en la funcion logresult() y  almacena resumen
+let logsave2 = [];
+let cuadranteArray = []; // Array para evaluar pass o fail de cuadrante
+let porcentajeArray = []; // Array que guarda el porcentaje en cada punto
+let cuadranteArraynew = [];
+let mtxw = []; //Array que guarda el porcentaje
+let IAdesition = [];
+let criterio; // Esta variable se utiliza como criterio de pase para % de TIM x cada TA
+let ruido;
+let latapona;
+let resultado;
+let pn = "LFTM1135558-03-D"; // = 'LFTM1135558-18-A'//'LFTM1135558-18-A' = 'LFTM1135558-55-A' //= 'LFTM1135558-16-B'
+let snr; //= 'LFTM1135558-03-D'
+let snfile; //= "ACTUAL"
+let maxR;
+let minR;
+let maxG;
+let minG;
+let maxB;
+let minB;
+let turno_pass_qty1;
+let turno_fail_qty1;
+let turno_pass_qty2;
+let turno_fail_qty2;
+let turno_pass_qtyD;
+let bar;
+let bar1;
+let porcentajeMayor = 7;
+let cantidadFallo = 0;
+let contadorValores = [0, 0];
+let turno_pass_qty3;
+let mondayPass;
+let mondayFail;
+let point;
+let TuesdayPass;
+let TuesdayFail;
+let WednesdayPass;
+let WednesdayFail;
+let ThursdayPass;
+let ThursdayFail;
+let FridayPass;
+let FridayFail;
+let SaturdayPass;
+let SaturdayFail;
+let SundayPass;
+let SundayFail;
+let Yield;
+let model; //Variable que se utiliza en mlinspector para cargar el modelo
+let pasa; //Variable utilizada para guardar el resultado pass en la red neuronal
+let falla; //Variable utilizada para guardar el resultado fail en la red neuronal
 
 //-----------Canvas--------------------//
-let fullimage = document.getElementById('CanvasFHD')
-let contextfullimage = fullimage.getContext('2d')
+let fullimage = document.getElementById("CanvasFHD");
+let contextfullimage = fullimage.getContext("2d");
 
-let canvasCamara = document.getElementById('canvasCamara')
-let contextcanvasCamara = canvasCamara.getContext('2d')
+let canvasCamara = document.getElementById("canvasCamara");
+let contextcanvasCamara = canvasCamara.getContext("2d");
 
-let canvasClen1 = document.getElementById('canvasClen1') //canvas 1,3
-let contextcanvasClen1 = canvasClen1.getContext('2d')
+let canvasClen1 = document.getElementById("canvasClen1"); //canvas 1,3
+let contextcanvasClen1 = canvasClen1.getContext("2d");
 
-let canvasMlen1 = document.getElementById('canvasMlen1') //canvas 12
-let contextcanvasMlen1 = canvasMlen1.getContext('2d')
+let canvasMlen1 = document.getElementById("canvasMlen1"); //canvas 12
+let contextcanvasMlen1 = canvasMlen1.getContext("2d");
 
-let canvasGlen1 = document.getElementById('canvasGlen1') //canvas 2 y 11
-let contextcanvasGlen1 = canvasGlen1.getContext('2d')
+let canvasGlen1 = document.getElementById("canvasGlen1"); //canvas 2 y 11
+let contextcanvasGlen1 = canvasGlen1.getContext("2d");
 
+let canvasClen2 = document.getElementById("canvasClen2");
+let contextcanvasClen2 = canvasClen2.getContext("2d");
 
-let canvasClen2 = document.getElementById('canvasClen2')
-let contextcanvasClen2 = canvasClen2.getContext('2d')
+let canvasTA6len1 = document.getElementById("canvasTA6len1");
+let contextcanvasTA6len1 = canvasTA6len1.getContext("2d");
 
-let canvasTA6len1 = document.getElementById('canvasTA6len1')
-let contextcanvasTA6len1 = canvasTA6len1.getContext('2d')
+let canvasGlen2 = document.getElementById("canvasGlen2");
+let contextcanvasGlen2 = canvasGlen2.getContext("2d");
 
-let canvasGlen2 = document.getElementById('canvasGlen2')
-let contextcanvasGlen2 = canvasGlen2.getContext('2d')
+let canvasTGlen2 = document.getElementById("canvasTGlen2");
+let contextcanvasTGlen2 = canvasTGlen2.getContext("2d");
 
-let canvasTGlen2 = document.getElementById('canvasTGlen2')
-let contextcanvasTGlen2 = canvasTGlen2.getContext('2d')
+let canvasflalen3 = document.getElementById("canvasflalen3");
+let contextcanvasflalen3 = canvasflalen3.getContext("2d");
 
-let canvasflalen3 = document.getElementById('canvasflalen3')
-let contextcanvasflalen3 = canvasflalen3.getContext('2d')
+let canvasgolen3 = document.getElementById("canvasgolen3");
+let contextcanvasgolen3 = canvasgolen3.getContext("2d");
 
-let canvasgolen3 = document.getElementById('canvasgolen3')
-let contextcanvasgolen3 = canvasgolen3.getContext('2d')
+let canvasTB = document.getElementById("canvasTB");
+let contextcanvasTB = canvasTB.getContext("2d");
 
-let canvasTB = document.getElementById('canvasTB')
-let contextcanvasTB = canvasTB.getContext('2d')
-
-let canvasTB4 = document.getElementById('canvasTB4')
-let contextcanvasTB4 = canvasTB4.getContext('2d')
+let canvasTB4 = document.getElementById("canvasTB4");
+let contextcanvasTB4 = canvasTB4.getContext("2d");
 
 //----- canvas de rotacion ----- //
-let canvasnuevo = document.getElementById('canvasnuevo')
-let contextcanvasnuevo = canvasnuevo.getContext('2d')
+let canvasnuevo = document.getElementById("canvasnuevo");
+let contextcanvasnuevo = canvasnuevo.getContext("2d");
 
 //------------------ Cuadrante 1 --------------------------- //
-let canvaspaste = document.getElementById('canvaspaste')
-let contextcanvaspaste = canvaspaste.getContext('2d')
+let canvaspaste = document.getElementById("canvaspaste");
+let contextcanvaspaste = canvaspaste.getContext("2d");
 
 //------------------ Cuadrante 2 --------------------------- //
-let canvaspasteC2 = document.getElementById('canvaspasteC2')
-let contextcanvaspasteC2 = canvaspasteC2.getContext('2d')
+let canvaspasteC2 = document.getElementById("canvaspasteC2");
+let contextcanvaspasteC2 = canvaspasteC2.getContext("2d");
 
 //------------------ Cuadrante 3 --------------------------- //
-let canvaspasteC3 = document.getElementById('canvaspasteC3')
-let contextcanvaspasteC3 = canvaspasteC3.getContext('2d')
+let canvaspasteC3 = document.getElementById("canvaspasteC3");
+let contextcanvaspasteC3 = canvaspasteC3.getContext("2d");
 
 //------------------ Cuadrante 4 --------------------------- //
-let canvasnuevo4 = document.getElementById('canvasnuevo4')
-let contextcanvasnuevo4 = canvasnuevo4.getContext('2d')
+let canvasnuevo4 = document.getElementById("canvasnuevo4");
+let contextcanvasnuevo4 = canvasnuevo4.getContext("2d");
 
-let canvaspaste4 = document.getElementById('canvaspaste4')
-let contextcanvaspaste4 = canvaspaste4.getContext('2d')
-
-//------------------ Cuadrante 5 --------------------------- //
-let canvaspasteC5 = document.getElementById('canvaspasteC5')
-let contextcanvaspasteC5 = canvaspasteC5.getContext('2d')
+let canvaspaste4 = document.getElementById("canvaspaste4");
+let contextcanvaspaste4 = canvaspaste4.getContext("2d");
 
 //------------------ Cuadrante 5 --------------------------- //
-let canvaspasteC6 = document.getElementById('canvaspasteC6')
-let contextcanvaspasteC6 = canvaspasteC6.getContext('2d')
+let canvaspasteC5 = document.getElementById("canvaspasteC5");
+let contextcanvaspasteC5 = canvaspasteC5.getContext("2d");
 
-let canvasnuevo7 = document.getElementById('canvasnuevo7')
-let contextcanvasnuevo7 = canvasnuevo7.getContext('2d')
+//------------------ Cuadrante 5 --------------------------- //
+let canvaspasteC6 = document.getElementById("canvaspasteC6");
+let contextcanvaspasteC6 = canvaspasteC6.getContext("2d");
 
-let canvaspaste7 = document.getElementById('canvaspaste7')
-let contextcanvaspaste7 = canvaspaste7.getContext('2d')
+let canvasnuevo7 = document.getElementById("canvasnuevo7");
+let contextcanvasnuevo7 = canvasnuevo7.getContext("2d");
 
-let canvastp1 = document.getElementById('canvastp1')
-let contextcanvastp1 = canvastp1.getContext('2d')
-let canvastp2 = document.getElementById('canvastp2')
-let contextcanvastp2 = canvastp2.getContext('2d')
-let canvastp3 = document.getElementById('canvastp3')
-let contextcanvastp3 = canvastp3.getContext('2d')
+let canvaspaste7 = document.getElementById("canvaspaste7");
+let contextcanvaspaste7 = canvaspaste7.getContext("2d");
 
+let canvastp1 = document.getElementById("canvastp1");
+let contextcanvastp1 = canvastp1.getContext("2d");
+let canvastp2 = document.getElementById("canvastp2");
+let contextcanvastp2 = canvastp2.getContext("2d");
+let canvastp3 = document.getElementById("canvastp3");
+let contextcanvastp3 = canvastp3.getContext("2d");
 
+let image = new Image(); //Carga caricatura
 
-let image = new Image() //Carga caricatura
+image.src = "/img/caricatura.png";
 
-image.src = '/img/caricatura.png'
+image.onload = function () {
+  //se usa para ejecutar una función de JavaScript tan pronto como una página haya cargado
+  contextcanvasCamara.drawImage(
+    image,
+    0,
+    0,
+    image.width,
+    image.height,
+    0,
+    0,
+    contextcanvasCamara.canvas.width,
+    contextcanvasCamara.canvas.height
+  );
+};
 
-image.onload = function () { //se usa para ejecutar una función de JavaScript tan pronto como una página haya cargado
-    contextcanvasCamara.drawImage(image, 0, 0, image.width, image.height, 0, 0, contextcanvasCamara.canvas.width, contextcanvasCamara.canvas.height);
-}
+window.onload = async function () {
+  //en cuanto se recag
+  return new Promise(async (resolve) => {
+    await abrir();
+    if (day == "Monday") {
+      await agrupapasst2("1", "pass", "Monday", fecha);
+      await agrupapasst2("2", "pass", "Monday", fecha);
+      await agrupapasst2("3", "pass", "Monday", fecha);
+      await agrupapasst2("1", "fail", "Monday", fecha);
+      await agrupapasst2("2", "fail", "Monday", fecha);
+      await agrupapasst2("3", "fail", "Monday", fecha);
+    }
+    if (day == "Tuesday") {
+      await agrupapasst2("1", "pass", "Tuesday", fecha);
+      await agrupapasst2("2", "pass", "Tuesday", fecha);
+      await agrupapasst2("3", "pass", "Tuesday", fecha);
+      await agrupapasst2("1", "fail", "Tuesday", fecha);
+      await agrupapasst2("2", "fail", "Tuesday", fecha);
+      await agrupapasst2("3", "fail", "Tuesday", fecha);
+    }
+    if (day == "Wednesday") {
+      await agrupapasst2("1", "pass", "Wednesday", fecha);
+      await agrupapasst2("2", "pass", "Wednesday", fecha);
+      await agrupapasst2("3", "pass", "Wednesday", fecha);
+      await agrupapasst2("1", "fail", "Wednesday", fecha);
+      await agrupapasst2("2", "fail", "Wednesday", fecha);
+      await agrupapasst2("3", "fail", "Wednesday", fecha);
+    }
+    if (day == "Thursday") {
+      await agrupapasst2("1", "pass", "Thursday", fecha);
+      await agrupapasst2("2", "pass", "Thursday", fecha);
+      await agrupapasst2("3", "pass", "Thursday", fecha);
+      await agrupapasst2("1", "fail", "Thursday", fecha);
+      await agrupapasst2("2", "fail", "Thursday", fecha);
+      await agrupapasst2("3", "fail", "Thursday", fecha);
+    }
+    if (day == "Friday") {
+      await agrupapasst2("1", "pass", "Friday", fecha);
+      await agrupapasst2("2", "pass", "Friday", fecha);
+      await agrupapasst2("3", "pass", "Friday", fecha);
+      await agrupapasst2("1", "fail", "Friday", fecha);
+      await agrupapasst2("2", "fail", "Friday", fecha);
+      await agrupapasst2("3", "fail", "Friday", fecha);
+    }
+    if (day == "Saturday") {
+      await agrupapasst2("1", "pass", "Saturday", fecha);
+      await agrupapasst2("2", "pass", "Saturday", fecha);
+      await agrupapasst2("3", "pass", "Saturday", fecha);
+      await agrupapasst2("1", "fail", "Saturday", fecha);
+      await agrupapasst2("2", "fail", "Saturday", fecha);
+      await agrupapasst2("3", "fail", "Saturday", fecha);
+    }
+    if (day == "Sunday") {
+      await agrupapasst2("1", "pass", "Sunday", fecha);
+      await agrupapasst2("2", "pass", "Sunday", fecha);
+      await agrupapasst2("3", "pass", "Sunday", fecha);
+      await agrupapasst2("1", "fail", "Sunday", fecha);
+      await agrupapasst2("2", "fail", "Sunday", fecha);
+      await agrupapasst2("3", "fail", "Sunday", fecha);
+    }
 
-window.onload = async function () { //en cuanto se recag
-    return new Promise(async resolve => {
-        await abrir()
-        if (day == 'Monday') {
-            await agrupapasst2('1', 'pass', 'Monday', fecha)
-            await agrupapasst2('2', 'pass', 'Monday', fecha)
-            await agrupapasst2('3', 'pass', 'Monday', fecha)
-            await agrupapasst2('1', 'fail', 'Monday', fecha)
-            await agrupapasst2('2', 'fail', 'Monday', fecha)
-            await agrupapasst2('3', 'fail', 'Monday', fecha)
-        } if (day == 'Tuesday') {
-            await agrupapasst2('1', 'pass', 'Tuesday', fecha)
-            await agrupapasst2('2', 'pass', 'Tuesday', fecha)
-            await agrupapasst2('3', 'pass', 'Tuesday', fecha)
-            await agrupapasst2('1', 'fail', 'Tuesday', fecha)
-            await agrupapasst2('2', 'fail', 'Tuesday', fecha)
-            await agrupapasst2('3', 'fail', 'Tuesday', fecha)
-        } if (day == 'Wednesday') {
-            await agrupapasst2('1', 'pass', 'Wednesday', fecha)
-            await agrupapasst2('2', 'pass', 'Wednesday', fecha)
-            await agrupapasst2('3', 'pass', 'Wednesday', fecha)
-            await agrupapasst2('1', 'fail', 'Wednesday', fecha)
-            await agrupapasst2('2', 'fail', 'Wednesday', fecha)
-            await agrupapasst2('3', 'fail', 'Wednesday', fecha)
-        } if (day == 'Thursday') {
-            await agrupapasst2('1', 'pass', 'Thursday', fecha)
-            await agrupapasst2('2', 'pass', 'Thursday', fecha)
-            await agrupapasst2('3', 'pass', 'Thursday', fecha)
-            await agrupapasst2('1', 'fail', 'Thursday', fecha)
-            await agrupapasst2('2', 'fail', 'Thursday', fecha)
-            await agrupapasst2('3', 'fail', 'Thursday', fecha)
-        } if (day == 'Friday') {
-            await agrupapasst2('1', 'pass', 'Friday', fecha)
-            await agrupapasst2('2', 'pass', 'Friday', fecha)
-            await agrupapasst2('3', 'pass', 'Friday', fecha)
-            await agrupapasst2('1', 'fail', 'Friday', fecha)
-            await agrupapasst2('2', 'fail', 'Friday', fecha)
-            await agrupapasst2('3', 'fail', 'Friday', fecha)
-        } if (day == 'Saturday') {
-            await agrupapasst2('1', 'pass', 'Saturday', fecha)
-            await agrupapasst2('2', 'pass', 'Saturday', fecha)
-            await agrupapasst2('3', 'pass', 'Saturday', fecha)
-            await agrupapasst2('1', 'fail', 'Saturday', fecha)
-            await agrupapasst2('2', 'fail', 'Saturday', fecha)
-            await agrupapasst2('3', 'fail', 'Saturday', fecha)
-        } if (day == 'Sunday') {
-            await agrupapasst2('1', 'pass', 'Sunday', fecha)
-            await agrupapasst2('2', 'pass', 'Sunday', fecha)
-            await agrupapasst2('3', 'pass', 'Sunday', fecha)
-            await agrupapasst2('1', 'fail', 'Sunday', fecha)
-            await agrupapasst2('2', 'fail', 'Sunday', fecha)
-            await agrupapasst2('3', 'fail', 'Sunday', fecha)
-        }
+    if (point == 1) {
+      await agrupta("1", "fail", "Monday", "TA1");
+      await agrupta("2", "fail", "Monday", "TA1");
+      await agrupta("3", "fail", "Monday", "TA1");
+      await agrupta("1", "fail", "Tuesday", "TA1");
+      await agrupta("2", "fail", "Tuesday", "TA1");
+      await agrupta("3", "fail", "Tuesday", "TA1");
+      await agrupta("1", "fail", "Wednesday", "TA1");
+      await agrupta("2", "fail", "Wednesday", "TA1");
+      await agrupta("3", "fail", "Wednesday", "TA1");
+      await agrupta("1", "fail", "Thursday", "TA1");
+      await agrupta("2", "fail", "Thursday", "TA1");
+      await agrupta("3", "fail", "Thursday", "TA1");
+      await agrupta("1", "fail", "Friday", "TA1");
+      await agrupta("2", "fail", "Friday", "TA1");
+      await agrupta("3", "fail", "Friday", "TA1");
+      await agrupta("1", "fail", "Saturday", "TA1");
+      await agrupta("2", "fail", "Saturday", "TA1");
+      await agrupta("3", "fail", "Saturday", "TA1");
+      await agrupta("1", "fail", "Sunday", "TA1");
+      await agrupta("2", "fail", "Sunday", "TA1");
+      await agrupta("3", "fail", "Sunday", "TA1");
+    }
+    if (point == 2) {
+      await agrupta("1", "fail", "Monday", "TA2");
+      await agrupta("2", "fail", "Monday", "TA2");
+      await agrupta("3", "fail", "Monday", "TA2");
+      await agrupta("1", "fail", "Tuesday", "TA2");
+      await agrupta("2", "fail", "Tuesday", "TA2");
+      await agrupta("3", "fail", "Tuesday", "TA2");
+      await agrupta("1", "fail", "Wednesday", "TA2");
+      await agrupta("2", "fail", "Wednesday", "TA2");
+      await agrupta("3", "fail", "Wednesday", "TA2");
+      await agrupta("1", "fail", "Thursday", "TA2");
+      await agrupta("2", "fail", "Thursday", "TA2");
+      await agrupta("3", "fail", "Thursday", "TA2");
+      await agrupta("1", "fail", "Friday", "TA2");
+      await agrupta("2", "fail", "Friday", "TA2");
+      await agrupta("3", "fail", "Friday", "TA2");
+      await agrupta("1", "fail", "Saturday", "TA2");
+      await agrupta("2", "fail", "Saturday", "TA2");
+      await agrupta("3", "fail", "Saturday", "TA2");
+      await agrupta("1", "fail", "Sunday", "TA2");
+      await agrupta("2", "fail", "Sunday", "TA2");
+      await agrupta("3", "fail", "Sunday", "TA2");
+    }
+    if (point == 3) {
+      await agrupta("1", "fail", "Monday", "TA3");
+      await agrupta("2", "fail", "Monday", "TA3");
+      await agrupta("3", "fail", "Monday", "TA3");
+      await agrupta("1", "fail", "Tuesday", "TA3");
+      await agrupta("2", "fail", "Tuesday", "TA3");
+      await agrupta("3", "fail", "Tuesday", "TA3");
+      await agrupta("1", "fail", "Wednesday", "TA3");
+      await agrupta("2", "fail", "Wednesday", "TA3");
+      await agrupta("3", "fail", "Wednesday", "TA3");
+      await agrupta("1", "fail", "Thursday", "TA3");
+      await agrupta("2", "fail", "Thursday", "TA3");
+      await agrupta("3", "fail", "Thursday", "TA3");
+      await agrupta("1", "fail", "Friday", "TA3");
+      await agrupta("2", "fail", "Friday", "TA3");
+      await agrupta("3", "fail", "Friday", "TA3");
+      await agrupta("1", "fail", "Saturday", "TA3");
+      await agrupta("2", "fail", "Saturday", "TA3");
+      await agrupta("3", "fail", "Saturday", "TA3");
+      await agrupta("1", "fail", "Sunday", "TA3");
+      await agrupta("2", "fail", "Sunday", "TA3");
+      await agrupta("3", "fail", "Sunday", "TA3");
+    }
+    if (point == 4) {
+      await agrupta("1", "fail", "Monday", "TA4");
+      await agrupta("2", "fail", "Monday", "TA4");
+      await agrupta("3", "fail", "Monday", "TA4");
+      await agrupta("1", "fail", "Tuesday", "TA4");
+      await agrupta("2", "fail", "Tuesday", "TA4");
+      await agrupta("3", "fail", "Tuesday", "TA4");
+      await agrupta("1", "fail", "Wednesday", "TA4");
+      await agrupta("2", "fail", "Wednesday", "TA4");
+      await agrupta("3", "fail", "Wednesday", "TA4");
+      await agrupta("1", "fail", "Thursday", "TA4");
+      await agrupta("2", "fail", "Thursday", "TA4");
+      await agrupta("3", "fail", "Thursday", "TA4");
+      await agrupta("1", "fail", "Friday", "TA4");
+      await agrupta("2", "fail", "Friday", "TA4");
+      await agrupta("3", "fail", "Friday", "TA4");
+      await agrupta("1", "fail", "Saturday", "TA4");
+      await agrupta("2", "fail", "Saturday", "TA4");
+      await agrupta("3", "fail", "Saturday", "TA4");
+      await agrupta("1", "fail", "Sunday", "TA4");
+      await agrupta("2", "fail", "Sunday", "TA4");
+      await agrupta("3", "fail", "Sunday", "TA4");
+    }
+    if (point == 5) {
+      await agrupta("1", "fail", "Monday", "TA5");
+      await agrupta("2", "fail", "Monday", "TA5");
+      await agrupta("3", "fail", "Monday", "TA5");
+      await agrupta("1", "fail", "Tuesday", "TA5");
+      await agrupta("2", "fail", "Tuesday", "TA5");
+      await agrupta("3", "fail", "Tuesday", "TA5");
+      await agrupta("1", "fail", "Wednesday", "TA5");
+      await agrupta("2", "fail", "Wednesday", "TA5");
+      await agrupta("3", "fail", "Wednesday", "TA5");
+      await agrupta("1", "fail", "Thursday", "TA5");
+      await agrupta("2", "fail", "Thursday", "TA5");
+      await agrupta("3", "fail", "Thursday", "TA5");
+      await agrupta("1", "fail", "Friday", "TA5");
+      await agrupta("2", "fail", "Friday", "TA5");
+      await agrupta("3", "fail", "Friday", "TA5");
+      await agrupta("1", "fail", "Saturday", "TA5");
+      await agrupta("2", "fail", "Saturday", "TA5");
+      await agrupta("3", "fail", "Saturday", "TA5");
+      await agrupta("1", "fail", "Sunday", "TA5");
+      await agrupta("2", "fail", "Sunday", "TA5");
+      await agrupta("3", "fail", "Sunday", "TA5");
+    }
+    if (point == 6) {
+      await agrupta("1", "fail", "Monday", "TA6");
+      await agrupta("2", "fail", "Monday", "TA6");
+      await agrupta("3", "fail", "Monday", "TA6");
+      await agrupta("1", "fail", "Tuesday", "TA6");
+      await agrupta("2", "fail", "Tuesday", "TA6");
+      await agrupta("3", "fail", "Tuesday", "TA6");
+      await agrupta("1", "fail", "Wednesday", "TA6");
+      await agrupta("2", "fail", "Wednesday", "TA6");
+      await agrupta("3", "fail", "Wednesday", "TA6");
+      await agrupta("1", "fail", "Thursday", "TA6");
+      await agrupta("2", "fail", "Thursday", "TA6");
+      await agrupta("3", "fail", "Thursday", "TA6");
+      await agrupta("1", "fail", "Friday", "TA6");
+      await agrupta("2", "fail", "Friday", "TA6");
+      await agrupta("3", "fail", "Friday", "TA6");
+      await agrupta("1", "fail", "Saturday", "TA6");
+      await agrupta("2", "fail", "Saturday", "TA6");
+      await agrupta("3", "fail", "Saturday", "TA6");
+      await agrupta("1", "fail", "Sunday", "TA6");
+      await agrupta("2", "fail", "Sunday", "TA6");
+      await agrupta("3", "fail", "Sunday", "TA6");
+    }
+    await numsem();
 
-
-        if (point == 1) {
-            await agrupta('1', 'fail', 'Monday', 'TA1')
-            await agrupta('2', 'fail', 'Monday', 'TA1')
-            await agrupta('3', 'fail', 'Monday', 'TA1')
-            await agrupta('1', 'fail', 'Tuesday', 'TA1')
-            await agrupta('2', 'fail', 'Tuesday', 'TA1')
-            await agrupta('3', 'fail', 'Tuesday', 'TA1')
-            await agrupta('1', 'fail', 'Wednesday', 'TA1')
-            await agrupta('2', 'fail', 'Wednesday', 'TA1')
-            await agrupta('3', 'fail', 'Wednesday', 'TA1')
-            await agrupta('1', 'fail', 'Thursday', 'TA1')
-            await agrupta('2', 'fail', 'Thursday', 'TA1')
-            await agrupta('3', 'fail', 'Thursday', 'TA1')
-            await agrupta('1', 'fail', 'Friday', 'TA1')
-            await agrupta('2', 'fail', 'Friday', 'TA1')
-            await agrupta('3', 'fail', 'Friday', 'TA1')
-            await agrupta('1', 'fail', 'Saturday', 'TA1')
-            await agrupta('2', 'fail', 'Saturday', 'TA1')
-            await agrupta('3', 'fail', 'Saturday', 'TA1')
-            await agrupta('1', 'fail', 'Sunday', 'TA1')
-            await agrupta('2', 'fail', 'Sunday', 'TA1')
-            await agrupta('3', 'fail', 'Sunday', 'TA1')
-
-
-        } if (point == 2) {
-            await agrupta('1', 'fail', 'Monday', 'TA2')
-            await agrupta('2', 'fail', 'Monday', 'TA2')
-            await agrupta('3', 'fail', 'Monday', 'TA2')
-            await agrupta('1', 'fail', 'Tuesday', 'TA2')
-            await agrupta('2', 'fail', 'Tuesday', 'TA2')
-            await agrupta('3', 'fail', 'Tuesday', 'TA2')
-            await agrupta('1', 'fail', 'Wednesday', 'TA2')
-            await agrupta('2', 'fail', 'Wednesday', 'TA2')
-            await agrupta('3', 'fail', 'Wednesday', 'TA2')
-            await agrupta('1', 'fail', 'Thursday', 'TA2')
-            await agrupta('2', 'fail', 'Thursday', 'TA2')
-            await agrupta('3', 'fail', 'Thursday', 'TA2')
-            await agrupta('1', 'fail', 'Friday', 'TA2')
-            await agrupta('2', 'fail', 'Friday', 'TA2')
-            await agrupta('3', 'fail', 'Friday', 'TA2')
-            await agrupta('1', 'fail', 'Saturday', 'TA2')
-            await agrupta('2', 'fail', 'Saturday', 'TA2')
-            await agrupta('3', 'fail', 'Saturday', 'TA2')
-            await agrupta('1', 'fail', 'Sunday', 'TA2')
-            await agrupta('2', 'fail', 'Sunday', 'TA2')
-            await agrupta('3', 'fail', 'Sunday', 'TA2')
-        } if (point == 3) {
-            await agrupta('1', 'fail', 'Monday', 'TA3')
-            await agrupta('2', 'fail', 'Monday', 'TA3')
-            await agrupta('3', 'fail', 'Monday', 'TA3')
-            await agrupta('1', 'fail', 'Tuesday', 'TA3')
-            await agrupta('2', 'fail', 'Tuesday', 'TA3')
-            await agrupta('3', 'fail', 'Tuesday', 'TA3')
-            await agrupta('1', 'fail', 'Wednesday', 'TA3')
-            await agrupta('2', 'fail', 'Wednesday', 'TA3')
-            await agrupta('3', 'fail', 'Wednesday', 'TA3')
-            await agrupta('1', 'fail', 'Thursday', 'TA3')
-            await agrupta('2', 'fail', 'Thursday', 'TA3')
-            await agrupta('3', 'fail', 'Thursday', 'TA3')
-            await agrupta('1', 'fail', 'Friday', 'TA3')
-            await agrupta('2', 'fail', 'Friday', 'TA3')
-            await agrupta('3', 'fail', 'Friday', 'TA3')
-            await agrupta('1', 'fail', 'Saturday', 'TA3')
-            await agrupta('2', 'fail', 'Saturday', 'TA3')
-            await agrupta('3', 'fail', 'Saturday', 'TA3')
-            await agrupta('1', 'fail', 'Sunday', 'TA3')
-            await agrupta('2', 'fail', 'Sunday', 'TA3')
-            await agrupta('3', 'fail', 'Sunday', 'TA3')
-        } if (point == 4) {
-            await agrupta('1', 'fail', 'Monday', 'TA4')
-            await agrupta('2', 'fail', 'Monday', 'TA4')
-            await agrupta('3', 'fail', 'Monday', 'TA4')
-            await agrupta('1', 'fail', 'Tuesday', 'TA4')
-            await agrupta('2', 'fail', 'Tuesday', 'TA4')
-            await agrupta('3', 'fail', 'Tuesday', 'TA4')
-            await agrupta('1', 'fail', 'Wednesday', 'TA4')
-            await agrupta('2', 'fail', 'Wednesday', 'TA4')
-            await agrupta('3', 'fail', 'Wednesday', 'TA4')
-            await agrupta('1', 'fail', 'Thursday', 'TA4')
-            await agrupta('2', 'fail', 'Thursday', 'TA4')
-            await agrupta('3', 'fail', 'Thursday', 'TA4')
-            await agrupta('1', 'fail', 'Friday', 'TA4')
-            await agrupta('2', 'fail', 'Friday', 'TA4')
-            await agrupta('3', 'fail', 'Friday', 'TA4')
-            await agrupta('1', 'fail', 'Saturday', 'TA4')
-            await agrupta('2', 'fail', 'Saturday', 'TA4')
-            await agrupta('3', 'fail', 'Saturday', 'TA4')
-            await agrupta('1', 'fail', 'Sunday', 'TA4')
-            await agrupta('2', 'fail', 'Sunday', 'TA4')
-            await agrupta('3', 'fail', 'Sunday', 'TA4')
-        } if (point == 5) {
-            await agrupta('1', 'fail', 'Monday', 'TA5')
-            await agrupta('2', 'fail', 'Monday', 'TA5')
-            await agrupta('3', 'fail', 'Monday', 'TA5')
-            await agrupta('1', 'fail', 'Tuesday', 'TA5')
-            await agrupta('2', 'fail', 'Tuesday', 'TA5')
-            await agrupta('3', 'fail', 'Tuesday', 'TA5')
-            await agrupta('1', 'fail', 'Wednesday', 'TA5')
-            await agrupta('2', 'fail', 'Wednesday', 'TA5')
-            await agrupta('3', 'fail', 'Wednesday', 'TA5')
-            await agrupta('1', 'fail', 'Thursday', 'TA5')
-            await agrupta('2', 'fail', 'Thursday', 'TA5')
-            await agrupta('3', 'fail', 'Thursday', 'TA5')
-            await agrupta('1', 'fail', 'Friday', 'TA5')
-            await agrupta('2', 'fail', 'Friday', 'TA5')
-            await agrupta('3', 'fail', 'Friday', 'TA5')
-            await agrupta('1', 'fail', 'Saturday', 'TA5')
-            await agrupta('2', 'fail', 'Saturday', 'TA5')
-            await agrupta('3', 'fail', 'Saturday', 'TA5')
-            await agrupta('1', 'fail', 'Sunday', 'TA5')
-            await agrupta('2', 'fail', 'Sunday', 'TA5')
-            await agrupta('3', 'fail', 'Sunday', 'TA5')
-
-        } if (point == 6) {
-            await agrupta('1', 'fail', 'Monday', 'TA6')
-            await agrupta('2', 'fail', 'Monday', 'TA6')
-            await agrupta('3', 'fail', 'Monday', 'TA6')
-            await agrupta('1', 'fail', 'Tuesday', 'TA6')
-            await agrupta('2', 'fail', 'Tuesday', 'TA6')
-            await agrupta('3', 'fail', 'Tuesday', 'TA6')
-            await agrupta('1', 'fail', 'Wednesday', 'TA6')
-            await agrupta('2', 'fail', 'Wednesday', 'TA6')
-            await agrupta('3', 'fail', 'Wednesday', 'TA6')
-            await agrupta('1', 'fail', 'Thursday', 'TA6')
-            await agrupta('2', 'fail', 'Thursday', 'TA6')
-            await agrupta('3', 'fail', 'Thursday', 'TA6')
-            await agrupta('1', 'fail', 'Friday', 'TA6')
-            await agrupta('2', 'fail', 'Friday', 'TA6')
-            await agrupta('3', 'fail', 'Friday', 'TA6')
-            await agrupta('1', 'fail', 'Saturday', 'TA6')
-            await agrupta('2', 'fail', 'Saturday', 'TA6')
-            await agrupta('3', 'fail', 'Saturday', 'TA6')
-            await agrupta('1', 'fail', 'Sunday', 'TA6')
-            await agrupta('2', 'fail', 'Sunday', 'TA6')
-            await agrupta('3', 'fail', 'Sunday', 'TA6')
-        }
-        await numsem()
-
-        resolve('resolved')
-    })
-}
-
+    resolve("resolved");
+  });
+};
 
 /*************************************************** Muestra hora local */
 const d = new Date();
 let hora = d.getHours();
 document.getElementById("demo").innerHTML = hora;
-console.log(hora)
+console.log(hora);
 
 /**************************************************** Muestra dia de calendario */
-const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+const weekday = [
+  "Sunday",
+  "Monday",
+  "Tuesday",
+  "Wednesday",
+  "Thursday",
+  "Friday",
+  "Saturday",
+];
 const dia = new Date();
 let day = weekday[dia.getDay()];
 document.getElementById("demo").innerHTML = day;
@@ -361,13 +382,26 @@ document.getElementById("demo").innerHTML = day;
 
 //numero
 const dian = new Date();
-let num = dian.getDate()
+let num = dian.getDate();
 document.getElementById("demo").innerHTML = num;
 
 //console.log(num)
 //mes
 
-const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+const months = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+];
 const m = new Date();
 let month = months[m.getMonth()];
 
@@ -375,441 +409,825 @@ let month = months[m.getMonth()];
 const y = new Date();
 let year = y.getFullYear();
 
-let fecha = year + "-" + month + "-" + num
+let fecha = year + "-" + month + "-" + num;
 //console.log(fecha)
 
-
 function getweek(date) {
-    var onejan = new Date(date.getFullYear(), 0, 1)
-    return Math.ceil((((date - onejan) / 86400000) + onejan.getDay() + 1) / 7)
-
+  var onejan = new Date(date.getFullYear(), 0, 1);
+  return Math.ceil(((date - onejan) / 86400000 + onejan.getDay() + 1) / 7);
 }
 var date = new Date(fecha);
 let semana = getweek(date);
 //console.log("soy semana" +semana);
 
+const fechaActual = new Date();
+const diaSemana = fechaActual.getDay();
 
-const fechaActual = new Date()
-const diaSemana = fechaActual.getDay()
-
-async function numsem() { //para graficar por semana
-    if ((diaSemana == 0 || diaSemana == 1 || diaSemana == 2 || diaSemana == 3 || diaSemana == 4 || diaSemana == 5 || diaSemana == 6 && (getweek(date)) == getweek(date))) {
-        await agrupardias('pass', 'Monday', semana)
-        await agrupardias('fail', 'Monday', semana)
-        await agrupardias('pass', 'Tuesday', semana)
-        await agrupardias('fail', 'Tuesday', semana)
-        await agrupardias('pass', 'Wednesday', semana)
-        await agrupardias('fail', 'Wednesday', semana)
-        await agrupardias('pass', 'Thursday', semana)
-        await agrupardias('fail', 'Thursday', semana)
-        await agrupardias('fail', 'Friday', semana)
-        await agrupardias('pass', 'Friday', semana)
-        await agrupardias('pass', 'Saturday', semana)
-        await agrupardias('fail', 'Saturday', semana)
-        await agrupardias('pass', 'Sunday', semana)
-        await agrupardias('fail', 'Sunday', semana)
-    }
+async function numsem() {
+  //para graficar por semana
+  if (
+    diaSemana == 0 ||
+    diaSemana == 1 ||
+    diaSemana == 2 ||
+    diaSemana == 3 ||
+    diaSemana == 4 ||
+    diaSemana == 5 ||
+    (diaSemana == 6 && getweek(date) == getweek(date))
+  ) {
+    await agrupardias("pass", "Monday", semana);
+    await agrupardias("fail", "Monday", semana);
+    await agrupardias("pass", "Tuesday", semana);
+    await agrupardias("fail", "Tuesday", semana);
+    await agrupardias("pass", "Wednesday", semana);
+    await agrupardias("fail", "Wednesday", semana);
+    await agrupardias("pass", "Thursday", semana);
+    await agrupardias("fail", "Thursday", semana);
+    await agrupardias("fail", "Friday", semana);
+    await agrupardias("pass", "Friday", semana);
+    await agrupardias("pass", "Saturday", semana);
+    await agrupardias("fail", "Saturday", semana);
+    await agrupardias("pass", "Sunday", semana);
+    await agrupardias("fail", "Sunday", semana);
+  }
 }
 
-//************************ GRAFICA LINEAL  
+//************************ GRAFICA LINEAL
 async function iniciar() {
-    return new Promise(async resolve => {
+  return new Promise(async (resolve) => {
+    const bar_ctx = document.getElementById("bar").getContext("2d");
+    let turno1 = 1;
+    let turno2 = 2;
+    let turno3 = 3;
 
-        const bar_ctx = document.getElementById('bar').getContext('2d');
-        let turno1 = 1
-        let turno2 = 2
-        let turno3 = 3
-
-        bar = new Chart(bar_ctx, {
-            type: 'bar',
-            data: {
-
-                labels: [turno1, turno2, turno3],
-                datasets: [{
-                    label: 'PASS',
-                    data: [],//[56,28,30,15,36,20,40,45, 34], 
-                    backgroundColor: '#5a8c83',
-                    borderColor: '#5a8c83',
-                    borderWidth: 1
-                }, {
-                    label: 'FAIL',
-                    data: [],// [12, 19, 3, 5, 4, 6, 2, 4, 2],
-                    backgroundColor: '#FF0000',
-                    borderColor: '#FF0000',
-                    borderWidth: 1
-                }]
+    bar = new Chart(bar_ctx, {
+      type: "bar",
+      data: {
+        labels: [turno1, turno2, turno3],
+        datasets: [
+          {
+            label: "PASS",
+            data: [], //[56,28,30,15,36,20,40,45, 34],
+            backgroundColor: "#5a8c83",
+            borderColor: "#5a8c83",
+            borderWidth: 1,
+          },
+          {
+            label: "FAIL",
+            data: [], // [12, 19, 3, 5, 4, 6, 2, 4, 2],
+            backgroundColor: "#FF0000",
+            borderColor: "#FF0000",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          x: {
+            grid: {
+              display: false,
             },
-            options: {
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        beginAtZero: false,
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-
-        });
-        //console.log(bar)
-        resolve('resolved');
-    })
-
+          },
+          y: {
+            beginAtZero: false,
+            grid: {
+              display: false,
+            },
+          },
+        },
+      },
+    });
+    //console.log(bar)
+    resolve("resolved");
+  });
 }
-iniciar()
-
+iniciar();
 
 /***************************** GRAFICA BARRAS */
 
 async function iniciar2() {
-    return new Promise(async resolve => {
-        //variable = 15
-        let Monday = 'Monday'
-        let Tuesday = 'Tuesday'
-        let Wednesday = 'Wednesday'
-        let Thursday = 'Thursday'
-        let Friday = 'Friday'
-        let Saturday = 'Saturday'
-        let Sunday = 'Sunday'
-        //let turno2 = 2
-        //let turno3 = 3
-        line_ctx = document.getElementById('linea').getContext('2d');
-        linea = new Chart(line_ctx, {
-            type: 'line',
-            data: {
-                labels: [Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday],
-                datasets: [{
-                    label: 'PASS',
-                    data: [],//[variable, 19, 3, 5, 2, 3],
-                    backgroundColor: '#5a8c83',
-                    borderColor: '#5a8c83',
-                    borderWidth: 1
-                }, {
-                    label: 'FAIL',
-                    data: [],//[5, 9, 6, 2, 1,15],
-                    backgroundColor: '#FF0000',
-                    borderColor: '#FF0000',
-                    borderWidth: 1
-                }]
+  return new Promise(async (resolve) => {
+    //variable = 15
+    let Monday = "Monday";
+    let Tuesday = "Tuesday";
+    let Wednesday = "Wednesday";
+    let Thursday = "Thursday";
+    let Friday = "Friday";
+    let Saturday = "Saturday";
+    let Sunday = "Sunday";
+    //let turno2 = 2
+    //let turno3 = 3
+    line_ctx = document.getElementById("linea").getContext("2d");
+    linea = new Chart(line_ctx, {
+      type: "line",
+      data: {
+        labels: [
+          Monday,
+          Tuesday,
+          Wednesday,
+          Thursday,
+          Friday,
+          Saturday,
+          Sunday,
+        ],
+        datasets: [
+          {
+            label: "PASS",
+            data: [], //[variable, 19, 3, 5, 2, 3],
+            backgroundColor: "#5a8c83",
+            borderColor: "#5a8c83",
+            borderWidth: 1,
+          },
+          {
+            label: "FAIL",
+            data: [], //[5, 9, 6, 2, 1,15],
+            backgroundColor: "#FF0000",
+            borderColor: "#FF0000",
+            borderWidth: 1,
+          },
+        ],
+      },
+      options: {
+        scales: {
+          x: {
+            grid: {
+              display: false,
             },
-            options: {
-
-                scales: {
-                    x: {
-                        grid: {
-                            display: false
-                        }
-                    },
-                    y: {
-                        beginAtZero: true,
-                        grid: {
-                            display: false
-                        }
-                    }
-                }
-            }
-        });
-        // console.log(bar)
-        resolve('resolved');
-    })
+          },
+          y: {
+            beginAtZero: true,
+            grid: {
+              display: false,
+            },
+          },
+        },
+      },
+    });
+    // console.log(bar)
+    resolve("resolved");
+  });
 }
 
-iniciar2()
-
+iniciar2();
 
 //*************************Socket block */
 
-
 const socket = io();
 
-socket.on('Timsequence_start', function (infoplc) {//pg migrated
-    split(infoplc)
+socket.on("Timsequence_start", function (infoplc) {
+  //pg migrated
+  split(infoplc);
 
-    if (infoplc != 0) {
-
-        station = infoplc.toString().substr(2, 8)
-        snr = infoplc.toString().substr(11, 29)
-        snfile = infoplc.toString().substr(25, 15)
-        pn = infoplc.toString().substr(41, 16)
-        console.log("Start test sequence");
-        if (pn == 'LFTM1135558-64-A' || pn == 'LFTM1135558-03-D') {
-            sequence2()
-        } else { testsequence() }//Activa bandera para continuar}
-        // console.log(typeof(data))
-        //console.log(infoplc)
-        //console.log(pn)
-    }
-    else {
-        console.log("Algo salio mal en el backend");
-    }
+  if (infoplc != 0) {
+    station = infoplc.toString().substr(2, 8);
+    snr = infoplc.toString().substr(11, 29);
+    snfile = infoplc.toString().substr(25, 15);
+    pn = infoplc.toString().substr(41, 16);
+    console.log("Start test sequence");
+    if (pn == "LFTM1135558-64-A" || pn == "LFTM1135558-03-D") {
+      sequence2();
+    } else {
+      testsequence();
+    } //Activa bandera para continuar}
+    // console.log(typeof(data))
+    //console.log(infoplc)
+    //console.log(pn)
+  } else {
+    console.log("Algo salio mal en el backend");
+  }
 });
 //---------------------------------- Matriz que imprime en log y manda cadena al PLC/
 
-
 function plc_response(logsave) {
-    return new Promise(async resolve => {
+  return new Promise(async (resolve) => {
+    porcentajeArray =
+      "" +
+      snr +
+      "\nCuadrante :1\n" +
+      "TA1-:  " +
+      "status :" +
+      logsave[1] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[1] * 100 +
+      "(%) " +
+      `IA Inspection : ${
+        IAdesition[1] == 0 ? "Fail" : IAdesition[1] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if
+      "TA2-:  " +
+      "status :" +
+      logsave[2] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[2] * 100 +
+      "(%) " +
+      `IA Inspection : ${
+        IAdesition[2] == 0 ? "Fail" : IAdesition[2] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if
+      "TA11-: " +
+      "status :" +
+      logsave[3] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[11] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[11] == 0 ? "Fail" : IAdesition[11] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if
+      "TA12-: " +
+      "status :" +
+      logsave[4] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[12] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[12] == 0 ? "Fail" : IAdesition[12] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if
+      "TB1-:  " +
+      "status :" +
+      logsave[5] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[23] * 100 +
+      "(%) \n\n" +
+      //Cuadrante 2
+      "\nCuadrante :2\n" +
+      "TA3-:  " +
+      "status :" +
+      logsave[6] +
+      ",  " +
+      "percent -->  " +
+      porcentajeArray[3] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[3] == 0 ? "Fail" : IAdesition[3] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if
+      "TA4-:  " +
+      "status :" +
+      logsave[7] +
+      ",  " +
+      "percent -->  " +
+      porcentajeArray[4] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[4] == 0 ? "Fail" : IAdesition[4] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if  //`IA Inspection: ${IAdesition[4] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+      "TA9-:  " +
+      "status :" +
+      logsave[8] +
+      ",  " +
+      "percent -->  " +
+      porcentajeArray[9] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[9] == 0 ? "Fail" : IAdesition[9] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if  //`IA Inspection: ${IAdesition[4] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+      "TA10-: " +
+      "status :" +
+      logsave[9] +
+      ",  " +
+      "percent -->  " +
+      porcentajeArray[10] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[10] == 0 ? "Fail" : IAdesition[10] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if  //`IA Inspection: ${IAdesition[4] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+      "TB2-:  " +
+      "status :" +
+      logsave[10] +
+      ",  " +
+      "percent -->  " +
+      porcentajeArray[24] * 100 +
+      "(%)\n\n" + // `IA Inspection: ${IAdesition[24] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
+      // Cuadrante3
+      "\nCuadrante :3\n" +
+      "TA5-: " +
+      "status :" +
+      logsave[11] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[5] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[5] == 0 ? "Fail" : IAdesition[5] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if
+      "TA6-: " +
+      "status :" +
+      logsave[12] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[6] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[6] == 0 ? "Fail" : IAdesition[6] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if
+      "TA7-: " +
+      "status :" +
+      logsave[13] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[7] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[7] == 0 ? "Fail" : IAdesition[7] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if
+      "TA8-: " +
+      "status :" +
+      logsave[14] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[8] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[8] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if
+      "TB3-: " +
+      "status :" +
+      logsave[15] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[25] * 100 +
+      "(%)\n\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[25] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //`IA Inspection : ${IAdesition[25] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
+      // Cuadrante 4
+      "\nCuadrante :4\n" +
+      "TA17-: " +
+      "status :" +
+      logsave[16] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[17] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[17] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //`IA Inspection : ${IAdesition[17] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+      "TA18-: " +
+      "status :" +
+      logsave[17] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[18] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[18] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //`IA Inspection: ${IAdesition[18] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+      "TG1-:  " +
+      "status :" +
+      logsave[18] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[27] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[27] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //`IA Inspection: ${IAdesition[27] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
+      // Cuadrante 5
+      "\nCuadrante :5\n" +
+      "TA15-: " +
+      "status :" +
+      logsave[19] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[15] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[15] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + // `IA Inspection : ${IAdesition[15] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+      "TA16-: " +
+      "status :" +
+      logsave[20] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[16] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[16] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //`IA Inspection : ${IAdesition[16] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+      "TA19-: " +
+      "status :" +
+      logsave[21] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[19] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[19] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //`IA Inspection : ${IAdesition[19] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+      "TA20-: " +
+      "status :" +
+      logsave[22] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[20] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[20] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" +
+      "TB4-:  " +
+      "status :" +
+      logsave[23] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[26] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[26] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" +
+      // Cuadrante 6
+      "\nCuadrante :6\n" +
+      "TA13-: " +
+      "status :" +
+      logsave[24] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[13] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[13] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + // `IA Inspection : ${IAdesition[13] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+      "TA14-: " +
+      "status :" +
+      logsave[25] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[14] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[14] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //`IA Inspection : ${IAdesition[14] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
+      // Cuadrante 7
+      "\nCuadrante :7\n" +
+      "TA21-: " +
+      "status :" +
+      logsave[26] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[21] * 100 +
+      "(%)\n" +
+      `IA Inspection : ${
+        IAdesition[8] == 0 ? "Fail" : IAdesition[21] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //`IA Inspection : ${IAdesition[21] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
+      "TC-:   " +
+      "status :" +
+      logsave[27] +
+      ", " +
+      "percent -->  " +
+      porcentajeArray[22] * 100 +
+      "(%)" +
+      `IA Inspection : ${
+        IAdesition[22] == 0 ? "Fail" : IAdesition[22] == 1 ? "Pass" : "On hold"
+      } ` +
+      "\n" + //Operador ternario que se interpreta como in else if
+      "#";
 
-        porcentajeArray =
+    logsave =
+      "" +
+      snr +
+      "&TA1-" +
+      mtxw[1] * 100 +
+      "%" +
+      "," +
+      logsave[1] +
+      "&TA2-" +
+      mtxw[2] * 100 +
+      "%" +
+      "," +
+      logsave[2] + //porcentajeArray[2]+"%"+
+      "&TA11-" +
+      mtxw[11] * 100 +
+      "%" +
+      "," +
+      logsave[3] + //porcentajeArray[3]+"%"+
+      "&TA12-" +
+      mtxw[12] * 100 +
+      "%" +
+      "," +
+      logsave[4] + //porcentajeArray[4]+
+      "&TB1-" +
+      mtxw[23] * 100 +
+      "%" +
+      "," +
+      logsave[5] + //porcentajeArray[5]+
+      //Cuadrante 2
+      "&TA3-" +
+      mtxw[3] * 100 +
+      "%" +
+      "," +
+      logsave[6] + //porcentajeArray[6]+
+      "&TA4-" +
+      mtxw[4] * 100 +
+      "%" +
+      "," +
+      logsave[7] + //porcentajeArray[7]+
+      "&TA9-" +
+      mtxw[9] * 100 +
+      "%" +
+      "," +
+      logsave[8] + //porcentajeArray[8]+
+      "&TA10-" +
+      mtxw[10] * 100 +
+      "%" +
+      "," +
+      logsave[9] + //porcentajeArray[9]+
+      "&TB2-" +
+      mtxw[24] * 100 +
+      "%" +
+      "," +
+      logsave[10] + //porcentajeArray[10]+
+      // Cuadrante3
+      "&TA5-" +
+      mtxw[5] * 100 +
+      "%" +
+      "," +
+      logsave[11] + //porcentajeArray[11]+
+      "&TA6-" +
+      mtxw[6] * 100 +
+      "%" +
+      "," +
+      logsave[12] + //porcentajeArray[12]+
+      "&TA7-" +
+      mtxw[7] * 100 +
+      "%" +
+      "," +
+      logsave[13] + //porcentajeArray[13]+
+      "&TA8-" +
+      mtxw[8] * 100 +
+      "%" +
+      "," +
+      logsave[14] + //porcentajeArray[14]+
+      "&TB3-" +
+      mtxw[25] * 100 +
+      "%" +
+      "," +
+      logsave[15] + //porcentajeArray[15]+
+      "&TA17-" +
+      mtxw[17] * 100 +
+      "%" +
+      "," +
+      logsave[16] + //porcentajeArray[16]+
+      "&TA18-" +
+      mtxw[18] * 100 +
+      "%" +
+      "," +
+      logsave[17] + //porcentajeArray[17]+
+      "&TG1-" +
+      mtxw[27] * 100 +
+      "%" +
+      "," +
+      logsave[18] +
+      "&TA15-" +
+      mtxw[15] * 100 +
+      "%" +
+      "," +
+      logsave[19] + //porcentajeArray[18]+
+      "&TA16-" +
+      mtxw[16] * 100 +
+      "%" +
+      "," +
+      logsave[20] + //porcentajeArray[19]+
+      "&TA19-" +
+      mtxw[19] * 100 +
+      "%" +
+      "," +
+      logsave[21] + //porcentajeArray[20]+
+      "&TA20-" +
+      mtxw[20] * 100 +
+      "%" +
+      "," +
+      logsave[22] + //porcentajeArray[21]+
+      "&TB4-" +
+      mtxw[26] * 100 +
+      "%" +
+      "," +
+      logsave[23] + //porcentajeArray[22]+
+      "&TA13-" +
+      mtxw[13] * 100 +
+      "%" +
+      "," +
+      logsave[24] + //porcentajeArray[23]+
+      "&TA14-" +
+      mtxw[14] * 100 +
+      "%" +
+      "," +
+      logsave[25] + //porcentajeArray[24]+
+      "&TA21-" +
+      mtxw[21] * 100 +
+      "%" +
+      "," +
+      logsave[26] + //porcentajeArray[25]+
+      "&TC-" +
+      mtxw[22] * 100 +
+      "%" +
+      "," +
+      logsave[27] + //porcentajeArray[26]+"%"+
+      "#";
 
-            "" + snr + "\nCuadrante :1\n" +
-            "TA1-:  " + "status :" + logsave[1] + ", " + "percent -->  " + porcentajeArray[1] * 100 + "(%) " + `IA Inspection : ${IAdesition[1] == 0 ? 'Fail' : (IAdesition[1] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "TA2-:  " + "status :" + logsave[2] + ", " + "percent -->  " + porcentajeArray[2] * 100 + "(%) " + `IA Inspection : ${IAdesition[2] == 0 ? 'Fail' : (IAdesition[2] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "TA11-: " + "status :" + logsave[3] + ", " + "percent -->  " + porcentajeArray[11] * 100 + "(%)" + `IA Inspection : ${IAdesition[11] == 0 ? 'Fail' : (IAdesition[11] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "TA12-: " + "status :" + logsave[4] + ", " + "percent -->  " + porcentajeArray[12] * 100 + "(%)" + `IA Inspection : ${IAdesition[12] == 0 ? 'Fail' : (IAdesition[12] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "TB1-:  " + "status :" + logsave[5] + ", " + "percent -->  " + porcentajeArray[23] * 100 + "(%) \n\n" +
-            //Cuadrante 2 
-            "\nCuadrante :2\n" +
-            "TA3-:  " + "status :" + logsave[6] + ",  " + "percent -->  " + porcentajeArray[3] * 100 + "(%)" + `IA Inspection : ${IAdesition[3] == 0 ? 'Fail' : (IAdesition[3] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "TA4-:  " + "status :" + logsave[7] + ",  " + "percent -->  " + porcentajeArray[4] * 100 + "(%)" + `IA Inspection : ${IAdesition[4] == 0 ? 'Fail' : (IAdesition[4] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if  //`IA Inspection: ${IAdesition[4] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA9-:  " + "status :" + logsave[8] + ",  " + "percent -->  " + porcentajeArray[9] * 100 + "(%)" + `IA Inspection : ${IAdesition[9] == 0 ? 'Fail' : (IAdesition[9] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if  //`IA Inspection: ${IAdesition[4] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA10-: " + "status :" + logsave[9] + ",  " + "percent -->  " + porcentajeArray[10] * 100 + "(%)" + `IA Inspection : ${IAdesition[10] == 0 ? 'Fail' : (IAdesition[10] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if  //`IA Inspection: ${IAdesition[4] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TB2-:  " + "status :" + logsave[10] + ",  " + "percent -->  " + porcentajeArray[24] * 100 + "(%)\n\n" +// `IA Inspection: ${IAdesition[24] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
-            // Cuadrante3
-            "\nCuadrante :3\n" +
-            "TA5-: " + "status :" + logsave[11] + ", " + "percent -->  " + porcentajeArray[5] * 100 + "(%)" + `IA Inspection : ${IAdesition[5] == 0 ? 'Fail' : (IAdesition[5] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "TA6-: " + "status :" + logsave[12] + ", " + "percent -->  " + porcentajeArray[6] * 100 + "(%)" + `IA Inspection : ${IAdesition[6] == 0 ? 'Fail' : (IAdesition[6] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "TA7-: " + "status :" + logsave[13] + ", " + "percent -->  " + porcentajeArray[7] * 100 + "(%)" + `IA Inspection : ${IAdesition[7] == 0 ? 'Fail' : (IAdesition[7] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "TA8-: " + "status :" + logsave[14] + ", " + "percent -->  " + porcentajeArray[8] * 100 + "(%)" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[8] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "TB3-: " + "status :" + logsave[15] + ", " + "percent -->  " + porcentajeArray[25] * 100 + "(%)\n\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[25] == 1 ? 'Pass' : 'On hold')} ` + "\n" +//`IA Inspection : ${IAdesition[25] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
+    //logsave=""+snr+"&TA0,1&TA1,1&TA2,1&TA3,1&TA4,1&TA5,1&TA6,1&TA7,1&TA8,1&TA9,1&TA10,1&TA11,1&TA12,1&TA13,1&TA14,1&TA15,1&TA16,1&TA17,1&TA18,1&TA19,1&TA20,1&TA21,1&TA22,1&TA23,1&TA24,1&TA25,1&TA26,0#"
+    //console.log("Logsave--"+logsave)
 
-            // Cuadrante 4
-            "\nCuadrante :4\n" +
-            "TA17-: " + "status :" + logsave[16] + ", " + "percent -->  " + porcentajeArray[17] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[17] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //`IA Inspection : ${IAdesition[17] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA18-: " + "status :" + logsave[17] + ", " + "percent -->  " + porcentajeArray[18] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[18] == 1 ? 'Pass' : 'On hold')} ` + "\n" +//`IA Inspection: ${IAdesition[18] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TG1-:  " + "status :" + logsave[18] + ", " + "percent -->  " + porcentajeArray[27] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[27] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //`IA Inspection: ${IAdesition[27] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
-            // Cuadrante 5 
-            "\nCuadrante :5\n" +
-            "TA15-: " + "status :" + logsave[19] + ", " + "percent -->  " + porcentajeArray[15] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[15] == 1 ? 'Pass' : 'On hold')} ` + "\n" +// `IA Inspection : ${IAdesition[15] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA16-: " + "status :" + logsave[20] + ", " + "percent -->  " + porcentajeArray[16] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[16] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //`IA Inspection : ${IAdesition[16] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA19-: " + "status :" + logsave[21] + ", " + "percent -->  " + porcentajeArray[19] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[19] == 1 ? 'Pass' : 'On hold')} ` + "\n" +//`IA Inspection : ${IAdesition[19] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA20-: " + "status :" + logsave[22] + ", " + "percent -->  " + porcentajeArray[20] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[20] == 1 ? 'Pass' : 'On hold')} ` + "\n" +
-            "TB4-:  " + "status :" + logsave[23] + ", " + "percent -->  " + porcentajeArray[26] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[26] == 1 ? 'Pass' : 'On hold')} ` + "\n" +
-            // Cuadrante 6
-            "\nCuadrante :6\n" +
-            "TA13-: " + "status :" + logsave[24] + ", " + "percent -->  " + porcentajeArray[13] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[13] == 1 ? 'Pass' : 'On hold')} ` + "\n" +// `IA Inspection : ${IAdesition[13] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TA14-: " + "status :" + logsave[25] + ", " + "percent -->  " + porcentajeArray[14] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[14] == 1 ? 'Pass' : 'On hold')} ` + "\n" +//`IA Inspection : ${IAdesition[14] == 0 ? 'Fail' : 'Pass'} ` + "\n\n" +
-            // Cuadrante 7
-            "\nCuadrante :7\n" +
-            "TA21-: " + "status :" + logsave[26] + ", " + "percent -->  " + porcentajeArray[21] * 100 + "(%)\n" + `IA Inspection : ${IAdesition[8] == 0 ? 'Fail' : (IAdesition[21] == 1 ? 'Pass' : 'On hold')} ` + "\n" +//`IA Inspection : ${IAdesition[21] == 0 ? 'Fail' : 'Pass'} ` + "\n" +
-            "TC-:   " + "status :" + logsave[27] + ", " + "percent -->  " + porcentajeArray[22] * 100 + "(%)" + `IA Inspection : ${IAdesition[22] == 0 ? 'Fail' : (IAdesition[22] == 1 ? 'Pass' : 'On hold')} ` + "\n" + //Operador ternario que se interpreta como in else if 
-            "#"
-
-
-        logsave =
-            "" + snr + "&TA1-" + mtxw[1] * 100 + "%" + "," + logsave[1] +
-            "&TA2-" + mtxw[2] * 100 + "%" + "," + logsave[2] +//porcentajeArray[2]+"%"+           
-            "&TA11-" + mtxw[11] * 100 + "%" + "," + logsave[3] +//porcentajeArray[3]+"%"+
-            "&TA12-" + mtxw[12] * 100 + "%" + "," + logsave[4] +//porcentajeArray[4]+
-            "&TB1-" + mtxw[23] * 100 + "%" + "," + logsave[5] +//porcentajeArray[5]+
-            //Cuadrante 2 
-            "&TA3-" + mtxw[3] * 100 + "%" + "," + logsave[6] +//porcentajeArray[6]+
-            "&TA4-" + mtxw[4] * 100 + "%" + "," + logsave[7] +//porcentajeArray[7]+
-            "&TA9-" + mtxw[9] * 100 + "%" + "," + logsave[8] +//porcentajeArray[8]+
-            "&TA10-" + mtxw[10] * 100 + "%" + "," + logsave[9] +//porcentajeArray[9]+
-            "&TB2-" + mtxw[24] * 100 + "%" + "," + logsave[10] +//porcentajeArray[10]+
-            // Cuadrante3
-            "&TA5-" + mtxw[5] * 100 + "%" + "," + logsave[11] +//porcentajeArray[11]+
-            "&TA6-" + mtxw[6] * 100 + "%" + "," + logsave[12] +//porcentajeArray[12]+
-            "&TA7-" + mtxw[7] * 100 + "%" + "," + logsave[13] +//porcentajeArray[13]+
-            "&TA8-" + mtxw[8] * 100 + "%" + "," + logsave[14] +//porcentajeArray[14]+
-            "&TB3-" + mtxw[25] * 100 + "%" + "," + logsave[15] +//porcentajeArray[15]+
-
-            "&TA17-" + mtxw[17] * 100 + "%" + "," + logsave[16] +//porcentajeArray[16]+
-            "&TA18-" + mtxw[18] * 100 + "%" + "," + logsave[17] +//porcentajeArray[17]+
-            "&TG1-" + mtxw[27] * 100 + "%" + "," + logsave[18] +
-
-            "&TA15-" + mtxw[15] * 100 + "%" + "," + logsave[19] +//porcentajeArray[18]+
-            "&TA16-" + mtxw[16] * 100 + "%" + "," + logsave[20] +//porcentajeArray[19]+
-            "&TA19-" + mtxw[19] * 100 + "%" + "," + logsave[21] +//porcentajeArray[20]+
-            "&TA20-" + mtxw[20] * 100 + "%" + "," + logsave[22] +//porcentajeArray[21]+
-            "&TB4-" + mtxw[26] * 100 + "%" + "," + logsave[23] +//porcentajeArray[22]+
-
-            "&TA13-" + mtxw[13] * 100 + "%" + "," + logsave[24] +//porcentajeArray[23]+
-            "&TA14-" + mtxw[14] * 100 + "%" + "," + logsave[25] +//porcentajeArray[24]+
-
-            "&TA21-" + mtxw[21] * 100 + "%" + "," + logsave[26] +//porcentajeArray[25]+
-            "&TC-" + mtxw[22] * 100 + "%" + "," + logsave[27] +//porcentajeArray[26]+"%"+
-            "#"
-
-        //logsave=""+snr+"&TA0,1&TA1,1&TA2,1&TA3,1&TA4,1&TA5,1&TA6,1&TA7,1&TA8,1&TA9,1&TA10,1&TA11,1&TA12,1&TA13,1&TA14,1&TA15,1&TA16,1&TA17,1&TA18,1&TA19,1&TA20,1&TA21,1&TA22,1&TA23,1&TA24,1&TA25,1&TA26,0#"
-        //console.log("Logsave--"+logsave)
-
-        /*mtxw= 
+    /*mtxw= 
         ""+snr+"&TA1,"+mtxw[1]*100+"%"+","+logsave[1]+","+
         "&TA2,       "+mtxw[2]*100+"%"+","+logsave[2]+","+
         "&TA11,      "+mtxw[11]*100+"%"+","+logsave[2]+","+
         "&TA11,      "+mtxw[11]*100+"%"+","+logsave[2]+","+*/
 
-        logsaving(snfile, porcentajeArray, logsave)
-        socket.emit('plc_response', logsave)
-        resolve('resolved')
-    })
+    logsaving(snfile, porcentajeArray, logsave);
+    socket.emit("plc_response", logsave);
+    resolve("resolved");
+  });
 }
 //funcion onload
 
-
 //----------------Main test sequence----------//
-let seconds = new Date()
-
-
+let seconds = new Date();
 
 async function testsequence() {
-    segundos = seconds.getSeconds() - seconds.getSeconds()
-    console.log("segundos inicial: " + segundos)
-    console.log("soy pn" + pn)
-    cuadranteArray = []// Reinicia valor para retrabajar cuadrante
-    porcentajeArray = []// Reinicia valor para retrabajar cuadrante
-    canbughide()
-    for (point = 1; point < 4; point++) {
-        console.log("soy punto " + point)
-        await open_cam(point)
-        await captureimage()
-        await recorTA(point)
-        await stopcam()
-    }
-
-    // await tiempofinal()
-
-    if (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A') {
-        await evalTP()
-        plc_responseNew(logsave)
-        //console.log("Entre a evalTP")
-    } else if (pn == 'LFTM1135558-64-A' || pn == 'LFTM1135558-03-D') {
-        await evaluaciondos()
-        await plc_responsep2(logsave)
-        console.log("entre a nuevo numero")
-    } else {
-        await Evaluacion() //Esta funcion se esta usando pero no existe en el codigo que deberia de hacer ?
-        await plc_response(logsave)//incluye la funcion para guardar el log txt
-        console.log("entre a antiguo")
-    }
-    //await plc_response(logsave)
-    if (resultado == true) {
-        renombra(snfile)
-    }
-    segundosfin = seconds.getSeconds()
-    console.log("segundos final: " + segundosfin)
-
-    //setTimeout(function fire() { location.reload() }, 2000);// temporizador para limpiar pantalla
-}
-
-
-function serialnumber(sn) {
-    return new Promise(async resolve => {
-        elementsn = document.getElementById('sn')
-        //console.log(serial)
-        elementsn.innerHTML = "Serial: " + sn + ""
-        resolve('resolved')
-    })
-}
-function partnumber(pn) {
-    return new Promise(async resolve => {
-        elementpn = document.getElementById('pn')
-        //console.log(model)
-        elementpn.innerHTML = "Model: " + pn + ""
-        resolve('resolved')
-    })
-}
-function st(st) {
-    return new Promise(async resolve => {
-        elementst = document.getElementById('st')
-        //console.log(station)
-        elementst.innerHTML = "Station: " + st + ""
-        resolve('resolved')
-    })
-}
-document.getElementById('menu').addEventListener('click', function() {
-    
-    let opcionSeleccionada = this.value;
-    if (opcionSeleccionada === 'ta1') {
-      mostrarTabla();
-    } else {
-      document.getElementById('tabla').style.display = 'none';
-    }
-  });
-
-  function mostrarTabla() {
-    document.getElementById('tabla').style.display = 'block';
+  segundos = seconds.getSeconds() - seconds.getSeconds();
+  console.log("segundos inicial: " + segundos);
+  console.log("soy pn" + pn);
+  cuadranteArray = []; // Reinicia valor para retrabajar cuadrante
+  porcentajeArray = []; // Reinicia valor para retrabajar cuadrante
+  canbughide();
+  for (point = 1; point < 4; point++) {
+    console.log("soy punto " + point);
+    await open_cam(point);
+    await captureimage();
+    await recorTA(point);
+    await stopcam();
   }
 
+  // await tiempofinal()
+
+  if (pn == "LFTM1135558-16-B" || pn == "LFTM1135558-55-A") {
+    await evalTP();
+    plc_responseNew(logsave);
+    //console.log("Entre a evalTP")
+  } else if (pn == "LFTM1135558-64-A" || pn == "LFTM1135558-03-D") {
+    await evaluaciondos();
+    await plc_responsep2(logsave);
+    console.log("entre a nuevo numero");
+  } else {
+    await Evaluacion(); //Esta funcion se esta usando pero no existe en el codigo que deberia de hacer ?
+    await plc_response(logsave); //incluye la funcion para guardar el log txt
+    console.log("entre a antiguo");
+  }
+  //await plc_response(logsave)
+  if (resultado == true) {
+    renombra(snfile);
+  }
+  segundosfin = seconds.getSeconds();
+  console.log("segundos final: " + segundosfin);
+
+  //setTimeout(function fire() { location.reload() }, 2000);// temporizador para limpiar pantalla
+}
+
+function serialnumber(sn) {
+  return new Promise(async (resolve) => {
+    elementsn = document.getElementById("sn");
+    //console.log(serial)
+    elementsn.innerHTML = "Serial: " + sn + "";
+    resolve("resolved");
+  });
+}
+function partnumber(pn) {
+  return new Promise(async (resolve) => {
+    elementpn = document.getElementById("pn");
+    //console.log(model)
+    elementpn.innerHTML = "Model: " + pn + "";
+    resolve("resolved");
+  });
+}
+function st(st) {
+  return new Promise(async (resolve) => {
+    elementst = document.getElementById("st");
+    //console.log(station)
+    elementst.innerHTML = "Station: " + st + "";
+    resolve("resolved");
+  });
+}
+
+document.getElementById("menu").addEventListener("click", function () {
+  let opcionSeleccionada = this.value;
+  if (opcionSeleccionada === "ta1") {
+    mostrarTabla();
+  } else {
+    document.getElementById("tabla").style.display = "none";
+  }
+});
+
+function mostrarTabla() {
+  document.getElementById("tabla").style.display = "block";
+}
+
 //-----------------Funciones de procesamiento  ( Coordenadas de areas a inspeccionar )-----------//
-let camid
-let TA1x = 1551//1535
-let TA1y = 71//129
-let TA2x = 1417//1401 //1420
-let TA2y = 61 //126 //65
-let TA11x = 1313// 1290
-let TA11y = 493// 556
-let TA12x = 1532 //1519
-let TA12y = 534//601
-let TA3x = 1085//1062
-let TA3y = 70//127
-let TA4x = 801//774
-let TA4y = 41//97
-let TA9x = 839//808
-let TA9y = 496//559
-let TA10x = 1065//1040
-let TA10y = 531//602
-let TA5x = 588//555
-let TA5y = 78//134
-let TA6x = 300//258
-let TA6y = 53//107
-let TA7x = 338//299
-let TA7y = 497//559
-let TA8x = 569//532
-let TA8y = 535//609
-let TA18x = 103
-let TA18y = 655
-let TA17x = 307
-let TA17y = 621
-let TA16x = 733
-let TA16y = 654
-let TA15x = 937
-let TA15y = 621
-let TA19x = 761
-let TA19y = 266
-let TA20x = 758
-let TA20y = 71
-let TA14x = 1466
-let TA14y = 654
-let TA13x = 1666
-let TA13y = 624
-let TATGx = 149
-let TATGy = 202
-let TA21x = 401
-let TA21y = 826
-let TA22x = 360
-let TA22y = 490
-let TB1x = 1677//1658
-let TB1y = 157//221
-let TB2x = 1212//1189
-let TB2y = 93//153
-let TB3x = 715//683
-let TB3y = 97//155
-let TB4x = 1008
-let TB4y = 459
+let camid;
+let TA1x = 1551; //1535
+let TA1y = 71; //129
+let TA2x = 1417; //1401 //1420
+let TA2y = 61; //126 //65
+let TA11x = 1313; // 1290
+let TA11y = 493; // 556
+let TA12x = 1532; //1519
+let TA12y = 534; //601
+let TA3x = 1085; //1062
+let TA3y = 70; //127
+let TA4x = 801; //774
+let TA4y = 41; //97
+let TA9x = 839; //808
+let TA9y = 496; //559
+let TA10x = 1065; //1040
+let TA10y = 531; //602
+let TA5x = 588; //555
+let TA5y = 78; //134
+let TA6x = 300; //258
+let TA6y = 53; //107
+let TA7x = 338; //299
+let TA7y = 497; //559
+let TA8x = 569; //532
+let TA8y = 535; //609
+let TA18x = 103;
+let TA18y = 655;
+let TA17x = 307;
+let TA17y = 621;
+let TA16x = 733;
+let TA16y = 654;
+let TA15x = 937;
+let TA15y = 621;
+let TA19x = 761;
+let TA19y = 266;
+let TA20x = 758;
+let TA20y = 71;
+let TA14x = 1466;
+let TA14y = 654;
+let TA13x = 1666;
+let TA13y = 624;
+let TATGx = 149;
+let TATGy = 202;
+let TA21x = 401;
+let TA21y = 826;
+let TA22x = 360;
+let TA22y = 490;
+let TB1x = 1677; //1658
+let TB1y = 157; //221
+let TB2x = 1212; //1189
+let TB2y = 93; //153
+let TB3x = 715; //683
+let TB3y = 97; //155
+let TB4x = 1008;
+let TB4y = 459;
 
 async function recorTA32(point) {
-    return new Promise(async resolve => {
-        switch (point) {
-            //TA1
+  return new Promise(async (resolve) => {
+    switch (point) {
+      //TA1
 
-            case 1:
-                /**** INICIO DE CAMARA 1 */
-                //Cuadrante 1
-                //TA1
-                contextcanvasClen1.drawImage(fullimage, TA1x, TA1y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
-                await Analiza(canvasClen1, 1)
+      case 1:
+        /**** INICIO DE CAMARA 1 */
+        //Cuadrante 1
+        //TA1
+        contextcanvasClen1.drawImage(
+          fullimage,
+          TA1x,
+          TA1y,
+          118,
+          299,
+          0,
+          0,
+          contextcanvasClen1.canvas.width,
+          contextcanvasClen1.canvas.height
+        );
+        await Analiza(canvasClen1, 1);
 
-                logresult(1, statusx)
+        logresult(1, statusx);
 
-            //TA2
-            /*  contextcanvasGlen1.drawImage(fullimage, TA2x, TA2y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
+      //TA2
+      /*  contextcanvasGlen1.drawImage(fullimage, TA2x, TA2y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
               await Analiza(canvasGlen1, 2)
               logresult(2, statusx)
 
@@ -882,59 +1300,165 @@ async function recorTA32(point) {
               await snapshot(point)
               await pause()
               break*/
-            //***INICIO CUADRANTE 2** */
-            case 2:
+      //***INICIO CUADRANTE 2** */
+      case 2:
+        contextcanvasClen2.drawImage(
+          fullimage,
+          TA18x,
+          TA18y,
+          149,
+          378,
+          0,
+          0,
+          contextcanvasClen2.canvas.width,
+          contextcanvasClen2.canvas.height
+        );
+        await Analiza(canvasClen2, 18);
+        logresult(16, statusx);
 
-                contextcanvasClen2.drawImage(fullimage, TA18x, TA18y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
-                await Analiza(canvasClen2, 18)
-                logresult(16, statusx)
+        contextcanvasClen2.drawImage(
+          fullimage,
+          TA17x,
+          TA17y,
+          149,
+          378,
+          0,
+          0,
+          contextcanvasClen2.canvas.width,
+          contextcanvasClen2.canvas.height
+        );
+        await Analiza(canvasClen2, 17);
+        logresult(17, statusx);
 
-                contextcanvasClen2.drawImage(fullimage, TA17x, TA17y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
-                await Analiza(canvasClen2, 17)
-                logresult(17, statusx)
+        contextcanvasTGlen2.drawImage(
+          fullimage,
+          TATGx,
+          TATGy,
+          298,
+          99,
+          0,
+          0,
+          contextcanvasTGlen2.canvas.width,
+          contextcanvasTGlen2.canvas.height
+        );
+        await Analiza(canvasTGlen2, 27);
+        logresult(18, statusx);
+        await Evaluacion(4);
+        contextcanvasnuevo4.drawImage(
+          fullimage,
+          5,
+          1,
+          605,
+          1069,
+          0,
+          0,
+          contextcanvasnuevo4.canvas.width,
+          contextcanvasnuevo4.canvas.height
+        ); // Canvas donde con imagen vertical original
+        contextcanvaspaste4.translate(1069, 605); //Punto donde va comenzar a realizar la translacion de la imagen
+        contextcanvaspaste4.rotate((270 * Math.PI) / 180); //Formula para convertir el angulo en radianes
+        contextcanvaspaste4.drawImage(
+          canvasnuevo4,
+          0,
+          0,
+          1677,
+          2138,
+          -1069,
+          -605,
+          1677,
+          2138
+        ); // Canvas donde se coloca la imagen ya rotada
+        // Imagen rotada
+        contextcanvasCamara.drawImage(
+          canvaspaste4,
+          464,
+          1069,
+          1067,
+          605,
+          0,
+          0,
+          935,
+          518
+        ); //REcorte de primer cuadrante tomada de fullimag
+        await pause();
 
-                contextcanvasTGlen2.drawImage(fullimage, TATGx, TATGy, 298, 99, 0, 0, contextcanvasTGlen2.canvas.width, contextcanvasTGlen2.canvas.height)
-                await Analiza(canvasTGlen2, 27)
-                logresult(18, statusx)
-                await Evaluacion(4)
-                contextcanvasnuevo4.drawImage(fullimage, 5, 1, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspaste4.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspaste4.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspaste4.drawImage(canvasnuevo4, 0, 0, 1677, 2138, -1069, -605, 1677, 2138) // Canvas donde se coloca la imagen ya rotada 
-                // Imagen rotada
-                contextcanvasCamara.drawImage(canvaspaste4, 464, 1069, 1067, 605, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
-                await pause()
+        //TA16
+        contextcanvasClen2.drawImage(
+          fullimage,
+          TA16x,
+          TA16y,
+          149,
+          378,
+          0,
+          0,
+          contextcanvasClen2.canvas.width,
+          contextcanvasClen2.canvas.height
+        );
+        await Analiza(canvasClen2, 16);
+        logresult(19, statusx);
 
-                //TA16
-                contextcanvasClen2.drawImage(fullimage, TA16x, TA16y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
-                await Analiza(canvasClen2, 16)
-                logresult(19, statusx)
+        //TA15
+        contextcanvasClen2.drawImage(
+          fullimage,
+          TA15x,
+          TA15y,
+          149,
+          378,
+          0,
+          0,
+          contextcanvasClen2.canvas.width,
+          contextcanvasClen2.canvas.height
+        );
+        await Analiza(canvasClen2, 15);
+        logresult(20, statusx);
 
+        //TA19 418,149
+        contextcanvasGlen2.drawImage(
+          fullimage,
+          TA19x,
+          TA19y,
+          418,
+          149,
+          0,
+          0,
+          contextcanvasGlen2.canvas.width,
+          contextcanvasGlen2.canvas.height
+        );
+        await Analiza(canvasGlen2, 19);
+        logresult(21, statusx);
 
-                //TA15
-                contextcanvasClen2.drawImage(fullimage, TA15x, TA15y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
-                await Analiza(canvasClen2, 15)
-                logresult(20, statusx)
+        //TA20 418,149
+        contextcanvasGlen2.drawImage(
+          fullimage,
+          TA20x,
+          TA20y,
+          418,
+          149,
+          0,
+          0,
+          contextcanvasGlen2.canvas.width,
+          contextcanvasGlen2.canvas.height
+        );
+        await Analiza(canvasGlen2, 20);
+        logresult(22, statusx);
 
-                //TA19 418,149
-                contextcanvasGlen2.drawImage(fullimage, TA19x, TA19y, 418, 149, 0, 0, contextcanvasGlen2.canvas.width, contextcanvasGlen2.canvas.height)
-                await Analiza(canvasGlen2, 19)
-                logresult(21, statusx)
+        //TB4
+        contextcanvasTB4.drawImage(
+          fullimage,
+          TB4x,
+          TB4y,
+          66,
+          52,
+          0,
+          0,
+          contextcanvasTB4.canvas.width,
+          contextcanvasTB4.canvas.height
+        );
+        await Analiza(canvasTB4, 26);
+        logresult(23, statusx);
 
-
-                //TA20 418,149
-                contextcanvasGlen2.drawImage(fullimage, TA20x, TA20y, 418, 149, 0, 0, contextcanvasGlen2.canvas.width, contextcanvasGlen2.canvas.height)
-                await Analiza(canvasGlen2, 20)
-                logresult(22, statusx)
-
-
-                //TB4
-                contextcanvasTB4.drawImage(fullimage, TB4x, TB4y, 66, 52, 0, 0, contextcanvasTB4.canvas.width, contextcanvasTB4.canvas.height)
-                await Analiza(canvasTB4, 26)
-                logresult(23, statusx)
-
-                await Evaluacion(5)
-                /* contextcanvasnuevo4.drawImage(fullimage, 695, 3, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
+        await Evaluacion(5);
+        /* contextcanvasnuevo4.drawImage(fullimage, 695, 3, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
                  contextcanvaspasteC5.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
                  contextcanvaspasteC5.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
                  contextcanvaspasteC5.drawImage(canvasnuevo4, 0, 0, 1677, 2138, -1069, -605, 1677, 2138) // Canvas donde se coloca la imagen ya rotada 
@@ -942,1582 +1466,2634 @@ async function recorTA32(point) {
                  contextcanvasCamara.drawImage(canvaspasteC5, 464, 1069, 1067, 605, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
                  await pause()*/
 
-                // await Evaluacion(6)
-                contextcanvasnuevo4.drawImage(fullimage, 1315, 7, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspasteC6.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspasteC6.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspasteC6.drawImage(canvasnuevo4, 0, 0, 1677, 2138, -1069, -605, 1677, 2138) // Canvas donde se coloca la imagen ya rotada 
-                //Imagen rotada 
-                contextcanvasCamara.drawImage(canvaspasteC6, 464, 1069, 1067, 605, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
+        // await Evaluacion(6)
+        contextcanvasnuevo4.drawImage(
+          fullimage,
+          1315,
+          7,
+          605,
+          1069,
+          0,
+          0,
+          contextcanvasnuevo4.canvas.width,
+          contextcanvasnuevo4.canvas.height
+        ); // Canvas donde con imagen vertical original
+        contextcanvaspasteC6.translate(1069, 605); //Punto donde va comenzar a realizar la translacion de la imagen
+        contextcanvaspasteC6.rotate((270 * Math.PI) / 180); //Formula para convertir el angulo en radianes
+        contextcanvaspasteC6.drawImage(
+          canvasnuevo4,
+          0,
+          0,
+          1677,
+          2138,
+          -1069,
+          -605,
+          1677,
+          2138
+        ); // Canvas donde se coloca la imagen ya rotada
+        //Imagen rotada
+        contextcanvasCamara.drawImage(
+          canvaspasteC6,
+          464,
+          1069,
+          1067,
+          605,
+          0,
+          0,
+          935,
+          518
+        ); //REcorte de primer cuadrante tomada de fullimag
 
-                resolve('resolved')
-                await snapshot(point)
-                await pause()
-                break
-            /** INICIO CUADRANTE 3 */
-            case 3:
-                contextcanvasflalen3.drawImage(fullimage, TA21x, TA21y, 561, 77, 0, 0, contextcanvasflalen3.canvas.width, contextcanvasflalen3.canvas.height)
-                await Analiza(canvasflalen3, 21)
-                logresult(26, statusx)
-                if (pn === 'LFTM1135558-64-A') {
-                    arrylogresult(19, statusx)
-                }
-                contextcanvasgolen3.drawImage(fullimage, TA22x, TA22y, 675, 326, 0, 0, contextcanvasgolen3.canvas.width, contextcanvasgolen3.canvas.height)
-                await Analiza(canvasgolen3, 22)
-                logresult(27, statusx)
-
-
-                await Evaluacion(7)
-                contextcanvasnuevo7.drawImage(fullimage, 297, 8, 986, 1066, 0, 0, contextcanvasnuevo7.canvas.width, contextcanvasnuevo7.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspaste7.translate(1066, 986) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspaste7.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspaste7.drawImage(canvasnuevo7, 0, 0, 1974, 2134, -1067, -987, 1974, 2134) // Canvas donde se coloca la imagen ya rotada 
-                //Imagen rotada
-                contextcanvasCamara.drawImage(fullimage, 0, 0, 1920, 1080, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
-                resolve('resolved')
-                await snapshot(point)
-                break
-            default:
+        resolve("resolved");
+        await snapshot(point);
+        await pause();
+        break;
+      /** INICIO CUADRANTE 3 */
+      case 3:
+        contextcanvasflalen3.drawImage(
+          fullimage,
+          TA21x,
+          TA21y,
+          561,
+          77,
+          0,
+          0,
+          contextcanvasflalen3.canvas.width,
+          contextcanvasflalen3.canvas.height
+        );
+        await Analiza(canvasflalen3, 21);
+        logresult(26, statusx);
+        if (pn === "LFTM1135558-64-A") {
+          arrylogresult(19, statusx);
         }
-    })
-}//Fin de switch
+        contextcanvasgolen3.drawImage(
+          fullimage,
+          TA22x,
+          TA22y,
+          675,
+          326,
+          0,
+          0,
+          contextcanvasgolen3.canvas.width,
+          contextcanvasgolen3.canvas.height
+        );
+        await Analiza(canvasgolen3, 22);
+        logresult(27, statusx);
 
-let fallosTA = 0
-let fallos = []
+        await Evaluacion(7);
+        contextcanvasnuevo7.drawImage(
+          fullimage,
+          297,
+          8,
+          986,
+          1066,
+          0,
+          0,
+          contextcanvasnuevo7.canvas.width,
+          contextcanvasnuevo7.canvas.height
+        ); // Canvas donde con imagen vertical original
+        contextcanvaspaste7.translate(1066, 986); //Punto donde va comenzar a realizar la translacion de la imagen
+        contextcanvaspaste7.rotate((270 * Math.PI) / 180); //Formula para convertir el angulo en radianes
+        contextcanvaspaste7.drawImage(
+          canvasnuevo7,
+          0,
+          0,
+          1974,
+          2134,
+          -1067,
+          -987,
+          1974,
+          2134
+        ); // Canvas donde se coloca la imagen ya rotada
+        //Imagen rotada
+        contextcanvasCamara.drawImage(
+          fullimage,
+          0,
+          0,
+          1920,
+          1080,
+          0,
+          0,
+          935,
+          518
+        ); //REcorte de primer cuadrante tomada de fullimag
+        resolve("resolved");
+        await snapshot(point);
+        break;
+      default:
+    }
+  });
+} //Fin de switch
+
+let fallosTA = 0;
+let fallos = [];
 async function recorTA(point) {
-    return new Promise(async resolve => {
-        switch (point) {
-            //TA1
+  return new Promise(async (resolve) => {
+    switch (point) {
+      //TA1
 
-            case 1:
-                /**** INICIO DE CAMARA 1 */
-                //Cuadrante 1
-                //TA1
-                contextcanvasClen1.drawImage(fullimage, TA1x, TA1y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
-                await rgbauto(canvasClen1)
-                console.log("entre a rgbauto")
-                await Analiza(canvasClen1, 1)
-                logresult(1, statusx)
-                //verificar si esl TA1 fallo
+      case 1:
+        /**** INICIO DE CAMARA 1 */
+        //Cuadrante 1
+        //TA1
+        contextcanvasClen1.drawImage(
+          fullimage,
+          TA1x,
+          TA1y,
+          118,
+          299,
+          0,
+          0,
+          contextcanvasClen1.canvas.width,
+          contextcanvasClen1.canvas.height
+        );
+        await rgbauto(canvasClen1);
+        console.log("entre a rgbauto");
+        await Analiza(canvasClen1, 1);
+        logresult(1, statusx);
+        //verificar si esl TA1 fallo
 
-                if (pn === 'LFTM1135558-64-A') {
-                    arrylogresult(1, statusx)
-                }
-
-
-                //TA2
-                contextcanvasGlen1.drawImage(fullimage, TA2x, TA2y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 2)
-                logresult(2, statusx)
-                if (pn === 'LFTM1135558-64-A') {
-                    arrylogresult(2, statusx)
-                }
-
-                //TA11
-                contextcanvasGlen1.drawImage(fullimage, TA11x, TA11y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 11)
-                logresult(3, statusx)
-                if (pn === 'LFTM1135558-64-A') {
-                    arrylogresult(3, statusx)
-                }
-
-                //TA12
-                contextcanvasMlen1.drawImage(fullimage, TA12x, TA12y, 118, 312, 0, 0, contextcanvasMlen1.canvas.width, contextcanvasMlen1.canvas.height)
-                await Analiza(canvasMlen1, 12)
-                logresult(4, statusx)
-                if (pn === 'LFTM1135558-64-A') {
-                    arrylogresult(4, statusx)
-                }
-
-                //TB1
-                contextcanvasTB.drawImage(fullimage, TB1x, TB1y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
-                await Analiza(canvasTB, 23)
-                logresult(5, statusx)
-                if (pn === 'LFTM1135558-64-A') {
-                    arrylogresult(5, statusx)
-                }
-                if (pn === 'LFTM1135558-64-A') {
-                    await evaluaciondos(1)
-                }
-
-                //TP1
-                if (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A') {
-                    await recortaTP1()
-                }
-
-
-                await Evaluacion(1)
-
-
-
-                contextcanvasnuevo.drawImage(fullimage, 1243, 35, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspaste.translate(934, 519) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspaste.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspaste.drawImage(canvasnuevo, 0, 0, 1868, 1038, -400, -519, 1868, 1038) // Canvas donde se coloca la imagen ya rotada 
-                //Imagen rotada C1
-                contextcanvasCamara.drawImage(canvaspaste, 415, 400, 934, 515, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
-                await pause()
-
-                //Cuadrante 2 , imagen 1
-                contextcanvasClen1.drawImage(fullimage, TA3x, TA3y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
-                await Analiza(canvasClen1, 3)
-                logresult(6, statusx)
-
-
-                //TA4
-                contextcanvasGlen1.drawImage(fullimage, TA4x, TA4y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 4)
-                logresult(7, statusx)
-
-
-                //TA9
-                contextcanvasGlen1.drawImage(fullimage, TA9x, TA9y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 9)
-                logresult(8, statusx)
-
-
-                //TA10
-                // TA10
-                contextcanvasGlen1.drawImage(fullimage, TA10x, TA10y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 10)
-                logresult(9, statusx)
-                console.log("soy statusx " + statusx)
-
-            
-
-                //TB2
-                contextcanvasTB.drawImage(fullimage, TB2x, TB2y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
-                await Analiza(canvasTB, 24)
-                logresult(10, statusx)
-
-
-                if (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A') {
-                    await recortaTP2()
-                }
-
-                await Evaluacion(2)
-                // Puntos de rotacion 
-                contextcanvasnuevo.drawImage(fullimage, 705, 29, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspasteC2.translate(934, 519) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspasteC2.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspasteC2.drawImage(canvasnuevo, 0, 0, 1868, 1038, -400, -519, 1868, 1038) // Canvas donde se coloca la imagen ya rotada
-                //Imagen rotada C2
-                contextcanvasCamara.drawImage(canvaspasteC2, 415, 400, 934, 515, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
-                setTimeout(function fire() { resolve('resolved'); }, 5000);
-                await pause()
-
-                //TA5
-                contextcanvasClen1.drawImage(fullimage, TA5x, TA5y, 118, 299, 0, 0, contextcanvasClen1.canvas.width, contextcanvasClen1.canvas.height)
-                await Analiza(canvasClen1, 5)
-                logresult(11, statusx)
-
-                contextcanvasTA6len1.drawImage(fullimage, TA6x, TA6y, 115, 322, 0, 0, contextcanvasTA6len1.canvas.width, contextcanvasTA6len1.canvas.height)
-                await Analiza(canvasClen1, 6)
-                logresult(12, statusx)
-
-                contextcanvasGlen1.drawImage(fullimage, TA7x, TA7y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 7)
-                logresult(13, statusx)
-
-                contextcanvasGlen1.drawImage(fullimage, TA8x, TA8y, 118, 330, 0, 0, contextcanvasGlen1.canvas.width, contextcanvasGlen1.canvas.height)
-                await Analiza(canvasGlen1, 8)
-                logresult(14, statusx)
-
-                //TB3
-                contextcanvasTB.drawImage(fullimage, TB3x, TB3y, 34, 52, 0, 0, contextcanvasTB.canvas.width, contextcanvasTB.canvas.height)
-                await Analiza(canvasTB, 25)
-                logresult(15, statusx)
-
-
-                if (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A') {
-                    await recortaTP3()
-                }
-
-                await Evaluacion(3)
-                // Puntos de rotacion 
-                contextcanvasnuevo.drawImage(fullimage, 162, 48, 519, 934, 0, 0, contextcanvasnuevo.canvas.width, contextcanvasnuevo.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspasteC3.translate(934, 519) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspasteC3.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspasteC3.drawImage(canvasnuevo, 0, 0, 1868, 1038, -400, -519, 1868, 1038) // Canvas donde se coloca la imagen ya rotada 
-                //Imagen rotada 
-                contextcanvasCamara.drawImage(canvaspasteC3, 415, 400, 934, 515, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
-                resolve('resolved')
-                await snapshot(point)
-                await pause()
-                break
-            //***INICIO CUADRANTE 2** */
-            case 2:
-
-                contextcanvasClen2.drawImage(fullimage, TA18x, TA18y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
-                await Analiza(canvasClen2, 18)
-                logresult(16, statusx)
-                if (pn === 'LFTM1135558-64-A') {
-                    arrylogresult(11, statusx)
-                }
-
-                contextcanvasClen2.drawImage(fullimage, TA17x, TA17y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
-                await Analiza(canvasClen2, 17)
-                logresult(17, statusx)
-                if (pn === 'LFTM1135558-64-A') {
-                    arrylogresult(12, statusx)
-                }
-
-                contextcanvasTGlen2.drawImage(fullimage, TATGx, TATGy, 298, 99, 0, 0, contextcanvasTGlen2.canvas.width, contextcanvasTGlen2.canvas.height)
-                await Analiza(canvasTGlen2, 27)
-                logresult(18, statusx)
-                if (pn === 'LFTM1135558-64-A') {
-                    arrylogresult(13, statusx)
-                }
-                if (pn === 'LFTM1135558-64-A') {
-                    await evaluaciondos(3)
-                }
-
-                await Evaluacion(4)
-                contextcanvasnuevo4.drawImage(fullimage, 5, 1, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspaste4.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspaste4.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspaste4.drawImage(canvasnuevo4, 0, 0, 1677, 2138, -1069, -605, 1677, 2138) // Canvas donde se coloca la imagen ya rotada 
-                // Imagen rotada
-                contextcanvasCamara.drawImage(canvaspaste4, 464, 1069, 1067, 605, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
-                await pause()
-
-                //TA16
-                contextcanvasClen2.drawImage(fullimage, TA16x, TA16y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
-                await Analiza(canvasClen2, 16)
-                logresult(19, statusx)
-
-
-                //TA15
-                contextcanvasClen2.drawImage(fullimage, TA15x, TA15y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
-                await Analiza(canvasClen2, 15)
-                logresult(20, statusx)
-
-                //TA19 418,149
-                contextcanvasGlen2.drawImage(fullimage, TA19x, TA19y, 418, 149, 0, 0, contextcanvasGlen2.canvas.width, contextcanvasGlen2.canvas.height)
-                await Analiza(canvasGlen2, 19)
-                logresult(21, statusx)
-
-
-                //TA20 418,149
-                contextcanvasGlen2.drawImage(fullimage, TA20x, TA20y, 418, 149, 0, 0, contextcanvasGlen2.canvas.width, contextcanvasGlen2.canvas.height)
-                await Analiza(canvasGlen2, 20)
-                logresult(22, statusx)
-
-
-                //TB4
-                contextcanvasTB4.drawImage(fullimage, TB4x, TB4y, 66, 52, 0, 0, contextcanvasTB4.canvas.width, contextcanvasTB4.canvas.height)
-                await Analiza(canvasTB4, 26)
-                logresult(23, statusx)
-
-                await Evaluacion(5)
-                contextcanvasnuevo4.drawImage(fullimage, 695, 3, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspasteC5.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspasteC5.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspasteC5.drawImage(canvasnuevo4, 0, 0, 1677, 2138, -1069, -605, 1677, 2138) // Canvas donde se coloca la imagen ya rotada 
-                //Imagen rotada
-                contextcanvasCamara.drawImage(canvaspasteC5, 464, 1069, 1067, 605, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
-                await pause()
-
-                //TA14
-                contextcanvasClen2.drawImage(fullimage, TA14x, TA14y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
-                await Analiza(canvasGlen2, 14)
-                logresult(24, statusx)
-
-                //TA13
-                contextcanvasClen2.drawImage(fullimage, TA13x, TA13y, 149, 378, 0, 0, contextcanvasClen2.canvas.width, contextcanvasClen2.canvas.height)
-                await Analiza(canvasClen2, 13)
-                logresult(25, statusx)
-
-                await Evaluacion(6)
-                contextcanvasnuevo4.drawImage(fullimage, 1315, 7, 605, 1069, 0, 0, contextcanvasnuevo4.canvas.width, contextcanvasnuevo4.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspasteC6.translate(1069, 605) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspasteC6.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspasteC6.drawImage(canvasnuevo4, 0, 0, 1677, 2138, -1069, -605, 1677, 2138) // Canvas donde se coloca la imagen ya rotada 
-                //Imagen rotada 
-                contextcanvasCamara.drawImage(canvaspasteC6, 464, 1069, 1067, 605, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
-                resolve('resolved')
-                await snapshot(point)
-                await pause()
-                break
-            /** INICIO CUADRANTE 3 */
-            case 3:
-                contextcanvasflalen3.drawImage(fullimage, TA21x, TA21y, 561, 77, 0, 0, contextcanvasflalen3.canvas.width, contextcanvasflalen3.canvas.height)
-                await Analiza(canvasflalen3, 21)
-                logresult(26, statusx)
-                if (pn === 'LFTM1135558-64-A') {
-                    arrylogresult(19, statusx)
-                }
-                contextcanvasgolen3.drawImage(fullimage, TA22x, TA22y, 675, 326, 0, 0, contextcanvasgolen3.canvas.width, contextcanvasgolen3.canvas.height)
-                await Analiza(canvasgolen3, 22)
-                logresult(27, statusx)
-
-
-                await Evaluacion(7)
-                contextcanvasnuevo7.drawImage(fullimage, 297, 8, 986, 1066, 0, 0, contextcanvasnuevo7.canvas.width, contextcanvasnuevo7.canvas.height) // Canvas donde con imagen vertical original 
-                contextcanvaspaste7.translate(1066, 986) //Punto donde va comenzar a realizar la translacion de la imagen
-                contextcanvaspaste7.rotate(270 * Math.PI / 180) //Formula para convertir el angulo en radianes
-                contextcanvaspaste7.drawImage(canvasnuevo7, 0, 0, 1974, 2134, -1067, -987, 1974, 2134) // Canvas donde se coloca la imagen ya rotada 
-                //Imagen rotada
-                contextcanvasCamara.drawImage(fullimage, 0, 0, 1920, 1080, 0, 0, 935, 518) //REcorte de primer cuadrante tomada de fullimag
-                resolve('resolved')
-                await snapshot(point)
-                break
-            default:
+        if (pn === "LFTM1135558-64-A") {
+          arrylogresult(1, statusx);
         }
-    })
-}//Fin de switch
+
+        //TA2
+        contextcanvasGlen1.drawImage(
+          fullimage,
+          TA2x,
+          TA2y,
+          118,
+          330,
+          0,
+          0,
+          contextcanvasGlen1.canvas.width,
+          contextcanvasGlen1.canvas.height
+        );
+        await Analiza(canvasGlen1, 2);
+        logresult(2, statusx);
+        if (pn === "LFTM1135558-64-A") {
+          arrylogresult(2, statusx);
+        }
+
+        //TA11
+        contextcanvasGlen1.drawImage(
+          fullimage,
+          TA11x,
+          TA11y,
+          118,
+          330,
+          0,
+          0,
+          contextcanvasGlen1.canvas.width,
+          contextcanvasGlen1.canvas.height
+        );
+        await Analiza(canvasGlen1, 11);
+        logresult(3, statusx);
+        if (pn === "LFTM1135558-64-A") {
+          arrylogresult(3, statusx);
+        }
+
+        //TA12
+        contextcanvasMlen1.drawImage(
+          fullimage,
+          TA12x,
+          TA12y,
+          118,
+          312,
+          0,
+          0,
+          contextcanvasMlen1.canvas.width,
+          contextcanvasMlen1.canvas.height
+        );
+        await Analiza(canvasMlen1, 12);
+        logresult(4, statusx);
+        if (pn === "LFTM1135558-64-A") {
+          arrylogresult(4, statusx);
+        }
+
+        //TB1
+        contextcanvasTB.drawImage(
+          fullimage,
+          TB1x,
+          TB1y,
+          34,
+          52,
+          0,
+          0,
+          contextcanvasTB.canvas.width,
+          contextcanvasTB.canvas.height
+        );
+        await Analiza(canvasTB, 23);
+        logresult(5, statusx);
+        if (pn === "LFTM1135558-64-A") {
+          arrylogresult(5, statusx);
+        }
+        if (pn === "LFTM1135558-64-A") {
+          await evaluaciondos(1);
+        }
+
+        //TP1
+        if (pn == "LFTM1135558-16-B" || pn == "LFTM1135558-55-A") {
+          await recortaTP1();
+        }
+
+        await Evaluacion(1);
+
+        contextcanvasnuevo.drawImage(
+          fullimage,
+          1243,
+          35,
+          519,
+          934,
+          0,
+          0,
+          contextcanvasnuevo.canvas.width,
+          contextcanvasnuevo.canvas.height
+        ); // Canvas donde con imagen vertical original
+        contextcanvaspaste.translate(934, 519); //Punto donde va comenzar a realizar la translacion de la imagen
+        contextcanvaspaste.rotate((270 * Math.PI) / 180); //Formula para convertir el angulo en radianes
+        contextcanvaspaste.drawImage(
+          canvasnuevo,
+          0,
+          0,
+          1868,
+          1038,
+          -400,
+          -519,
+          1868,
+          1038
+        ); // Canvas donde se coloca la imagen ya rotada
+        //Imagen rotada C1
+        contextcanvasCamara.drawImage(
+          canvaspaste,
+          415,
+          400,
+          934,
+          515,
+          0,
+          0,
+          935,
+          518
+        ); //REcorte de primer cuadrante tomada de fullimag
+        await pause();
+
+        //Cuadrante 2 , imagen 1
+        contextcanvasClen1.drawImage(
+          fullimage,
+          TA3x,
+          TA3y,
+          118,
+          299,
+          0,
+          0,
+          contextcanvasClen1.canvas.width,
+          contextcanvasClen1.canvas.height
+        );
+        await Analiza(canvasClen1, 3);
+        logresult(6, statusx);
+
+        //TA4
+        contextcanvasGlen1.drawImage(
+          fullimage,
+          TA4x,
+          TA4y,
+          118,
+          330,
+          0,
+          0,
+          contextcanvasGlen1.canvas.width,
+          contextcanvasGlen1.canvas.height
+        );
+        await Analiza(canvasGlen1, 4);
+        logresult(7, statusx);
+
+        //TA9
+        contextcanvasGlen1.drawImage(
+          fullimage,
+          TA9x,
+          TA9y,
+          118,
+          330,
+          0,
+          0,
+          contextcanvasGlen1.canvas.width,
+          contextcanvasGlen1.canvas.height
+        );
+        await Analiza(canvasGlen1, 9);
+        logresult(8, statusx);
+
+        //TA10
+        // TA10
+        contextcanvasGlen1.drawImage(
+          fullimage,
+          TA10x,
+          TA10y,
+          118,
+          330,
+          0,
+          0,
+          contextcanvasGlen1.canvas.width,
+          contextcanvasGlen1.canvas.height
+        );
+        await Analiza(canvasGlen1, 10);
+        logresult(9, statusx);
+        console.log("soy statusx " + statusx);
+
+        //TB2
+        contextcanvasTB.drawImage(
+          fullimage,
+          TB2x,
+          TB2y,
+          34,
+          52,
+          0,
+          0,
+          contextcanvasTB.canvas.width,
+          contextcanvasTB.canvas.height
+        );
+        await Analiza(canvasTB, 24);
+        logresult(10, statusx);
+
+        if (pn == "LFTM1135558-16-B" || pn == "LFTM1135558-55-A") {
+          await recortaTP2();
+        }
+
+        await Evaluacion(2);
+        // Puntos de rotacion
+        contextcanvasnuevo.drawImage(
+          fullimage,
+          705,
+          29,
+          519,
+          934,
+          0,
+          0,
+          contextcanvasnuevo.canvas.width,
+          contextcanvasnuevo.canvas.height
+        ); // Canvas donde con imagen vertical original
+        contextcanvaspasteC2.translate(934, 519); //Punto donde va comenzar a realizar la translacion de la imagen
+        contextcanvaspasteC2.rotate((270 * Math.PI) / 180); //Formula para convertir el angulo en radianes
+        contextcanvaspasteC2.drawImage(
+          canvasnuevo,
+          0,
+          0,
+          1868,
+          1038,
+          -400,
+          -519,
+          1868,
+          1038
+        ); // Canvas donde se coloca la imagen ya rotada
+        //Imagen rotada C2
+        contextcanvasCamara.drawImage(
+          canvaspasteC2,
+          415,
+          400,
+          934,
+          515,
+          0,
+          0,
+          935,
+          518
+        ); //REcorte de primer cuadrante tomada de fullimag
+        setTimeout(function fire() {
+          resolve("resolved");
+        }, 5000);
+        await pause();
+
+        //TA5
+        contextcanvasClen1.drawImage(
+          fullimage,
+          TA5x,
+          TA5y,
+          118,
+          299,
+          0,
+          0,
+          contextcanvasClen1.canvas.width,
+          contextcanvasClen1.canvas.height
+        );
+        await Analiza(canvasClen1, 5);
+        logresult(11, statusx);
+
+        contextcanvasTA6len1.drawImage(
+          fullimage,
+          TA6x,
+          TA6y,
+          115,
+          322,
+          0,
+          0,
+          contextcanvasTA6len1.canvas.width,
+          contextcanvasTA6len1.canvas.height
+        );
+        await Analiza(canvasClen1, 6);
+        logresult(12, statusx);
+
+        contextcanvasGlen1.drawImage(
+          fullimage,
+          TA7x,
+          TA7y,
+          118,
+          330,
+          0,
+          0,
+          contextcanvasGlen1.canvas.width,
+          contextcanvasGlen1.canvas.height
+        );
+        await Analiza(canvasGlen1, 7);
+        logresult(13, statusx);
+
+        contextcanvasGlen1.drawImage(
+          fullimage,
+          TA8x,
+          TA8y,
+          118,
+          330,
+          0,
+          0,
+          contextcanvasGlen1.canvas.width,
+          contextcanvasGlen1.canvas.height
+        );
+        await Analiza(canvasGlen1, 8);
+        logresult(14, statusx);
+
+        //TB3
+        contextcanvasTB.drawImage(
+          fullimage,
+          TB3x,
+          TB3y,
+          34,
+          52,
+          0,
+          0,
+          contextcanvasTB.canvas.width,
+          contextcanvasTB.canvas.height
+        );
+        await Analiza(canvasTB, 25);
+        logresult(15, statusx);
+
+        if (pn == "LFTM1135558-16-B" || pn == "LFTM1135558-55-A") {
+          await recortaTP3();
+        }
+
+        await Evaluacion(3);
+        // Puntos de rotacion
+        contextcanvasnuevo.drawImage(
+          fullimage,
+          162,
+          48,
+          519,
+          934,
+          0,
+          0,
+          contextcanvasnuevo.canvas.width,
+          contextcanvasnuevo.canvas.height
+        ); // Canvas donde con imagen vertical original
+        contextcanvaspasteC3.translate(934, 519); //Punto donde va comenzar a realizar la translacion de la imagen
+        contextcanvaspasteC3.rotate((270 * Math.PI) / 180); //Formula para convertir el angulo en radianes
+        contextcanvaspasteC3.drawImage(
+          canvasnuevo,
+          0,
+          0,
+          1868,
+          1038,
+          -400,
+          -519,
+          1868,
+          1038
+        ); // Canvas donde se coloca la imagen ya rotada
+        //Imagen rotada
+        contextcanvasCamara.drawImage(
+          canvaspasteC3,
+          415,
+          400,
+          934,
+          515,
+          0,
+          0,
+          935,
+          518
+        ); //REcorte de primer cuadrante tomada de fullimag
+        resolve("resolved");
+        await snapshot(point);
+        await pause();
+        break;
+      //***INICIO CUADRANTE 2** */
+      case 2:
+        contextcanvasClen2.drawImage(
+          fullimage,
+          TA18x,
+          TA18y,
+          149,
+          378,
+          0,
+          0,
+          contextcanvasClen2.canvas.width,
+          contextcanvasClen2.canvas.height
+        );
+        await Analiza(canvasClen2, 18);
+        logresult(16, statusx);
+        if (pn === "LFTM1135558-64-A") {
+          arrylogresult(11, statusx);
+        }
+
+        contextcanvasClen2.drawImage(
+          fullimage,
+          TA17x,
+          TA17y,
+          149,
+          378,
+          0,
+          0,
+          contextcanvasClen2.canvas.width,
+          contextcanvasClen2.canvas.height
+        );
+        await Analiza(canvasClen2, 17);
+        logresult(17, statusx);
+        if (pn === "LFTM1135558-64-A") {
+          arrylogresult(12, statusx);
+        }
+
+        contextcanvasTGlen2.drawImage(
+          fullimage,
+          TATGx,
+          TATGy,
+          298,
+          99,
+          0,
+          0,
+          contextcanvasTGlen2.canvas.width,
+          contextcanvasTGlen2.canvas.height
+        );
+        await Analiza(canvasTGlen2, 27);
+        logresult(18, statusx);
+        if (pn === "LFTM1135558-64-A") {
+          arrylogresult(13, statusx);
+        }
+        if (pn === "LFTM1135558-64-A") {
+          await evaluaciondos(3);
+        }
+
+        await Evaluacion(4);
+        contextcanvasnuevo4.drawImage(
+          fullimage,
+          5,
+          1,
+          605,
+          1069,
+          0,
+          0,
+          contextcanvasnuevo4.canvas.width,
+          contextcanvasnuevo4.canvas.height
+        ); // Canvas donde con imagen vertical original
+        contextcanvaspaste4.translate(1069, 605); //Punto donde va comenzar a realizar la translacion de la imagen
+        contextcanvaspaste4.rotate((270 * Math.PI) / 180); //Formula para convertir el angulo en radianes
+        contextcanvaspaste4.drawImage(
+          canvasnuevo4,
+          0,
+          0,
+          1677,
+          2138,
+          -1069,
+          -605,
+          1677,
+          2138
+        ); // Canvas donde se coloca la imagen ya rotada
+        // Imagen rotada
+        contextcanvasCamara.drawImage(
+          canvaspaste4,
+          464,
+          1069,
+          1067,
+          605,
+          0,
+          0,
+          935,
+          518
+        ); //REcorte de primer cuadrante tomada de fullimag
+        await pause();
+
+        //TA16
+        contextcanvasClen2.drawImage(
+          fullimage,
+          TA16x,
+          TA16y,
+          149,
+          378,
+          0,
+          0,
+          contextcanvasClen2.canvas.width,
+          contextcanvasClen2.canvas.height
+        );
+        await Analiza(canvasClen2, 16);
+        logresult(19, statusx);
+
+        //TA15
+        contextcanvasClen2.drawImage(
+          fullimage,
+          TA15x,
+          TA15y,
+          149,
+          378,
+          0,
+          0,
+          contextcanvasClen2.canvas.width,
+          contextcanvasClen2.canvas.height
+        );
+        await Analiza(canvasClen2, 15);
+        logresult(20, statusx);
+
+        //TA19 418,149
+        contextcanvasGlen2.drawImage(
+          fullimage,
+          TA19x,
+          TA19y,
+          418,
+          149,
+          0,
+          0,
+          contextcanvasGlen2.canvas.width,
+          contextcanvasGlen2.canvas.height
+        );
+        await Analiza(canvasGlen2, 19);
+        logresult(21, statusx);
+
+        //TA20 418,149
+        contextcanvasGlen2.drawImage(
+          fullimage,
+          TA20x,
+          TA20y,
+          418,
+          149,
+          0,
+          0,
+          contextcanvasGlen2.canvas.width,
+          contextcanvasGlen2.canvas.height
+        );
+        await Analiza(canvasGlen2, 20);
+        logresult(22, statusx);
+
+        //TB4
+        contextcanvasTB4.drawImage(
+          fullimage,
+          TB4x,
+          TB4y,
+          66,
+          52,
+          0,
+          0,
+          contextcanvasTB4.canvas.width,
+          contextcanvasTB4.canvas.height
+        );
+        await Analiza(canvasTB4, 26);
+        logresult(23, statusx);
+
+        await Evaluacion(5);
+        contextcanvasnuevo4.drawImage(
+          fullimage,
+          695,
+          3,
+          605,
+          1069,
+          0,
+          0,
+          contextcanvasnuevo4.canvas.width,
+          contextcanvasnuevo4.canvas.height
+        ); // Canvas donde con imagen vertical original
+        contextcanvaspasteC5.translate(1069, 605); //Punto donde va comenzar a realizar la translacion de la imagen
+        contextcanvaspasteC5.rotate((270 * Math.PI) / 180); //Formula para convertir el angulo en radianes
+        contextcanvaspasteC5.drawImage(
+          canvasnuevo4,
+          0,
+          0,
+          1677,
+          2138,
+          -1069,
+          -605,
+          1677,
+          2138
+        ); // Canvas donde se coloca la imagen ya rotada
+        //Imagen rotada
+        contextcanvasCamara.drawImage(
+          canvaspasteC5,
+          464,
+          1069,
+          1067,
+          605,
+          0,
+          0,
+          935,
+          518
+        ); //REcorte de primer cuadrante tomada de fullimag
+        await pause();
+
+        //TA14
+        contextcanvasClen2.drawImage(
+          fullimage,
+          TA14x,
+          TA14y,
+          149,
+          378,
+          0,
+          0,
+          contextcanvasClen2.canvas.width,
+          contextcanvasClen2.canvas.height
+        );
+        await Analiza(canvasGlen2, 14);
+        logresult(24, statusx);
+
+        //TA13
+        contextcanvasClen2.drawImage(
+          fullimage,
+          TA13x,
+          TA13y,
+          149,
+          378,
+          0,
+          0,
+          contextcanvasClen2.canvas.width,
+          contextcanvasClen2.canvas.height
+        );
+        await Analiza(canvasClen2, 13);
+        logresult(25, statusx);
+
+        await Evaluacion(6);
+        contextcanvasnuevo4.drawImage(
+          fullimage,
+          1315,
+          7,
+          605,
+          1069,
+          0,
+          0,
+          contextcanvasnuevo4.canvas.width,
+          contextcanvasnuevo4.canvas.height
+        ); // Canvas donde con imagen vertical original
+        contextcanvaspasteC6.translate(1069, 605); //Punto donde va comenzar a realizar la translacion de la imagen
+        contextcanvaspasteC6.rotate((270 * Math.PI) / 180); //Formula para convertir el angulo en radianes
+        contextcanvaspasteC6.drawImage(
+          canvasnuevo4,
+          0,
+          0,
+          1677,
+          2138,
+          -1069,
+          -605,
+          1677,
+          2138
+        ); // Canvas donde se coloca la imagen ya rotada
+        //Imagen rotada
+        contextcanvasCamara.drawImage(
+          canvaspasteC6,
+          464,
+          1069,
+          1067,
+          605,
+          0,
+          0,
+          935,
+          518
+        ); //REcorte de primer cuadrante tomada de fullimag
+        resolve("resolved");
+        await snapshot(point);
+        await pause();
+        break;
+      /** INICIO CUADRANTE 3 */
+      case 3:
+        contextcanvasflalen3.drawImage(
+          fullimage,
+          TA21x,
+          TA21y,
+          561,
+          77,
+          0,
+          0,
+          contextcanvasflalen3.canvas.width,
+          contextcanvasflalen3.canvas.height
+        );
+        await Analiza(canvasflalen3, 21);
+        logresult(26, statusx);
+        if (pn === "LFTM1135558-64-A") {
+          arrylogresult(19, statusx);
+        }
+        contextcanvasgolen3.drawImage(
+          fullimage,
+          TA22x,
+          TA22y,
+          675,
+          326,
+          0,
+          0,
+          contextcanvasgolen3.canvas.width,
+          contextcanvasgolen3.canvas.height
+        );
+        await Analiza(canvasgolen3, 22);
+        logresult(27, statusx);
+
+        await Evaluacion(7);
+        contextcanvasnuevo7.drawImage(
+          fullimage,
+          297,
+          8,
+          986,
+          1066,
+          0,
+          0,
+          contextcanvasnuevo7.canvas.width,
+          contextcanvasnuevo7.canvas.height
+        ); // Canvas donde con imagen vertical original
+        contextcanvaspaste7.translate(1066, 986); //Punto donde va comenzar a realizar la translacion de la imagen
+        contextcanvaspaste7.rotate((270 * Math.PI) / 180); //Formula para convertir el angulo en radianes
+        contextcanvaspaste7.drawImage(
+          canvasnuevo7,
+          0,
+          0,
+          1974,
+          2134,
+          -1067,
+          -987,
+          1974,
+          2134
+        ); // Canvas donde se coloca la imagen ya rotada
+        //Imagen rotada
+        contextcanvasCamara.drawImage(
+          fullimage,
+          0,
+          0,
+          1920,
+          1080,
+          0,
+          0,
+          935,
+          518
+        ); //REcorte de primer cuadrante tomada de fullimag
+        resolve("resolved");
+        await snapshot(point);
+        break;
+      default:
+    }
+  });
+} //Fin de switch
 
 async function pause() {
-    return new Promise(async resolve => {
-        setTimeout(function pausea() { resolve('resolved') }, 3000)
-    });
+  return new Promise(async (resolve) => {
+    setTimeout(function pausea() {
+      resolve("resolved");
+    }, 3000);
+  });
 }
 
-// Función para calcular la media y la desviación estándar de los valores RGB 
+// Función para calcular la media y la desviación estándar de los valores RGB
 
 function Analiza(canvasx, point, maxR, minR, maxG, minG, maxB, minB) {
-    return new Promise(async resolve => {
-        let contextcanvasx = canvasx.getContext('2d')
-        let cdata = contextcanvasx.getImageData(0, 0, canvasx.width, canvasx.height);
-        // Obtener los valores ajustados de RGB
-       
-        
-        let malo = 0, bueno = 0;
-        
-      
-       // R 130,145 G 130,165 B 120, 145 TA1 Actualizado * No tapona
-        if (point == 1) { rmin = 123, rmax = 183, gmin = 137, gmax = 216, bmin = 112, bmax = 185, criterio = 1, latapona = 0 } 
-        if (point == 2) { rmin = 123, rmax = 183, gmin = 137, gmax = 216, bmin = 112, bmax = 185, criterio = 1, latapona = 0 }  //TA2 Actualizado *  
-        if (point == 11) { rmin = 135, rmax = 175, gmin = 155, gmax = 195, bmin = 135, bmax = 165, criterio = 1, latapona = 0 }  // TA11 Actualizado * //tapona para regular
-        if (point == 12) { rmin = 140, rmax = 160, gmin = 158, gmax = 190, bmin = 130, bmax = 162, criterio = 1, latapona = 0 } // TA12 Actualizado //tapona para regular
-        if (point == 23) { rmin = 113, rmax = 150, gmin = 125, gmax = 170, bmin = 105, bmax = 145, criterio = .995, latapona = 1000 } //TB1
-        if ((point == 28) && (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A')) { rmin = 100, rmax = 205, gmin = 115, gmax = 240, bmin = 100, bmax = 200, criterio = .995, latapona = 3000 } //TP1
-        // Cuadrante 2
-        if (point == 3) { rmin = 122, rmax = 224, gmin = 134, gmax = 222, bmin = 110, bmax = 197, criterio = 1, latapona = 0 } // TA3 Actualizado  *
-        if (point == 4) { rmin = 119, rmax = 188, gmin = 127, gmax = 221, bmin = 104, bmax = 194, criterio = 1, latapona = 0 }  // TA4 Actualizado *
-        if (point == 9) { rmin = 108, rmax = 192, gmin = 127, gmax = 237, bmin = 105, bmax = 206, criterio = 1, latapona = 0 }  // TA9 Actuaalizado * 
-        if (point == 10) { rmin = 113, rmax = 150, gmin = 125, gmax = 170, bmin = 105, bmax = 145, criterio = .995, latapona = 1000 }  // TA9 Actuaalizado * 
+  return new Promise(async (resolve) => {
+    let contextcanvasx = canvasx.getContext("2d");
+    let cdata = contextcanvasx.getImageData(
+      0,
+      0,
+      canvasx.width,
+      canvasx.height
+    );
+    // Obtener los valores ajustados de RGB
 
-        if (point == 24) { rmin = 145, rmax = 216, gmin = 163, gmax = 238, bmin = 135, bmax = 217, criterio = .995, latapona = 1000 }  //TB2
-        if ((point == 29) && (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A')) { rmin = 100, rmax = 195, gmin = 120, gmax = 235, bmin = 110, bmax = 210, criterio = .995, latapona = 3000 }//TP2 
+    let malo = 0,
+      bueno = 0;
 
-        // Cuadrante 3 
-        if (point == 5) { rmin = 140, rmax = 165, gmin = 159, gmax = 195, bmin = 135, bmax = 169, criterio = 1, latapona = 0 }  // TA5 Actualizado * No tapona
-        if (point == 6) { rmin = 128, rmax = 143, gmin = 148, gmax = 158, bmin = 120, bmax = 135, criterio = 1, latapona = 0 }  // TA6 Actualizado  *
-        if (point == 7) { rmin = 115, rmax = 158, gmin = 128, gmax = 179, bmin = 105, bmax = 155, criterio = 1, latapona = 0 }  // TA7 Actualizado * Canvande
-        if (point == 8) { rmin = 112, rmax = 204, gmin = 130, gmax = 230, bmin = 110, bmax = 206, criterio = 1, latapona = 0 } // TA8 Actualizado  *
-        if (point == 25) { rmin = 134, rmax = 176, gmin = 170, gmax = 210, bmin = 145, bmax = 183, criterio = .995, latapona = 1800 } //TB3
-        if ((point == 30) && (pn == 'LFTM1135558-16-B' || pn == 'LFTM1135558-55-A')) { rmin = 95, rmax = 210, gmin = 105, gmax = 215, bmin = 90, bmax = 200, criterio = .995, latapona = 400 }//TP3
+    // R 130,145 G 130,165 B 120, 145 TA1 Actualizado * No tapona
+    if (point == 1) {
+      (rmin = 123),
+        (rmax = 183),
+        (gmin = 137),
+        (gmax = 216),
+        (bmin = 112),
+        (bmax = 185),
+        (criterio = 1),
+        (latapona = 0);
+    }
+    if (point == 2) {
+      (rmin = 123),
+        (rmax = 183),
+        (gmin = 137),
+        (gmax = 216),
+        (bmin = 112),
+        (bmax = 185),
+        (criterio = 1),
+        (latapona = 0);
+    } //TA2 Actualizado *
+    if (point == 11) {
+      (rmin = 135),
+        (rmax = 175),
+        (gmin = 155),
+        (gmax = 195),
+        (bmin = 135),
+        (bmax = 165),
+        (criterio = 1),
+        (latapona = 0);
+    } // TA11 Actualizado * //tapona para regular
+    if (point == 12) {
+      (rmin = 140),
+        (rmax = 160),
+        (gmin = 158),
+        (gmax = 190),
+        (bmin = 130),
+        (bmax = 162),
+        (criterio = 1),
+        (latapona = 0);
+    } // TA12 Actualizado //tapona para regular
+    if (point == 23) {
+      (rmin = 113),
+        (rmax = 150),
+        (gmin = 125),
+        (gmax = 170),
+        (bmin = 105),
+        (bmax = 145),
+        (criterio = 0.995),
+        (latapona = 1000);
+    } //TB1
+    if (point == 28 && (pn == "LFTM1135558-16-B" || pn == "LFTM1135558-55-A")) {
+      (rmin = 100),
+        (rmax = 205),
+        (gmin = 115),
+        (gmax = 240),
+        (bmin = 100),
+        (bmax = 200),
+        (criterio = 0.995),
+        (latapona = 3000);
+    } //TP1
+    // Cuadrante 2
+    if (point == 3) {
+      (rmin = 122),
+        (rmax = 224),
+        (gmin = 134),
+        (gmax = 222),
+        (bmin = 110),
+        (bmax = 197),
+        (criterio = 1),
+        (latapona = 0);
+    } // TA3 Actualizado  *
+    if (point == 4) {
+      (rmin = 119),
+        (rmax = 188),
+        (gmin = 127),
+        (gmax = 221),
+        (bmin = 104),
+        (bmax = 194),
+        (criterio = 1),
+        (latapona = 0);
+    } // TA4 Actualizado *
+    if (point == 9) {
+      (rmin = 108),
+        (rmax = 192),
+        (gmin = 127),
+        (gmax = 237),
+        (bmin = 105),
+        (bmax = 206),
+        (criterio = 1),
+        (latapona = 0);
+    } // TA9 Actuaalizado *
+    if (point == 10) {
+      (rmin = 113),
+        (rmax = 150),
+        (gmin = 125),
+        (gmax = 170),
+        (bmin = 105),
+        (bmax = 145),
+        (criterio = 0.995),
+        (latapona = 1000);
+    } // TA9 Actuaalizado *
 
-        // Cuadrante 4n
-        if (point == 17) { rmin = 135, rmax = 188, gmin = 149, gmax = 207, bmin = 126, bmax = 185, criterio = .995, latapona = 0 } // TA17 Actualizado 
-        if (point == 18) { rmin = 143, rmax = 182, gmin = 165, gmax = 208, bmin = 138, bmax = 180, criterio = .995, latapona = 0 } // TA18 Actualizado
-        if (point == 27) { rmin = 119, rmax = 186, gmin = 150, gmax = 210, bmin = 135, bmax = 184, criterio = .995, latapona = 0 } // TA27 
-        // Cuadrante 5
-        if (point == 15) { rmin = 138, rmax = 211, gmin = 151, gmax = 245, bmin = 125, bmax = 218, criterio = .995, latapona = 0 } // TA15 Actualizado
-        if (point == 16) { rmin = 103, rmax = 211, gmin = 140, gmax = 245, bmin = 120, bmax = 212, criterio = .995, latapona = 0 } // TA16 Actualizado
-        if (point == 19) { rmin = 140, rmax = 156, gmin = 158, gmax = 173, bmin = 132, bmax = 145, criterio = .995, latapona = 0 } // TA19 Actualizado
-        if (point == 20) { rmin = 109, rmax = 211, gmin = 121, gmax = 231, bmin = 101, bmax = 204, criterio = .995, latapona = 0 } // TA20 Actualizado
-        if (point == 26) { rmin = 115, rmax = 191, gmin = 165, gmax = 215, bmin = 140, bmax = 189, criterio = .995, latapona = 0 } //TB4
-        // Cuadrante 6
-        if (point == 13) { rmin = 135, rmax = 146, gmin = 148, gmax = 160, bmin = 122, bmax = 136, criterio = .995, latapona = 0 } // TA13  Actualizado *
-        if (point == 14) { rmin = 134, rmax = 234, gmin = 148, gmax = 255, bmin = 125, bmax = 231, criterio = .995, latapona = 0 } // TA14 Actualizado *
-        // Cuadrante 7
-        if (point == 21) { rmin = 102, rmax = 185, gmin = 105, gmax = 182, bmin = 96, bmax = 143, criterio = .995, latapona = 0 } // TA21 Rectangulo ch
-        if (point == 22) { rmin = 74, rmax = 237, gmin = 68, gmax = 255, bmin = 44, bmax = 215, criterio = 1, latapona = 0 } // TA22 Actualizado
+    if (point == 24) {
+      (rmin = 145),
+        (rmax = 216),
+        (gmin = 163),
+        (gmax = 238),
+        (bmin = 135),
+        (bmax = 217),
+        (criterio = 0.995),
+        (latapona = 1000);
+    } //TB2
+    if (point == 29 && (pn == "LFTM1135558-16-B" || pn == "LFTM1135558-55-A")) {
+      (rmin = 100),
+        (rmax = 195),
+        (gmin = 120),
+        (gmax = 235),
+        (bmin = 110),
+        (bmax = 210),
+        (criterio = 0.995),
+        (latapona = 3000);
+    } //TP2
 
-        for (let i = 0; i < cdata.data.length; i += 4) { //cdata.data.length
-            // Matriz para valores 
-            R = cdata.data[i + 0]
-            // console.log("soy r", R)
-            G = cdata.data[i + 1]
-            // console.log("soy g", G)
-            B = cdata.data[i + 2]
-            //console.log("soy b", B)
-            A = cdata.data[i + 3]
-            // console.log("soy a", A)
-            //console.log(`Pixn: ${ i / 4 }:-->`, R,G,B,A)
+    // Cuadrante 3
+    if (point == 5) {
+      (rmin = 140),
+        (rmax = 165),
+        (gmin = 159),
+        (gmax = 195),
+        (bmin = 135),
+        (bmax = 169),
+        (criterio = 1),
+        (latapona = 0);
+    } // TA5 Actualizado * No tapona
+    if (point == 6) {
+      (rmin = 128),
+        (rmax = 143),
+        (gmin = 148),
+        (gmax = 158),
+        (bmin = 120),
+        (bmax = 135),
+        (criterio = 1),
+        (latapona = 0);
+    } // TA6 Actualizado  *
+    if (point == 7) {
+      (rmin = 115),
+        (rmax = 158),
+        (gmin = 128),
+        (gmax = 179),
+        (bmin = 105),
+        (bmax = 155),
+        (criterio = 1),
+        (latapona = 0);
+    } // TA7 Actualizado * Canvande
+    if (point == 8) {
+      (rmin = 112),
+        (rmax = 204),
+        (gmin = 130),
+        (gmax = 230),
+        (bmin = 110),
+        (bmax = 206),
+        (criterio = 1),
+        (latapona = 0);
+    } // TA8 Actualizado  *
+    if (point == 25) {
+      (rmin = 134),
+        (rmax = 176),
+        (gmin = 170),
+        (gmax = 210),
+        (bmin = 145),
+        (bmax = 183),
+        (criterio = 0.995),
+        (latapona = 1800);
+    } //TB3
+    if (point == 30 && (pn == "LFTM1135558-16-B" || pn == "LFTM1135558-55-A")) {
+      (rmin = 95),
+        (rmax = 210),
+        (gmin = 105),
+        (gmax = 215),
+        (bmin = 90),
+        (bmax = 200),
+        (criterio = 0.995),
+        (latapona = 400);
+    } //TP3
 
-            if (((R > rmin) && (R < rmax)) && ((G > gmin) && (G < gmax)) && ((B > bmin) && (B < bmax))) {// condicion para verificar cada pixel
-                bueno++
-            } else {
-                malo++  // Matriz que pinta de color rojo sino se cumple la condicion anterior 
-                cdata.data[i + 0] = 255
-                cdata.data[i + 1] = 0
-                cdata.data[i + 2] = 0
-                cdata.data[i + 3] = 255
-            }//End Else
-        }// End For
+    // Cuadrante 4n
+    if (point == 17) {
+      (rmin = 135),
+        (rmax = 188),
+        (gmin = 149),
+        (gmax = 207),
+        (bmin = 126),
+        (bmax = 185),
+        (criterio = 0.995),
+        (latapona = 0);
+    } // TA17 Actualizado
+    if (point == 18) {
+      (rmin = 143),
+        (rmax = 182),
+        (gmin = 165),
+        (gmax = 208),
+        (bmin = 138),
+        (bmax = 180),
+        (criterio = 0.995),
+        (latapona = 0);
+    } // TA18 Actualizado
+    if (point == 27) {
+      (rmin = 119),
+        (rmax = 186),
+        (gmin = 150),
+        (gmax = 210),
+        (bmin = 135),
+        (bmax = 184),
+        (criterio = 0.995),
+        (latapona = 0);
+    } // TA27
+    // Cuadrante 5
+    if (point == 15) {
+      (rmin = 138),
+        (rmax = 211),
+        (gmin = 151),
+        (gmax = 245),
+        (bmin = 125),
+        (bmax = 218),
+        (criterio = 0.995),
+        (latapona = 0);
+    } // TA15 Actualizado
+    if (point == 16) {
+      (rmin = 103),
+        (rmax = 211),
+        (gmin = 140),
+        (gmax = 245),
+        (bmin = 120),
+        (bmax = 212),
+        (criterio = 0.995),
+        (latapona = 0);
+    } // TA16 Actualizado
+    if (point == 19) {
+      (rmin = 140),
+        (rmax = 156),
+        (gmin = 158),
+        (gmax = 173),
+        (bmin = 132),
+        (bmax = 145),
+        (criterio = 0.995),
+        (latapona = 0);
+    } // TA19 Actualizado
+    if (point == 20) {
+      (rmin = 109),
+        (rmax = 211),
+        (gmin = 121),
+        (gmax = 231),
+        (bmin = 101),
+        (bmax = 204),
+        (criterio = 0.995),
+        (latapona = 0);
+    } // TA20 Actualizado
+    if (point == 26) {
+      (rmin = 115),
+        (rmax = 191),
+        (gmin = 165),
+        (gmax = 215),
+        (bmin = 140),
+        (bmax = 189),
+        (criterio = 0.995),
+        (latapona = 0);
+    } //TB4
+    // Cuadrante 6
+    if (point == 13) {
+      (rmin = 135),
+        (rmax = 146),
+        (gmin = 148),
+        (gmax = 160),
+        (bmin = 122),
+        (bmax = 136),
+        (criterio = 0.995),
+        (latapona = 0);
+    } // TA13  Actualizado *
+    if (point == 14) {
+      (rmin = 134),
+        (rmax = 234),
+        (gmin = 148),
+        (gmax = 255),
+        (bmin = 125),
+        (bmax = 231),
+        (criterio = 0.995),
+        (latapona = 0);
+    } // TA14 Actualizado *
+    // Cuadrante 7
+    if (point == 21) {
+      (rmin = 102),
+        (rmax = 185),
+        (gmin = 105),
+        (gmax = 182),
+        (bmin = 96),
+        (bmax = 143),
+        (criterio = 0.995),
+        (latapona = 0);
+    } // TA21 Rectangulo ch
+    if (point == 22) {
+      (rmin = 74),
+        (rmax = 237),
+        (gmin = 68),
+        (gmax = 255),
+        (bmin = 44),
+        (bmax = 215),
+        (criterio = 1),
+        (latapona = 0);
+    } // TA22 Actualizado
 
-        contextcanvasx.putImageData(cdata, 0, 0)// Dibuja los pixeles rojos encontrados 
-        await limpiaR(point, canvasx) // Se manda llamar limpiar ruido
-        let pixitotal = (cdata.data.length) / 4 // cuenta todos los pixeles del canvas bajo analisis 
+    for (let i = 0; i < cdata.data.length; i += 4) {
+      //cdata.data.length
+      // Matriz para valores
+      R = cdata.data[i + 0];
+      // console.log("soy r", R)
+      G = cdata.data[i + 1];
+      // console.log("soy g", G)
+      B = cdata.data[i + 2];
+      //console.log("soy b", B)
+      A = cdata.data[i + 3];
+      // console.log("soy a", A)
+      //console.log(`Pixn: ${ i / 4 }:-->`, R,G,B,A)
 
-        /*if (point == 19) { //Imprime por cada punto el conteo de pixeles
-              console.log("Buenos: " + bueno)
-              console.log("******")
-              console.log("Malo: " + malo)
-              console.log("Ruido:" + ruido)
-              console.log("Finetuning:" + latapona)
-              console.log("******")
-              console.log("Pix Total:"+pixitotal)
-               }
-          console.log("Pix Total:"+pixitotal)*/
+      if (
+        R > rmin &&
+        R < rmax &&
+        G > gmin &&
+        G < gmax &&
+        B > bmin &&
+        B < bmax
+      ) {
+        // condicion para verificar cada pixel
+        bueno++;
+      } else {
+        malo++; // Matriz que pinta de color rojo sino se cumple la condicion anterior
+        cdata.data[i + 0] = 255;
+        cdata.data[i + 1] = 0;
+        cdata.data[i + 2] = 0;
+        cdata.data[i + 3] = 255;
+      } //End Else
+    } // End For
 
-        let pixibuenos = bueno + ruido + latapona
-        let porcentajebueno = pixibuenos / pixitotal
-        /*let percent = pixitotal - ruido
+    contextcanvasx.putImageData(cdata, 0, 0); // Dibuja los pixeles rojos encontrados
+    await limpiaR(point, canvasx); // Se manda llamar limpiar ruido
+    let pixitotal = cdata.data.length / 4; // cuenta todos los pixeles del canvas bajo analisis
+
+    if (point == 1) {
+      console.log("entre bien al if");
+      //Imprime por cada punto el conteo de pixeles
+      console.log("Buenos: " + bueno);
+      console.log("******");
+      console.log("Malo: " + malo);
+      console.log("Ruido:" + ruido);
+      console.log("Finetuning:" + latapona);
+      console.log("******");
+      console.log("Pix Total:" + pixitotal);
+      sugerencia = ruido + malo;
+      console.log("sugerencia" + sugerencia);
+      let data = {
+        bueno: bueno,
+        malo: malo,
+        ruido: ruido,
+        latapona: latapona,
+        sugerencia: sugerencia,
+      };
+      console.log("data" + data.bueno);
+      localStorage.setItem("ultimaEvaluacion", JSON.stringify(data));
+    }
+
+    //console.log("Pix Total:" + pixitotal);
+
+    let pixibuenos = bueno + ruido + latapona;
+    let porcentajebueno = pixibuenos / pixitotal;
+    /*let percent = pixitotal - ruido
         console.log("cobertura: " + percent + " pixeles restantes de ruido ")
         cobertura = pixitotal * percent
         console.log("cobertura en porcentaje :" + cobertura / 100 + "(%)")*/
 
+    porcentajefinal = porcentajebueno.toFixed(4);
+    if (porcentajefinal > 0.95) {
+      porcentajefinal = 1;
+    } //valor final de pase al 99.6%
+    porcentajeArray[point] = porcentajefinal;
+    mtxw[point] = porcentajefinal;
 
-        porcentajefinal = porcentajebueno.toFixed(4);
-        if (porcentajefinal > .950) { porcentajefinal = 1 }  //valor final de pase al 99.6%
-        porcentajeArray[point] = porcentajefinal
-        mtxw[point] = porcentajefinal
+    //porcentajeArray[point]= porcentajefinal
+    //console.log("Pix Total:"+pixitotal)
+    //console.log(pixibuenos)
 
-        //porcentajeArray[point]= porcentajefinal
-        //console.log("Pix Total:"+pixitotal)
-        //console.log(pixibuenos)
+    if (porcentajebueno > criterio) {
+      statusx = "1";
+      IAdesition[point] = " On hold ";
+    } else {
+      statusx = "0";
 
-        if (porcentajebueno > criterio) {
-            statusx = "1"
-            IAdesition[point] = " On hold "
-        }
-        else {
-            statusx = "0"
+      if (
+        point == 1 ||
+        point == 2 ||
+        point == 3 ||
+        point == 4 ||
+        point == 5 ||
+        point == 6 ||
+        point == 7 ||
+        point == 8 ||
+        point == 9 ||
+        point == 11 ||
+        point == 12 ||
+        point == 22
+      ) {
+        // se cumple condicion cuando el TA falle y llama a inspectora
+        await mlinspection(point);
+      }
+    }
+    console.log("TA-" + point + ":" + porcentajefinal * 100 + "(%) "); //+" Status: "+status
+    resolve("resolved");
+  });
+}
+document.getElementById("menu").addEventListener("change", function () {
+  if (this.value == "ta1") {
+    console.log("entre bien al if de ta1");
+    let data = JSON.parse(localStorage.getItem("ultimaEvaluacion"));
+    if (data) {
+      document.getElementById("buenos").textContent = data.bueno;
+      document.getElementById("malo").textContent = data.malo;
+      document.getElementById("ruido").textContent = data.ruido;
+      document.getElementById("actual").textContent = data.latapona;
+      document.getElementById("sugerencia").textContent = data.sugerencia;
+      document.getElementById("tabla").hidden = false;
+    } else {
+      alert("No hay datos de evaluacion disponibles");
+      document.getElementById("tabla").hidden = true;
+    }
+  } else {
+    document.getElementById("tabla").hidden = true;
+  }
+  const inputCantidad = document.getElementById("cantidad");
 
-            if (point == 1 || point == 2 || point == 3 || point == 4 || point == 5 || point == 6 || point == 7 || point == 8 || point == 9 || point == 11 || point == 12 || point == 22) { // se cumple condicion cuando el TA falle y llama a inspectora 
-                await mlinspection(point)
-            }
-        }
-        console.log("TA-" + point + ":" + porcentajefinal * 100 + "(%) ")//+" Status: "+status
-        resolve('resolved')
-    })
+  inputCantidad.addEventListener("keyup", function (event) {
+    if (event.key === "Enter") {
+      const nuevoValor = inputCantidad.value;
+      localStorage.setItem("latapona", nuevoValor);
+    }
+  });
+});
+function cuentarojos(canvasx, x, y, w, h) {
+  //cuenta puntos rojos de la coordenada con el tamaño especificado
+
+  let contextcanvasx = canvasx.getContext("2d");
+  let cdata = contextcanvasx.getImageData(x, y, w, h);
+  let rojos = 0;
+  let otros = 0;
+
+  contextcanvasx.strokeStyle = "#3333ff";
+  contextcanvasx.lineWidth = 1;
+  contextcanvasx.strokeRect(x, y, w, h);
+
+  for (let i = 0; i < cdata.data.length; i += 4) {
+    //cdata.data.length
+    // Matriz para valores
+    R = cdata.data[i + 0];
+    if (R == 255) {
+      rojos++;
+    } else {
+      otros++;
+    }
+  } // end for
+  console.log("Red :" + rojos);
+  console.log("Others :" + otros);
 }
 
-function cuentarojos(canvasx, x, y, w, h) { //cuenta puntos rojos de la coordenada con el tamaño especificado
+function limpiaR(p, canvasx) {
+  //Funcion que se utiliza para dibujar un rectangulo azul en el canvas del TA seleccionado y pinta azules parte de los pixeles para convertirlos a pixeles buenos
+  return new Promise(async (resolve) => {
+    let contextcanvasx = canvasx.getContext("2d");
 
-    let contextcanvasx = canvasx.getContext('2d')
-    let cdata = contextcanvasx.getImageData(x, y, w, h);
-    let rojos = 0
-    let otros = 0
+    let azul = 0;
+    let otros = 0;
+    let x = 0;
+    let y = 0;
+    let w = 0;
+    let h = 0;
 
-    contextcanvasx.strokeStyle = "#3333ff"
-    contextcanvasx.lineWidth = 1
-    contextcanvasx.strokeRect(x, y, w, h)
+    //Cuadrante 1
+    if (p == 1) {
+      (x = 95), (y = 0), (w = 200), (h = 100);
+    } //TA1  Coordenadas de rectangulos donde pinta azules
+    if (p == 2) {
+      (x = 385), (y = 28), (w = 153), (h = 143);
+    } //TA2
+    if (p == 11) {
+      (x = 36), (y = 15), (w = 495), (h = 157);
+    } //TA11
+    if (p == 12) {
+      (x = 15), (y = 6), (w = 500), (h = 91);
+    } //TA12
+    if (p == 23) {
+      (x = 1), (y = 25), (w = 47), (h = 50);
+    } //TB1
+    //Cuadrante 2
+    if (p == 3) {
+      (x = 2), (y = 0), (w = 143), (h = 78);
+    } // TA3
+    if (p == 4) {
+      (x = 252), (y = 12), (w = 116), (h = 107);
+    } //TA4
+    if (p == 9) {
+      (x = 7), (y = 77), (w = 357), (h = 40);
+    } //TA9
+    if (p == 10) {
+      (x = 12), (y = 9), (w = 345), (h = 112);
+    } //TA10
+    if (p == 24) {
+      (x = 8), (y = 9), (w = 36), (h = 34);
+    } //TB2
+    //Cuadrante 3
+    if (p == 5) {
+      (x = 39), (y = 35), (w = 439), (h = 160);
+    } //TA5
+    if (p == 6) {
+      (x = 9), (y = 1), (w = 1264), (h = 741);
+    } //TA6
+    if (p == 7) {
+      (x = 12), (y = 6), (w = 506), (h = 89);
+    } //TA7
+    if (p == 8) {
+      (x = 15), (y = 115), (w = 507), (h = 73);
+    } //TA8
+    if (p == 25) {
+      (x = 7), (y = 5), (w = 63), (h = 65);
+    } // TB3
+    //Cuadrante4
+    if (p == 17) {
+      (x = 33), (y = 7), (w = 417), (h = 72);
+    } //TA17
+    if (p == 18) {
+      (x = 32), (y = 6), (w = 438), (h = 50);
+    } //TA18
+    if (p == 27) {
+      (x = 32), (y = 6), (w = 438), (h = 50);
+    } //TA27 //
+    //Cuadrante 5
+    if (p == 15) {
+      (x = 27), (y = 9), (w = 356), (h = 180);
+    } //TA15
+    if (p == 16) {
+      (x = 34), (y = 12), (w = 341), (h = 197);
+    } // TA16
+    if (p == 19) {
+      (x = 17), (y = 0), (w = 124), (h = 382);
+    } //TA19
+    if (p == 20) {
+      (x = 18), (y = 211), (w = 122), (h = 239);
+    } //TA20
+    if (p == 26) {
+      (x = 6), (y = 5), (w = 52), (h = 54);
+    } // TB4
+    //Cuadrante 6
+    if (p == 13) {
+      (x = 2), (y = 3), (w = 478), (h = 85);
+    } //TA13
+    if (p == 14) {
+      (x = 20), (y = 10), (w = 460), (h = 75);
+    } //TA14
+    //Cuadrante 7
+    if (p == 21) {
+      (x = 0), (y = 6), (w = 25), (h = 450);
+    } //TA21
+    if (p == 22) {
+      (x = 91), (y = 1), (w = 447), (h = 75);
+    } //TA22
+    //TPs
+    if ((p = 28)) {
+      (x = 1), (y = 25), (w = 47), (h = 50);
+    }
+    if ((p = 29)) {
+      (x = 1), (y = 25), (w = 47), (h = 50);
+    }
+    if ((p = 30)) {
+      (x = 1), (y = 25), (w = 47), (h = 50);
+    }
 
-    for (let i = 0; i < cdata.data.length; i += 4) { //cdata.data.length
-        // Matriz para valores 
-        R = cdata.data[i + 0]
-        if (R == 255) { rojos++ }
-        else { otros++ }
-    }// end for
-    console.log("Red :" + rojos)
-    console.log("Others :" + otros)
-}
+    let cdata = contextcanvasx.getImageData(x, y, w, h); // linea para pintar
 
-
-function limpiaR(p, canvasx) { //Funcion que se utiliza para dibujar un rectangulo azul en el canvas del TA seleccionado y pinta azules parte de los pixeles para convertirlos a pixeles buenos
-    return new Promise(async resolve => {
-        let contextcanvasx = canvasx.getContext('2d')
-
-        let azul = 0
-        let otros = 0
-        let x = 0
-        let y = 0
-        let w = 0
-        let h = 0
-
-        //Cuadrante 1 
-        if (p == 1) { x = 95, y = 0, w = 200, h = 100 } //TA1  Coordenadas de rectangulos donde pinta azules 
-        if (p == 2) { x = 385, y = 28, w = 153, h = 143 } //TA2
-        if (p == 11) { x = 36, y = 15, w = 495, h = 157 } //TA11
-        if (p == 12) { x = 15, y = 6, w = 500, h = 91 } //TA12
-        if (p == 23) { x = 1, y = 25, w = 47, h = 50 } //TB1
-        //Cuadrante 2
-        if (p == 3) { x = 2, y = 0, w = 143, h = 78 } // TA3
-        if (p == 4) { x = 252, y = 12, w = 116, h = 107 } //TA4
-        if (p == 9) { x = 7, y = 77, w = 357, h = 40 } //TA9
-        if (p == 10) { x = 12, y = 9, w = 345, h = 112 } //TA10
-        if (p == 24) { x = 8, y = 9, w = 36, h = 34 } //TB2
-        //Cuadrante 3
-        if (p == 5) { x = 39, y = 35, w = 439, h = 160 } //TA5
-        if (p == 6) { x = 9, y = 1, w = 1264, h = 741 } //TA6
-        if (p == 7) { x = 12, y = 6, w = 506, h = 89 } //TA7
-        if (p == 8) { x = 15, y = 115, w = 507, h = 73 } //TA8 
-        if (p == 25) { x = 7, y = 5, w = 63, h = 65 } // TB3
-        //Cuadrante4
-        if (p == 17) { x = 33, y = 7, w = 417, h = 72 } //TA17
-        if (p == 18) { x = 32, y = 6, w = 438, h = 50 } //TA18
-        if (p == 27) { x = 32, y = 6, w = 438, h = 50 } //TA27 // 
-        //Cuadrante 5
-        if (p == 15) { x = 27, y = 9, w = 356, h = 180 } //TA15
-        if (p == 16) { x = 34, y = 12, w = 341, h = 197 } // TA16 
-        if (p == 19) { x = 17, y = 0, w = 124, h = 382 } //TA19
-        if (p == 20) { x = 18, y = 211, w = 122, h = 239 } //TA20
-        if (p == 26) { x = 6, y = 5, w = 52, h = 54 } // TB4
-        //Cuadrante 6 
-        if (p == 13) { x = 2, y = 3, w = 478, h = 85 } //TA13
-        if (p == 14) { x = 20, y = 10, w = 460, h = 75 } //TA14
-        //Cuadrante 7 
-        if (p == 21) { x = 0, y = 6, w = 25, h = 450 } //TA21
-        if (p == 22) { x = 91, y = 1, w = 447, h = 75 } //TA22
-        //TPs 
-        if (p = 28) { x = 1, y = 25, w = 47, h = 50 }
-        if (p = 29) { x = 1, y = 25, w = 47, h = 50 }
-        if (p = 30) { x = 1, y = 25, w = 47, h = 50 }
-
-        let cdata = contextcanvasx.getImageData(x, y, w, h) // linea para pintar 
-
-        for (let i = 0; i < cdata.data.length; i += 4) { // ciclo de matriz /camina la matriz las veces que tiene el ciclo
-            // matriz para pintar color azul si encuentra un rojo
-            R = cdata.data[i + 0]
-            if (R == 255) {
-                cdata.data[i + 0] = 0
-                cdata.data[i + 1] = 0
-                cdata.data[i + 2] = 255
-                cdata.data[i + 3] = 255
-                B = cdata.data[i + 2]
-                if (B == 255) { azul++ }
-                //else {otros++}
-            }
-        }// end for
-        //console.log(cdata.data.length)
-        //console.log("Blue :"+azul)
-        ruido = azul
-        contextcanvasx.putImageData(cdata, x, y)// Dibuja los pixeles rojos encontrados
-        contextcanvasx.strokeStyle = "#0000FF"
-        contextcanvasx.lineWidth = 1
-        contextcanvasx.strokeRect(x, y, w, h)
-        resolve('resolved')
-    })
+    for (let i = 0; i < cdata.data.length; i += 4) {
+      // ciclo de matriz /camina la matriz las veces que tiene el ciclo
+      // matriz para pintar color azul si encuentra un rojo
+      R = cdata.data[i + 0];
+      if (R == 255) {
+        cdata.data[i + 0] = 0;
+        cdata.data[i + 1] = 0;
+        cdata.data[i + 2] = 255;
+        cdata.data[i + 3] = 255;
+        B = cdata.data[i + 2];
+        if (B == 255) {
+          azul++;
+        }
+        //else {otros++}
+      }
+    } // end for
+    //console.log(cdata.data.length)
+    //console.log("Blue :"+azul)
+    ruido = azul;
+    contextcanvasx.putImageData(cdata, x, y); // Dibuja los pixeles rojos encontrados
+    contextcanvasx.strokeStyle = "#0000FF";
+    contextcanvasx.lineWidth = 1;
+    contextcanvasx.strokeRect(x, y, w, h);
+    resolve("resolved");
+  });
 }
 //------------------------------------------- Funciones de evaluacion ----------//
-function logresult(pointemp, statusl) {// Guarda valor de cada punto analizado
-    logsave[pointemp] = statusl//"TA"+pointemp+","+statusl+"&";
+function logresult(pointemp, statusl) {
+  // Guarda valor de cada punto analizado
+  logsave[pointemp] = statusl; //"TA"+pointemp+","+statusl+"&";
 }
 
 async function arrylogresult(puntota, statusta) {
-    logsave2[puntota] = statusta
+  logsave2[puntota] = statusta;
 }
 
-
 async function pointstatus(TAx, statusx) {
-    if ((TAx == 1) && (statusx == '1')) {
-        cuadroVerde1()
+  if (TAx == 1 && statusx == "1") {
+    cuadroVerde1();
+  } else if (TAx == 1 && statusx == "0") {
+    cuadroRojo1();
+  } //Fin de if para TA1
 
-    } else if ((TAx == 1) && (statusx == '0')) {
-        cuadroRojo1()
-    }//Fin de if para TA1
+  if (TAx == 2 && statusx == "1") {
+    cuadroVerde2();
+  } else if (TAx == 2 && statusx == "0") {
+    cuadroRojo2();
+  } //Fin de if para TA2
 
-    if ((TAx == 2) && (statusx == '1')) {
-        cuadroVerde2()
-    } else if ((TAx == 2) && (statusx == '0')) {
-        cuadroRojo2()
-    }//Fin de if para TA2
+  //TA11
+  if (TAx == 11 && statusx == "1") {
+    cuadroVerde11();
+  } else if (TAx == 11 && statusx == "0") {
+    cuadroRojo11();
+  } //Fin de if para TA11
 
-    //TA11
-    if ((TAx == 11) && (statusx == '1')) {
-        cuadroVerde11()
-    } else if ((TAx == 11) && (statusx == '0')) {
-        cuadroRojo11()
-    }//Fin de if para TA11
+  //TA12
+  if (TAx == 12 && statusx == "1") {
+    cuadroVerde12();
+  } else if (TAx == 12 && statusx == "0") {
+    cuadroRojo12();
+  } //Fin de if para TA12
 
-    //TA12
-    if ((TAx == 12) && (statusx == '1')) {
-        cuadroVerde12()
-    } else if ((TAx == 12) && (statusx == '0')) {
-        cuadroRojo12()
-    }//Fin de if para TA12
+  if (TAx == 23 && statusx == "1") {
+    cuadroVerde23();
+  } else if (TAx == 23 && statusx == "0") {
+    cuadroRojo23();
+  } //Fin de if para TB1
 
-    if ((TAx == 23) && (statusx == '1')) {
-        cuadroVerde23()
-    } else if ((TAx == 23) && (statusx == '0')) {
-        cuadroRojo23()
-    }//Fin de if para TB1
+  //TP1
+  if (TAx == 28 && statusx == "1") {
+    cuadroVerde28();
+  } else if (TAx == 28 && statusx == "0") {
+    cuadroRojo28();
+  }
 
-    //TP1
-    if ((TAx == 28) && (statusx == '1')) {
-        cuadroVerde28()
-    } else if ((TAx == 28) && (statusx == '0')) {
-        cuadroRojo28()
+  //CUADRANTE 2
+  if (TAx == 3 && statusx == "1") {
+    cuadroVerde3();
+  } else if (TAx == 3 && statusx == "0") {
+    cuadroRojo3();
+  } //Fin de if para TB1
+
+  if (TAx == 4 && statusx == "1") {
+    if (pn == "LFTM1135558-03-D") {
+      cuadroVerde432();
+    } else {
+      cuadroVerde4();
     }
+  } else if (TAx == 4 && statusx == "0") {
+    cuadroRojo4();
+  } //Fin de if para TB1
 
-    //CUADRANTE 2
-    if ((TAx == 3) && (statusx == '1')) {
-        cuadroVerde3()
-    } else if ((TAx == 3) && (statusx == '0')) {
-        cuadroRojo3()
-    }//Fin de if para TB1
+  if (TAx == 9 && statusx == "1") {
+    cuadroVerde9();
+  } else if (TAx == 9 && statusx == "0") {
+    cuadroRojo9();
+  } //Fin de if para TB1
 
-    if ((TAx == 4) && (statusx == '1')) {
-        if (pn == 'LFTM1135558-03-D') {
-            cuadroVerde432();
-        } else {
-            cuadroVerde4();
-        }
-    }
+  if (TAx == 10 && statusx == "1") {
+    cuadroVerde10();
+  } else if (TAx == 10 && statusx == "0") {
+    cuadroRojo10();
+  } //Fin de if para TB1
 
+  if (TAx == 24 && statusx == "1") {
+    cuadroVerde24();
+  } else if (TAx == 24 && statusx == "0") {
+    cuadroRojo24();
+  } //Fin de if para TB1
 
-    else if ((TAx == 4) && (statusx == '0')) {
-        cuadroRojo4()
-    }//Fin de if para TB1
+  //TP2
+  if (TAx == 29 && statusx == "1") {
+    cuadroVerde29();
+  } else if (TAx == 29 && statusx == "0") {
+    cuadroRojo29();
+  }
+  //Cuadrante 3
+  if (TAx == 5 && statusx == "1") {
+    cuadroVerde5();
+  } else if (TAx == 5 && statusx == "0") {
+    cuadroRojo5();
+  }
 
-    if ((TAx == 9) && (statusx == '1')) {
-        cuadroVerde9()
-    } else if ((TAx == 9) && (statusx == '0')) {
-        cuadroRojo9()
-    }//Fin de if para TB1
+  if (TAx == 6 && statusx == "1") {
+    cuadroVerde6();
+  } else if (TAx == 6 && statusx == "0") {
+    cuadroRojo6();
+  }
 
-    if ((TAx == 10) && (statusx == '1')) {
-        cuadroVerde10()
-    } else if ((TAx == 10) && (statusx == '0')) {
-        cuadroRojo10()
-    }//Fin de if para TB1
+  if (TAx == 7 && statusx == "1") {
+    cuadroVerde7();
+  } else if (TAx == 7 && statusx == "0") {
+    cuadroRojo7();
+  }
 
-    if ((TAx == 24) && (statusx == '1')) {
-        cuadroVerde24()
-    } else if ((TAx == 24) && (statusx == '0')) {
-        cuadroRojo24()
-    }//Fin de if para TB1
+  if (TAx == 8 && statusx == "1") {
+    cuadroVerde8();
+  } else if (TAx == 8 && statusx == "0") {
+    cuadroRojo8();
+  }
 
-    //TP2
-    if ((TAx == 29) && (statusx == '1')) {
-        cuadroVerde29()
-    } else if ((TAx == 29) && (statusx == '0')) {
-        cuadroRojo29()
-    }
-    //Cuadrante 3
-    if ((TAx == 5) && (statusx == '1')) {
-        cuadroVerde5()
-    } else if ((TAx == 5) && (statusx == '0')) {
-        cuadroRojo5()
-    }
+  if (TAx == 25 && statusx == "1") {
+    cuadroVerde25();
+  } else if (TAx == 25 && statusx == "0") {
+    cuadroRojo25();
+  }
+  //TP3
+  if (TAx == 30 && statusx == "1") {
+    cuadroVerde30();
+  } else if (TAx == 30 && statusx == "0") {
+    cuadroRojo30();
+  }
 
-    if ((TAx == 6) && (statusx == '1')) {
-        cuadroVerde6()
-    } else if ((TAx == 6) && (statusx == '0')) {
-        cuadroRojo6()
-    }
+  if (TAx == 18 && statusx == "1") {
+    cuadroVerde18();
+  } else if (TAx == 18 && statusx == "0") {
+    cuadroRojo18();
+  }
 
-    if ((TAx == 7) && (statusx == '1')) {
-        cuadroVerde7()
-    } else if ((TAx == 7) && (statusx == '0')) {
-        cuadroRojo7()
-    }
+  if (TAx == 17 && statusx == "1") {
+    cuadroVerde17();
+  } else if (TAx == 17 && statusx == "0") {
+    cuadroRojo17();
+  }
 
-    if ((TAx == 8) && (statusx == '1')) {
-        cuadroVerde8()
-    } else if ((TAx == 8) && (statusx == '0')) {
-        cuadroRojo8()
-    }
+  if (TAx == 27 && statusx == "1") {
+    cuadroVerde27();
+  } else if (TAx == 27 && statusx == "0") {
+    cuadroRojo27();
+  }
 
-    if ((TAx == 25) && (statusx == '1')) {
-        cuadroVerde25()
-    } else if ((TAx == 25) && (statusx == '0')) {
-        cuadroRojo25()
-    }
-    //TP3
-    if ((TAx == 30) && (statusx == '1')) {
-        cuadroVerde30()
-    } else if ((TAx == 30) && (statusx == '0')) {
-        cuadroRojo30()
-    }
+  if (TAx == 16 && statusx == "1") {
+    cuadroVerde16();
+  } else if (TAx == 16 && statusx == "0") {
+    cuadroRojo16();
+  }
 
-    if ((TAx == 18) && (statusx == '1')) {
-        cuadroVerde18()
-    } else if ((TAx == 18) && (statusx == '0')) {
-        cuadroRojo18()
-    }
+  if (TAx == 15 && statusx == "1") {
+    cuadroVerde15();
+  } else if (TAx == 15 && statusx == "0") {
+    cuadroRojo15();
+  }
 
-    if ((TAx == 17) && (statusx == '1')) {
-        cuadroVerde17()
-    } else if ((TAx == 17) && (statusx == '0')) {
-        cuadroRojo17()
-    }
+  if (TAx == 19 && statusx == "1") {
+    cuadroVerde19();
+  } else if (TAx == 19 && statusx == "0") {
+    cuadroRojo19();
+  }
 
-    if ((TAx == 27) && (statusx == '1')) {
-        cuadroVerde27()
-    } else if ((TAx == 27) && (statusx == '0')) {
-        cuadroRojo27()
-    }
+  if (TAx == 20 && statusx == "1") {
+    cuadroVerde20();
+  } else if (TAx == 20 && statusx == "0") {
+    cuadroRojo20();
+  }
 
-    if ((TAx == 16) && (statusx == '1')) {
-        cuadroVerde16()
-    } else if ((TAx == 16) && (statusx == '0')) {
-        cuadroRojo16()
-    }
+  if (TAx == 26 && statusx == "1") {
+    cuadroVerde26();
+  } else if (TAx == 26 && statusx == "0") {
+    cuadroRojo26();
+  }
 
-    if ((TAx == 15) && (statusx == '1')) {
-        cuadroVerde15()
-    } else if ((TAx == 15) && (statusx == '0')) {
-        cuadroRojo15()
-    }
+  if (TAx == 14 && statusx == "1") {
+    cuadroVerde14();
+  } else if (TAx == 14 && statusx == "0") {
+    cuadroRojo14();
+  }
 
-    if ((TAx == 19) && (statusx == '1')) {
-        cuadroVerde19()
-    } else if ((TAx == 19) && (statusx == '0')) {
-        cuadroRojo19()
-    }
+  if (TAx == 13 && statusx == "1") {
+    cuadroVerde13();
+  } else if (TAx == 13 && statusx == "0") {
+    cuadroRojo13();
+  }
 
-    if ((TAx == 20) && (statusx == '1')) {
-        cuadroVerde20()
-    } else if ((TAx == 20) && (statusx == '0')) {
-        cuadroRojo20()
-    }
+  if (TAx == 21 && statusx == "1") {
+    cuadroVerde21();
+  } else if (TAx == 21 && statusx == "0") {
+    cuadroRojo21();
+  }
 
-    if ((TAx == 26) && (statusx == '1')) {
-        cuadroVerde26()
-    } else if ((TAx == 26) && (statusx == '0')) {
-        cuadroRojo26()
-    }
-
-    if ((TAx == 14) && (statusx == '1')) {
-        cuadroVerde14()
-    } else if ((TAx == 14) && (statusx == '0')) {
-        cuadroRojo14()
-    }
-
-    if ((TAx == 13) && (statusx == '1')) {
-        cuadroVerde13()
-    } else if ((TAx == 13) && (statusx == '0')) {
-        cuadroRojo13()
-    }
-
-    if ((TAx == 21) && (statusx == '1')) {
-        cuadroVerde21()
-    } else if ((TAx == 21) && (statusx == '0')) {
-        cuadroRojo21()
-    }
-
-    if ((TAx == 22) && (statusx == '1')) {
-        cuadroVerde22()
-    } else if ((TAx == 22) && (statusx == '0')) {
-        cuadroRojo22()
-    }
-
-}//Fin de if principal
+  if (TAx == 22 && statusx == "1") {
+    cuadroVerde22();
+  } else if (TAx == 22 && statusx == "0") {
+    cuadroRojo22();
+  }
+} //Fin de if principal
 
 function cuadroVerde1() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA1x, TA1y, 118, 299)
-
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA1x, TA1y, 118, 299);
 }
 
 function cuadroVerde2() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA2x, TA2y, 118, 330)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA2x, TA2y, 118, 330);
 }
 
 function cuadroVerde11() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA11x, TA11y, 118, 330)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA11x, TA11y, 118, 330);
 }
 
 function cuadroVerde12() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA12x, TA12y, 118, 312)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA12x, TA12y, 118, 312);
 }
 
 function cuadroVerde23() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TB1x, TB1y, 34, 52)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TB1x, TB1y, 34, 52);
 }
 
 function cuadroVerde28() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TP1X, TP1Y, 98, 318)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TP1X, TP1Y, 98, 318);
 }
 //Cuadrante 2
 function cuadroVerde3() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA3x, TA3y, 118, 299)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA3x, TA3y, 118, 299);
 }
 
 function cuadroVerde432() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(949, 74, 113, 312)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(949, 74, 113, 312);
 }
 function cuadroVerde4() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA4x, TA4y, 118, 330)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA4x, TA4y, 118, 330);
 }
 
 function cuadroVerde9() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA9x, TA9y, 118, 330)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA9x, TA9y, 118, 330);
 }
 
 function cuadroVerde10() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA10x, TA10y, 118, 330)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA10x, TA10y, 118, 330);
 }
 
 function cuadroVerde24() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TB2x, TB2y, 34, 52)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TB2x, TB2y, 34, 52);
 }
 function cuadroVerde29() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TP2X, TP2Y, 100, 325)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TP2X, TP2Y, 100, 325);
 }
 
 //Cuadrante 3
 function cuadroVerde5() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA5x, TA5y, 118, 299)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA5x, TA5y, 118, 299);
 }
 function cuadroVerde6() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA6x, TA6y, 115, 322)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA6x, TA6y, 115, 322);
 }
 function cuadroVerde7() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA7x, TA7y, 118, 330)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA7x, TA7y, 118, 330);
 }
 function cuadroVerde8() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA8x, TA8y, 118, 330)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA8x, TA8y, 118, 330);
 }
 function cuadroVerde25() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TB3x, TB3y, 34, 52)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TB3x, TB3y, 34, 52);
 }
 function cuadroVerde30() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TP3X, TP3Y, 102, 317)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TP3X, TP3Y, 102, 317);
 }
-//Cuadrante 4 
+//Cuadrante 4
 function cuadroVerde18() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA18x, TA18y, 149, 378)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA18x, TA18y, 149, 378);
 }
 
 function cuadroVerde17() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA17x, TA17y, 149, 378)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA17x, TA17y, 149, 378);
 }
 
 function cuadroVerde27() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TATGx, TATGy, 298, 99)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TATGx, TATGy, 298, 99);
 }
 
 //Cuarante 5
 function cuadroVerde16() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA16x, TA16y, 149, 378)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA16x, TA16y, 149, 378);
 }
 function cuadroVerde15() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA15x, TA15y, 149, 378)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA15x, TA15y, 149, 378);
 }
 function cuadroVerde19() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA19x, TA19y, 418, 149)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA19x, TA19y, 418, 149);
 }
 function cuadroVerde20() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA20x, TA20y, 418, 149)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA20x, TA20y, 418, 149);
 }
 function cuadroVerde26() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TB4x, TB4y, 66, 52)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TB4x, TB4y, 66, 52);
 }
 //Cuadrante 6
 function cuadroVerde14() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA14x, TA14y, 149, 378)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA14x, TA14y, 149, 378);
 }
 function cuadroVerde13() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA13x, TA13y, 149, 378)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA13x, TA13y, 149, 378);
 }
 //Cuadrante 7
 function cuadroVerde21() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA21x, TA21y, 571, 77)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA21x, TA21y, 571, 77);
 }
 function cuadroVerde22() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#76FF03"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA22x, TA22y, 675, 326)
+  contextfullimage.strokeStyle = "#76FF03";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA22x, TA22y, 675, 326);
 }
-
 
 //Cuadrante 1
 function cuadroRojo1() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA1x, TA1y, 118, 299)
-
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA1x, TA1y, 118, 299);
 }
 
 function cuadroRojo2() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA2x, TA2y, 118, 330)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA2x, TA2y, 118, 330);
 }
 
 function cuadroRojo11() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA11x, TA11y, 118, 330)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA11x, TA11y, 118, 330);
 }
 
 function cuadroRojo12() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA12x, TA12y, 118, 312)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA12x, TA12y, 118, 312);
 }
 //Cuadrante 2
 function cuadroRojo23() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TB1x, TB1y, 34, 52)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TB1x, TB1y, 34, 52);
 }
 
 function cuadroRojo28() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TP1X, TP1Y, 98, 318)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TP1X, TP1Y, 98, 318);
 }
 function cuadroRojo3() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA3x, TA3y, 118, 299)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA3x, TA3y, 118, 299);
 }
 function cuadroRojo432() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(949, 74, 113, 330)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(949, 74, 113, 330);
 }
 function cuadroRojo4() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA4x, TA4y, 118, 330)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA4x, TA4y, 118, 330);
 }
 function cuadroRojo9() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA9x, TA9y, 118, 330)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA9x, TA9y, 118, 330);
 }
 function cuadroRojo10() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA10x, TA10y, 118, 330)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA10x, TA10y, 118, 330);
 }
 function cuadroRojo24() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TB2x, TB2y, 34, 52)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TB2x, TB2y, 34, 52);
 }
 function cuadroRojo29() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TP2X, TP2Y, 100, 325)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TP2X, TP2Y, 100, 325);
 }
 
 //Cuadrante 3
 function cuadroRojo5() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA5x, TA5y, 118, 299)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA5x, TA5y, 118, 299);
 }
 function cuadroRojo6() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA6x, TA6y, 115, 322)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA6x, TA6y, 115, 322);
 }
 function cuadroRojo7() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA7x, TA7y, 118, 330)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA7x, TA7y, 118, 330);
 }
 function cuadroRojo8() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA8x, TA8y, 118, 330)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA8x, TA8y, 118, 330);
 }
 function cuadroRojo25() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#00FFFF"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TB3x, TB3y, 34, 52)
+  contextfullimage.strokeStyle = "#00FFFF";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TB3x, TB3y, 34, 52);
 }
 function cuadroRojo30() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
-    contextfullimage.strokeStyle = "#00FFFF"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TP3X, TP3Y, 102, 317)
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
+  contextfullimage.strokeStyle = "#00FFFF";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TP3X, TP3Y, 102, 317);
 }
 
 //Cuadrante 4
 function cuadroRojo18() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA18x, TA18y, 149, 378)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA18x, TA18y, 149, 378);
 }
 
 function cuadroRojo17() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA17x, TA17y, 149, 378)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA17x, TA17y, 149, 378);
 }
 
 function cuadroRojo27() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TATGx, TATGy, 298, 99)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TATGx, TATGy, 298, 99);
 }
 //Cuadrante 5
 function cuadroRojo16() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA16x, TA16y, 149, 378)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA16x, TA16y, 149, 378);
 }
 function cuadroRojo15() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA15x, TA15y, 149, 378)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA15x, TA15y, 149, 378);
 }
 function cuadroRojo19() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA19x, TA19y, 418, 149)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA19x, TA19y, 418, 149);
 }
 function cuadroRojo20() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA20x, TA20y, 418, 149)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA20x, TA20y, 418, 149);
 }
 function cuadroRojo26() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TB4x, TB4y, 66, 52)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TB4x, TB4y, 66, 52);
 }
 
 function cuadroRojo14() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA14x, TA14y, 149, 378)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA14x, TA14y, 149, 378);
 }
 function cuadroRojo13() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA13x, TA13y, 149, 378)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA13x, TA13y, 149, 378);
 }
 function cuadroRojo21() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA21x, TA21y, 571, 77)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA21x, TA21y, 571, 77);
 }
 function cuadroRojo22() {
-    let fullimage = document.getElementById('CanvasFHD')
-    let contextfullimage = fullimage.getContext('2d')
+  let fullimage = document.getElementById("CanvasFHD");
+  let contextfullimage = fullimage.getContext("2d");
 
-    contextfullimage.strokeStyle = "#FF0000"
-    contextfullimage.lineWidth = 2
-    contextfullimage.strokeRect(TA22x, TA22y, 675, 326)
+  contextfullimage.strokeStyle = "#FF0000";
+  contextfullimage.lineWidth = 2;
+  contextfullimage.strokeRect(TA22x, TA22y, 675, 326);
 }
 
-function Evaluacion(point) { //Evalua la matriz de logsave 
-    let valtus  //Variable que guarda el valor que se almacena en el Array
-    return new Promise(async resolve => {
-        switch (point) {
+function Evaluacion(point) {
+  //Evalua la matriz de logsave
+  let valtus; //Variable que guarda el valor que se almacena en el Array
+  return new Promise(async (resolve) => {
+    switch (point) {
+      case 1:
+        //Cuadrante 1
+        cuadranteArray[0] = logsave[1];
+        valtus = cuadranteArray.some((e) => e == "0"); // funcion para buscar dentro de un array solo un valor
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(1, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-            case 1:
+        cuadranteArray[1] = logsave[2];
+        valtus = cuadranteArray.some((e) => e == "0"); // funcion para buscar dentro de un array solo un valor
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(2, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                //Cuadrante 1 
-                cuadranteArray[0] = logsave[1]
-                valtus = cuadranteArray.some((e) => e == "0") // funcion para buscar dentro de un array solo un valor 
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(1, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[2] = logsave[3];
+        valtus = cuadranteArray.some((e) => e == "0"); // funcion para buscar dentro de un array solo un valor
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(11, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[1] = logsave[2]
-                valtus = cuadranteArray.some((e) => e == "0") // funcion para buscar dentro de un array solo un valor 
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(2, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[3] = logsave[4];
+        valtus = cuadranteArray.some((e) => e == "0"); // funcion para buscar dentro de un array solo un valor
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(12, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[2] = logsave[3]
-                valtus = cuadranteArray.some((e) => e == "0") // funcion para buscar dentro de un array solo un valor 
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(11, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[4] = logsave[5];
+        valtus = cuadranteArray.some((e) => e == "0"); // funcion para buscar dentro de un array solo un valor
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(23, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
+        break;
 
-                cuadranteArray[3] = logsave[4]
-                valtus = cuadranteArray.some((e) => e == "0") // funcion para buscar dentro de un array solo un valor 
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(12, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+      case 2:
+        //Cuadrante 2
+        cuadranteArray[0] = logsave[6];
+        valtus = cuadranteArray.some((e) => e == "0"); // funcion para buscar dentro de un array solo un valor
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(3, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[4] = logsave[5]
-                valtus = cuadranteArray.some((e) => e == "0") // funcion para buscar dentro de un array solo un valor 
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(23, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
-                break
+        cuadranteArray[1] = logsave[7];
+        valtus = cuadranteArray.some((e) => e == "0"); // funcion para buscar dentro de un array solo un valor
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(4, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-            case 2:
-                //Cuadrante 2
-                cuadranteArray[0] = logsave[6]
-                valtus = cuadranteArray.some((e) => e == "0") // funcion para buscar dentro de un array solo un valor 
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(3, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[2] = logsave[8];
+        valtus = cuadranteArray.some((e) => e == "0"); // funcion para buscar dentro de un array solo un valor
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(9, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[1] = logsave[7]
-                valtus = cuadranteArray.some((e) => e == "0") // funcion para buscar dentro de un array solo un valor 
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(4, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[3] = logsave[9];
+        valtus = cuadranteArray.some((e) => e == "0"); // funcion para buscar dentro de un array solo un valor
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(10, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[2] = logsave[8]
-                valtus = cuadranteArray.some((e) => e == "0") // funcion para buscar dentro de un array solo un valor 
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(9, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[4] = logsave[10];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(24, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[3] = logsave[9]
-                valtus = cuadranteArray.some((e) => e == "0") // funcion para buscar dentro de un array solo un valor 
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(10, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        break;
 
-                cuadranteArray[4] = logsave[10]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(24, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+      case 3:
+        //Cuadrante 3
+        cuadranteArray[0] = logsave[11];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(5, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                break
+        cuadranteArray[1] = logsave[12];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(6, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
+        cuadranteArray[2] = logsave[13];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(7, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-            case 3:
-                //Cuadrante 3
-                cuadranteArray[0] = logsave[11]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(5, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[3] = logsave[14];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(8, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[1] = logsave[12]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(6, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[4] = logsave[15];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(25, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
+        break;
+      case 4:
+        //Cuadrante 4
+        cuadranteArray[0] = logsave[16];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(18, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[2] = logsave[13]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(7, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[1] = logsave[17];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(17, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[3] = logsave[14]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(8, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[2] = logsave[18];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(27, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
+        break;
+      case 5:
+        //Cuadrante 5
+        cuadranteArray[0] = logsave[19];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(16, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[4] = logsave[15]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(25, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
-                break
-            case 4:
-                //Cuadrante 4
-                cuadranteArray[0] = logsave[16]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(18, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[1] = logsave[20];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(15, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[1] = logsave[17]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(17, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[2] = logsave[21];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(19, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[2] = logsave[18]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(27, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
-                break
-            case 5:
-                //Cuadrante 5
-                cuadranteArray[0] = logsave[19]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(16, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[3] = logsave[22];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(20, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[1] = logsave[20]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(15, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[4] = logsave[23];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(26, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
+        break;
+      case 6:
+        //Cuadrante 6
+        cuadranteArray[0] = logsave[24];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(14, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[2] = logsave[21]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(19, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[1] = logsave[25];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(13, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
+        break;
+      case 7:
+        //Cuadrante 7
+        cuadranteArray[0] = logsave[26];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(21, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[3] = logsave[22]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(20, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        cuadranteArray[1] = logsave[27];
+        valtus = cuadranteArray.some((e) => e == "0");
+        if (valtus == true) {
+          valtus = "0";
+        } else {
+          valtus = "1";
+        }
+        pointstatus(22, valtus);
+        cuadranteArray = []; //Limpia matriz de trabajo
 
-                cuadranteArray[4] = logsave[23]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(26, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
-                break
-            case 6:
-                //Cuadrante 6
-                cuadranteArray[0] = logsave[24]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(14, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        //La evaluacion de todo el array se hara hasta el final del ultimo case
+        //logsave[27] = ('1') //Dispensado pendiente de revisar
+        //turno 1
+        //logsave.fill('1')
+        bypass();
 
-                cuadranteArray[1] = logsave[25]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(13, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
-                break
-            case 7:
-                //Cuadrante 7 
-                cuadranteArray[0] = logsave[26]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(21, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+        let resultadofinal = logsave.some((e) => e == "0");
+        //console.log(logsave)
+        //let hora = 23
+        if (resultadofinal == false) {
+          pass();
+          passturno(); //tiene status
+          console.log("Unit---> Pass");
+        } else {
+          fail();
+          failturno();
 
-                cuadranteArray[1] = logsave[27]
-                valtus = cuadranteArray.some((e) => e == "0")
-                if (valtus == true) { valtus = "0" } else { valtus = "1" }
-                pointstatus(22, valtus)
-                cuadranteArray = [] //Limpia matriz de trabajo
+          console.log("Unit---> Fail");
+        }
+        resultado = resultadofinal;
+        break;
+      default:
+    } //fin de switch
 
-
-                //La evaluacion de todo el array se hara hasta el final del ultimo case
-                //logsave[27] = ('1') //Dispensado pendiente de revisar 
-                //turno 1
-                //logsave.fill('1')
-                bypass()
-
-                let resultadofinal = logsave.some((e) => e == "0")
-                //console.log(logsave)
-                //let hora = 23
-                if (resultadofinal == false) {
-                    pass()
-                    passturno() //tiene status
-                    console.log("Unit---> Pass")
-                } else {
-                    fail()
-                    failturno()
-
-                    console.log("Unit---> Fail")
-                }
-                resultado = resultadofinal
-                break
-            default:
-        }//fin de switch
-
-        resolve('resolved')
-    })
+    resolve("resolved");
+  });
 }
-//funciones base de datos 
+//funciones base de datos
 
 function agrupapasst2(turno, status, day, fecha) {
-    return new Promise(async resolve => {
-        const socket = io();
-        socket.emit('agrupapasst2', { turno, status, day, fecha })
-        resolve('resolved');
-    })
+  return new Promise(async (resolve) => {
+    const socket = io();
+    socket.emit("agrupapasst2", { turno, status, day, fecha });
+    resolve("resolved");
+  });
 }
 function agrupardias(status, day, semana) {
-    return new Promise(async resolve => {
-        const socket = io();
-        socket.emit('agrupardias', { status, day, semana })
-        resolve('resolved');
-    })
+  return new Promise(async (resolve) => {
+    const socket = io();
+    socket.emit("agrupardias", { status, day, semana });
+    resolve("resolved");
+  });
 }
-
 
 function abrir() {
-    return new Promise(async resolve => {
-        const socket = io();
-        socket.emit('abrir')
-        setTimeout(function fire() { resolve('resolved'); }, 1000) //tiempo para el opencam
-    })//cierra la promesa
+  return new Promise(async (resolve) => {
+    const socket = io();
+    socket.emit("abrir");
+    setTimeout(function fire() {
+      resolve("resolved");
+    }, 1000); //tiempo para el opencam
+  }); //cierra la promesa
 }
 function cerrar() {
-    const socket = io();
-    socket.emit('cerrar')
+  const socket = io();
+  socket.emit("cerrar");
 }
 function exp() {
-    const socket = io();
-    socket.emit('exp')
+  const socket = io();
+  socket.emit("exp");
 }
 //funciones abrir y cerrar conexion
 
-socket.on('qtyP2', function (resulcons) {
-    let datosp2 = resulcons.result
-    turno_pass_qty2 = parseInt(datosp2.rows[0].count, 10)
-    // console.log(resulcons.result)
-    // console.log(parseInt(datosp2.rows[0].count, 10))
+socket.on("qtyP2", function (resulcons) {
+  let datosp2 = resulcons.result;
+  turno_pass_qty2 = parseInt(datosp2.rows[0].count, 10);
+  // console.log(resulcons.result)
+  // console.log(parseInt(datosp2.rows[0].count, 10))
 
-    //UnidadesPLunesT1(resulcons)
-    bar.data.datasets[resulcons.status === 'pass' ? 0 : 1].data.push(turno_pass_qty2)
-    // console.log(bar.data.datasets[resulcons.status === 'pass' ? 0 : 1].data)
-    bar.update()
-})
-
+  //UnidadesPLunesT1(resulcons)
+  bar.data.datasets[resulcons.status === "pass" ? 0 : 1].data.push(
+    turno_pass_qty2
+  );
+  // console.log(bar.data.datasets[resulcons.status === 'pass' ? 0 : 1].data)
+  bar.update();
+});
 
 //console.log(turno_pass_qty2)
 //console.log(resulcons.status)
 //qtyD segunda grafica, por dias
 
-socket.on('qtyD', function (resulday) {
-    let datosday = resulday.result
-    turno_pass_qtyD = parseInt(datosday.rows[0].count, 10)
-    //console.log(datosday)
-    // console.log(parseInt(datosday.rows[0].count, 10))
-    //se mandan llamar las funciones de "funcionyield"
-    yieldMonday(resulday)
-    yieldTuesday(resulday)
-    yieldWednesday(resulday)
-    yieldThursday(resulday)
-    yieldFriday(resulday)
-    yieldSaturday(resulday)
-    yieldSunday(resulday)
+socket.on("qtyD", function (resulday) {
+  let datosday = resulday.result;
+  turno_pass_qtyD = parseInt(datosday.rows[0].count, 10);
+  //console.log(datosday)
+  // console.log(parseInt(datosday.rows[0].count, 10))
+  //se mandan llamar las funciones de "funcionyield"
+  yieldMonday(resulday);
+  yieldTuesday(resulday);
+  yieldWednesday(resulday);
+  yieldThursday(resulday);
+  yieldFriday(resulday);
+  yieldSaturday(resulday);
+  yieldSunday(resulday);
 
-    linea.data.datasets[resulday.day === 'day', resulday.status == 'pass' ? 0 : 1].data.push(turno_pass_qtyD)
+  linea.data.datasets[
+    (resulday.day === "day", resulday.status == "pass" ? 0 : 1)
+  ].data.push(turno_pass_qtyD);
 
-    linea.update()
-
-})
+  linea.update();
+});
 //console.log(turno_pass_qtyD)
 //operacion
 
@@ -2530,584 +4106,608 @@ socket.on('qtyD', function (resulday) {
     console.log(contador)*/
 
 //---------------------------Respuesta backend--------------------------------//
-socket.on('respuestabd', function (conteototal) {
-    //console.log(conteototal)
-
-})
+socket.on("respuestabd", function (conteototal) {
+  //console.log(conteototal)
+});
 
 //--------------------------------------------Funciones de la camara-----------//
-async function open_cam(point) {// Resolve de 2 segundos
+async function open_cam(point) {
+  // Resolve de 2 segundos
 
-    return new Promise(async resolve => {
+  return new Promise(async (resolve) => {
+    if (point == 1) {
+      camid =
+        "cec923b27e35169d50048222f8a28d5b0015656bac04a172e025a22751c12aab";
+    } //b4b549adca64fbbea923ab3919fa3a208dfe76b328e1a1566a2d3e1d5461ddfb
+    if (point == 2) {
+      camid =
+        "64345777916e8acb939635dd300abb133b7f13400326eeb2b4f2f875b4a39d4c";
+    } // b4b549adca64fbbea923ab3919fa3a208dfe76b328e1a1566a2d3e1d5461ddfb
+    if (point == 3) {
+      camid =
+        "b4b549adca64fbbea923ab3919fa3a208dfe76b328e1a1566a2d3e1d5461ddfb";
+    } // 64345777916e8acb939635dd300abb133b7f13400326eeb2b4f2f875b4a39d4c
+    // camara UR
 
-        if (point == 1) { camid = "cec923b27e35169d50048222f8a28d5b0015656bac04a172e025a22751c12aab" } //b4b549adca64fbbea923ab3919fa3a208dfe76b328e1a1566a2d3e1d5461ddfb
-        if (point == 2) { camid = "64345777916e8acb939635dd300abb133b7f13400326eeb2b4f2f875b4a39d4c" } // b4b549adca64fbbea923ab3919fa3a208dfe76b328e1a1566a2d3e1d5461ddfb
-        if (point == 3) { camid = "b4b549adca64fbbea923ab3919fa3a208dfe76b328e1a1566a2d3e1d5461ddfb" } // 64345777916e8acb939635dd300abb133b7f13400326eeb2b4f2f875b4a39d4c
-        // camara UR
-
-        const video = document.querySelector('video')
-        const vgaConstraints = {
-            video:
-            {
-                width: { ideal: 1920 },
-                height: { ideal: 1080 },
-                deviceId: camid
-            }
-        }
-        await navigator.mediaDevices.getUserMedia(vgaConstraints).then((stream) => { video.srcObject = stream }).catch(function (err) { console.log(err.name) })
-        setTimeout(function fire() { resolve('resolved'); }, 2000) //tiempo para el opencam
-    })//Cierra Promise principal
+    const video = document.querySelector("video");
+    const vgaConstraints = {
+      video: {
+        width: { ideal: 1920 },
+        height: { ideal: 1080 },
+        deviceId: camid,
+      },
+    };
+    await navigator.mediaDevices
+      .getUserMedia(vgaConstraints)
+      .then((stream) => {
+        video.srcObject = stream;
+      })
+      .catch(function (err) {
+        console.log(err.name);
+      });
+    setTimeout(function fire() {
+      resolve("resolved");
+    }, 2000); //tiempo para el opencam
+  }); //Cierra Promise principal
 }
-console.time("t1")
+console.time("t1");
 // testsequence()
-console.timeEnd("t1")
-function captureimage() {// Resolve de 2 segundos
-    return new Promise(async resolve => {
+console.timeEnd("t1");
+function captureimage() {
+  // Resolve de 2 segundos
+  return new Promise(async (resolve) => {
+    let image = document.getElementById("CanvasFHD");
+    let contexim2 = image.getContext("2d");
 
-        let image = document.getElementById('CanvasFHD');
-        let contexim2 = image.getContext('2d');
+    var video = document.getElementById("video");
 
-        var video = document.getElementById("video");
+    w = image.width;
+    h = image.height;
 
-        w = image.width;
-        h = image.height;
-
-        contexim2.drawImage(video, 0, 0, image.width, image.height);
-        //var dataURI = canvas.toDataURL('image/jpeg');
-        setTimeout(function fire() { resolve('resolved'); }, 2000);//Temporal para programacion de secuencia
-        resolve('resolved')
-    });
+    contexim2.drawImage(video, 0, 0, image.width, image.height);
+    //var dataURI = canvas.toDataURL('image/jpeg');
+    setTimeout(function fire() {
+      resolve("resolved");
+    }, 2000); //Temporal para programacion de secuencia
+    resolve("resolved");
+  });
 }
 
 function mapcams() {
-    navigator.mediaDevices.enumerateDevices()
-        .then(devices => {
-            const filtered = devices.filter(device => device.kind === 'videoinput');
-            console.log('Cameras found', filtered);
-        });
+  navigator.mediaDevices.enumerateDevices().then((devices) => {
+    const filtered = devices.filter((device) => device.kind === "videoinput");
+    console.log("Cameras found", filtered);
+  });
 }
 function stopcam() {
-    return new Promise(async resolve => {
-        const video = document.querySelector('video');
-        // A video's MediaStream object is available through its srcObject attribute
-        const mediaStream = video.srcObject;
-        // Through the MediaStream, you can get the MediaStreamTracks with getTracks():
-        const tracks = mediaStream.getTracks();
-        tracks.forEach(track => { track.stop() })//;console.log(track);
-        setTimeout(function fire() { resolve('resolved'); }, 1000);
-    });//Cierra Promise principal
+  return new Promise(async (resolve) => {
+    const video = document.querySelector("video");
+    // A video's MediaStream object is available through its srcObject attribute
+    const mediaStream = video.srcObject;
+    // Through the MediaStream, you can get the MediaStreamTracks with getTracks():
+    const tracks = mediaStream.getTracks();
+    tracks.forEach((track) => {
+      track.stop();
+    }); //;console.log(track);
+    setTimeout(function fire() {
+      resolve("resolved");
+    }, 1000);
+  }); //Cierra Promise principal
 }
-function snapshot() {//Back end sent URI,SN? & point?
-    return new Promise(async resolve => {
-        //let image1 = document.getElementById( 'fullimage' );
-        //let contexim1 = image1.getContext( '2d' );        
+function snapshot() {
+  //Back end sent URI,SN? & point?
+  return new Promise(async (resolve) => {
+    //let image1 = document.getElementById( 'fullimage' );
+    //let contexim1 = image1.getContext( '2d' );
 
-        //var video = document.getElementById("webcam_conveyor");
+    //var video = document.getElementById("webcam_conveyor");
 
-        //w = image1.width;
-        //h= image1.height;
+    //w = image1.width;
+    //h= image1.height;
 
-        //contextfullimage.drawImage(fullimage,0,0,fullimage.width,fullimage.height);
-        var dataURI = fullimage.toDataURL('image/jpeg');
-        savepic(dataURI, snfile, point); //savepic(dataURI,point);
-        //console.log("Pic Sent--"+sn+"--"+point);
-        //setTimeout(function fire(){resolve('resolved');},2000);//Temporal para programacion de secuencia
-        resolve('resolved')
-    });
+    //contextfullimage.drawImage(fullimage,0,0,fullimage.width,fullimage.height);
+    var dataURI = fullimage.toDataURL("image/jpeg");
+    savepic(dataURI, snfile, point); //savepic(dataURI,point);
+    //console.log("Pic Sent--"+sn+"--"+point);
+    //setTimeout(function fire(){resolve('resolved');},2000);//Temporal para programacion de secuencia
+    resolve("resolved");
+  });
 }
-
 
 function renombra(snfile) {
-    const socket = io();
-    socket.emit('renombrasnr', snfile);
+  const socket = io();
+  socket.emit("renombrasnr", snfile);
 }
 
 function savepic(uri, snfile, point) {
-    const socket = io();
-    socket.emit('picsaving', uri, snfile, point);
+  const socket = io();
+  socket.emit("picsaving", uri, snfile, point);
 }
 
 function logsaving(snr, logdata, logsave) {
-    //  console.log(logsave)
-    socket.emit('logsaving', snr, '\n' + logdata, '\n' + logsave);
-    //console.log("entre a logsaving")
-    // console.log(snr)
+  //  console.log(logsave)
+  socket.emit("logsaving", snr, "\n" + logdata, "\n" + logsave);
+  //console.log("entre a logsaving")
+  // console.log(snr)
 }
 
 //----------Funciones de debug---------------//
 
-let calis = new Image()// Variable utilizada por switchpic
+let calis = new Image(); // Variable utilizada por switchpic
 
-function loadcalis(fotox) {//Funcion Carga la imagen del modelo 
-    switchpic(fotox)
-    setTimeout(function dibuja() {
-        contextfullimage.drawImage(calis, 0, 0, calis.width, calis.height, 0, 0, contextfullimage.canvas.width, contextfullimage.canvas.height)
-        canbughide()
-    }, 300)
+function loadcalis(fotox) {
+  //Funcion Carga la imagen del modelo
+  switchpic(fotox);
+  setTimeout(function dibuja() {
+    contextfullimage.drawImage(
+      calis,
+      0,
+      0,
+      calis.width,
+      calis.height,
+      0,
+      0,
+      contextfullimage.canvas.width,
+      contextfullimage.canvas.height
+    );
+    canbughide();
+  }, 300);
 }
 function switchpic(name) {
-    calis.src = "/img/" + name + ".jpg"
+  calis.src = "/img/" + name + ".jpg";
 }
 
-function canbughide() { // funcion para esconder los canvas 
-    return new Promise(async resolve => {
-        document.getElementById('CanvasFHD').style.visibility = "hidden"
-        // document.getElementById('canvasClen1').style.visibility = "hidden"
-        document.getElementById('canvasMlen1').style.visibility = "hidden"
-        document.getElementById('canvasGlen1').style.visibility = "hidden"
-        document.getElementById('canvasClen2').style.visibility = "hidden"
-        document.getElementById('canvasTA6len1').style.visibility = "hidden"
-        document.getElementById('canvasGlen2').style.visibility = "hidden"
-        document.getElementById('canvasflalen3').style.visibility = "hidden"
-        document.getElementById('canvasgolen3').style.visibility = "hidden"
-        resolve('resolved')
-    });
+function canbughide() {
+  // funcion para esconder los canvas
+  return new Promise(async (resolve) => {
+    document.getElementById("CanvasFHD").style.visibility = "hidden";
+    // document.getElementById('canvasClen1').style.visibility = "hidden"
+    document.getElementById("canvasMlen1").style.visibility = "hidden";
+    document.getElementById("canvasGlen1").style.visibility = "hidden";
+    document.getElementById("canvasClen2").style.visibility = "hidden";
+    document.getElementById("canvasTA6len1").style.visibility = "hidden";
+    document.getElementById("canvasGlen2").style.visibility = "hidden";
+    document.getElementById("canvasflalen3").style.visibility = "hidden";
+    document.getElementById("canvasgolen3").style.visibility = "hidden";
+    resolve("resolved");
+  });
 }
 
 function canbugshow() {
-    return new Promise(async resolve => {
-        document.getElementById('CanvasFHD').style.visibility = "visible"
-        document.getElementById('canvasClen1').style.visibility = "visible"
-        document.getElementById('canvasMlen1').style.visibility = "visible"
-        document.getElementById('canvasGlen1').style.visibility = "visible"
-        document.getElementById('canvasClen2').style.visibility = "visible"
-        document.getElementById('canvasTA6len1').style.visibility = "visible"
-        document.getElementById('canvasGlen2').style.visibility = "visible"
-        document.getElementById('canvasflalen3').style.visibility = "visible"
-        document.getElementById('canvasgolen3').style.visibility = "visible"
-        resolve('resolved')
-    });
+  return new Promise(async (resolve) => {
+    document.getElementById("CanvasFHD").style.visibility = "visible";
+    document.getElementById("canvasClen1").style.visibility = "visible";
+    document.getElementById("canvasMlen1").style.visibility = "visible";
+    document.getElementById("canvasGlen1").style.visibility = "visible";
+    document.getElementById("canvasClen2").style.visibility = "visible";
+    document.getElementById("canvasTA6len1").style.visibility = "visible";
+    document.getElementById("canvasGlen2").style.visibility = "visible";
+    document.getElementById("canvasflalen3").style.visibility = "visible";
+    document.getElementById("canvasgolen3").style.visibility = "visible";
+    resolve("resolved");
+  });
 }
 
-function bypass() { //vtemp parametro igual a point
-    //cuadrante 1
-    // logsave[1] = ('1') //ta1
-    //logsave[2] = ('1')//ta2
-    //logsave[3] = ('1')//ta11
-    logsave[4] = ('1')//ta12
-    // logsave[5] = ('1')//tb1
-    // console.log(logsave)
+function bypass() {
+  //vtemp parametro igual a point
+  //cuadrante 1
+  // logsave[1] = ('1') //ta1
+  //logsave[2] = ('1')//ta2
+  //logsave[3] = ('1')//ta11
+  logsave[4] = "1"; //ta12
+  // logsave[5] = ('1')//tb1
+  // console.log(logsave)
 
-    //cuadrante 2
+  //cuadrante 2
 
-    //logsave[6] = ('1') //TA3
-    //logsave[7] = ('1')//TA4
-    //logsave[8] = ('1')
-    //logsave[9] = ('1')
-    //logsave[10] = ('1')
-    //cuadrante 3
-    //logsave[11] = ('1') //TA5
-    // logsave[12] = ('1') //TA6
-    //logsave[13] = ('1')
-    //logsave[14] = ('1')
-    logsave[15] = ('1')
-    //cuadrante 4
-    logsave[16] = ('1')
-    logsave[17] = ('1')
-    logsave[18] = ('1')
-    //cuadrante 5
-    logsave[19] = ('1')
-    logsave[20] = ('1')
-    logsave[21] = ('1')
-    logsave[22] = ('1')
-    logsave[23] = ('1')
-    //cuadrante 6
-    logsave[24] = ('1')
-    logsave[25] = ('1')
-    //cuadrante 7
-    logsave[26] = ('1')
-    logsave[27] = ('1')
-    console.log(logsave)
-    //TP'S
-    /*logsave[28] = ('1')
+  //logsave[6] = ('1') //TA3
+  //logsave[7] = ('1')//TA4
+  //logsave[8] = ('1')
+  //logsave[9] = ('1')
+  //logsave[10] = ('1')
+  //cuadrante 3
+  //logsave[11] = ('1') //TA5
+  // logsave[12] = ('1') //TA6
+  //logsave[13] = ('1')
+  //logsave[14] = ('1')
+  logsave[15] = "1";
+  //cuadrante 4
+  logsave[16] = "1";
+  logsave[17] = "1";
+  logsave[18] = "1";
+  //cuadrante 5
+  logsave[19] = "1";
+  logsave[20] = "1";
+  logsave[21] = "1";
+  logsave[22] = "1";
+  logsave[23] = "1";
+  //cuadrante 6
+  logsave[24] = "1";
+  logsave[25] = "1";
+  //cuadrante 7
+  logsave[26] = "1";
+  logsave[27] = "1";
+  console.log(logsave);
+  //TP'S
+  /*logsave[28] = ('1')
     logsave[29] = ('1')
     logsave[30] = ('1')*/
 }
 //---------------------------------- Seccion cadena de plc ---------------//
 
-async function split(infoplc) { // S&IDM-2007&P1093219-00-G:SBNJ19194020602&LFTM1135558-04-A&START#
-    //console.log(infoplc)
-    station = infoplc.toString().substr(2, 8); //console.log(station)
-    sn = infoplc.toString().substr(11, 29); //console.log(sn)
-    pn = infoplc.toString().substr(41, 16); //console.log(pn)
-    await serialnumber(sn)
-    await partnumber(pn)
-    await st(station)
-
+async function split(infoplc) {
+  // S&IDM-2007&P1093219-00-G:SBNJ19194020602&LFTM1135558-04-A&START#
+  //console.log(infoplc)
+  station = infoplc.toString().substr(2, 8); //console.log(station)
+  sn = infoplc.toString().substr(11, 29); //console.log(sn)
+  pn = infoplc.toString().substr(41, 16); //console.log(pn)
+  await serialnumber(sn);
+  await partnumber(pn);
+  await st(station);
 }
 
 // Antes de cargar los contadores
-if (localStorage.getItem('contadorPass')) {
-    contadorValores[0] = parseInt(localStorage.getItem('contadorPass'));
+if (localStorage.getItem("contadorPass")) {
+  contadorValores[0] = parseInt(localStorage.getItem("contadorPass"));
 }
 
-if (localStorage.getItem('contadorFail')) {
-    contadorValores[1] = parseInt(localStorage.getItem('contadorFail'));
+if (localStorage.getItem("contadorFail")) {
+  contadorValores[1] = parseInt(localStorage.getItem("contadorFail"));
 }
 async function mlinspection(point) {
+  return new Promise(async (resolve) => {
+    switch (point) {
+      case 1: //TA1
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA1/model.json");
 
-
-    return new Promise(async resolve => {
-
-        switch (point) {
-
-            case 1: //TA1
-
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA1/model.json');
-
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                //console.log("Unit pass" , pass)
-                //console.log("Unit fail", fail)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[1] = statusx
-                break
-            case 2://TA2
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA11/model.json');
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                // console.log("Unit pass" , pasa)
-                //console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[2] = statusx
-                break
-            case 3://TA3
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA3/model.json');
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                //console.log("Unit pass" , pasa)
-                // console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-
-                }
-
-                IAdesition[3] = statusx
-                break
-
-            case 4://TA4
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA4/model.json');
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                //console.log("Unit pass" , pasa)
-                // console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    contadorValores[0]++
-                    localStorage.setItem('contadorPass', contadorValores[0])
-                    console.log("soy el contdor pass: " + contadorValores[0])
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    contadorValores[1]++ //contadorfail
-                    localStorage.setItem('contadorFail', contadorValores[1])
-                    console.log("soy el contador fail: " + contadorValores[1])
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                    if (contadorValores[1] >= porcentajeMayor) { // 3 = 3
-                        alert("Inspección de IA: Reentrenamiento Requerido TA4"); //muestra la alerta
-
-                    }
-
-
-                }
-
-                IAdesition[4] = statusx
-                break
-            case 5://TA5
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA5/model.json');
-                //console.log(model)
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                //console.log("Unit pass" , pasa)
-                //console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[5] = statusx
-                break
-
-            case 6://TA6
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA6/model.json');
-                //console.log(model)
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                // console.log("Unit pass", pasa)
-                //console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[6] = statusx
-                break
-
-            case 7://TA7
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA8_1/model.json');
-                //console.log(model)
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasGlen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                //console.log("Unit pass", pasa)
-                //console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[7] = statusx
-                break
-
-            case 8://TA8
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA8_1/model.json');
-                //console.log(model)
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                //console.log("Unit pass", pasa)
-                //console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[8] = statusx
-                break
-
-            case 9://TA9
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA9_1/model.json');
-                //console.log(model)
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                // console.log("Unit pass", pasa)
-                //console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[9] = statusx
-                break
-
-            case 10://TA10
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA10/model.json');
-                //console.log(model)
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                // console.log("Unit pass", pasa)
-                //console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[10] = statusx
-                break
-
-            case 11://TA11
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA11/model.json');
-                //console.log(model)
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                //  console.log("Unit pass", pasa)
-                // console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[11] = statusx
-                break
-
-            case 12://TA12
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA11/model.json');
-                //console.log(model)
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                //console.log("Unit pass", pasa)
-                //console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[12] = statusx
-                break
-
-            case 22://TA22
-
-                model = new cvstfjs.ClassificationModel();
-                await model.loadModelAsync('../ml/TA22/model.json');
-                //console.log(model)
-                //await loadNN()
-                //const image = document.getElementById('canvasClen1');
-                result = await model.executeAsync(canvasClen1);
-                // console.log(result)
-                //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
-                pasa = result[0][0]
-                falla = result[0][1]
-                //console.log("Unit pass", pasa)
-                //console.log("Unit fail", falla)
-                if (pasa >= falla) { //Evalua el valor en la posicion 0 que da la redneuronal
-                    //console.log("Unit pass" , pass)
-                    statusx = "1"
-                    console.log("AI Inspection: " + `${statusx == 1 ? 'Pass' : 'Fail'}`)
-                } else {
-                    statusx = "0"
-                    console.log("AI Inspection: " + `${statusx == 0 ? 'Fail' : 'Pass'}`)
-                }
-
-                IAdesition[22] = statusx
-                break
-
-
-
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        //console.log("Unit pass" , pass)
+        //console.log("Unit fail", fail)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
         }
 
-        resolve('resolved')
-    })
+        IAdesition[1] = statusx;
+        break;
+      case 2: //TA2
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA11/model.json");
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        // console.log("Unit pass" , pasa)
+        //console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[2] = statusx;
+        break;
+      case 3: //TA3
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA3/model.json");
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        //console.log("Unit pass" , pasa)
+        // console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[3] = statusx;
+        break;
+
+      case 4: //TA4
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA4/model.json");
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        //console.log("Unit pass" , pasa)
+        // console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          contadorValores[0]++;
+          localStorage.setItem("contadorPass", contadorValores[0]);
+          console.log("soy el contdor pass: " + contadorValores[0]);
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          contadorValores[1]++; //contadorfail
+          localStorage.setItem("contadorFail", contadorValores[1]);
+          console.log("soy el contador fail: " + contadorValores[1]);
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+          if (contadorValores[1] >= porcentajeMayor) {
+            // 3 = 3
+            alert("Inspección de IA: Reentrenamiento Requerido TA4"); //muestra la alerta
+          }
+        }
+
+        IAdesition[4] = statusx;
+        break;
+      case 5: //TA5
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA5/model.json");
+        //console.log(model)
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        //console.log("Unit pass" , pasa)
+        //console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[5] = statusx;
+        break;
+
+      case 6: //TA6
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA6/model.json");
+        //console.log(model)
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        // console.log("Unit pass", pasa)
+        //console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[6] = statusx;
+        break;
+
+      case 7: //TA7
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA8_1/model.json");
+        //console.log(model)
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasGlen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        //console.log("Unit pass", pasa)
+        //console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[7] = statusx;
+        break;
+
+      case 8: //TA8
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA8_1/model.json");
+        //console.log(model)
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        //console.log("Unit pass", pasa)
+        //console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[8] = statusx;
+        break;
+
+      case 9: //TA9
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA9_1/model.json");
+        //console.log(model)
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        // console.log("Unit pass", pasa)
+        //console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[9] = statusx;
+        break;
+
+      case 10: //TA10
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA10/model.json");
+        //console.log(model)
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        // console.log("Unit pass", pasa)
+        //console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[10] = statusx;
+        break;
+
+      case 11: //TA11
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA11/model.json");
+        //console.log(model)
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        //  console.log("Unit pass", pasa)
+        // console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[11] = statusx;
+        break;
+
+      case 12: //TA12
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA11/model.json");
+        //console.log(model)
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        //console.log("Unit pass", pasa)
+        //console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[12] = statusx;
+        break;
+
+      case 22: //TA22
+        model = new cvstfjs.ClassificationModel();
+        await model.loadModelAsync("../ml/TA22/model.json");
+        //console.log(model)
+        //await loadNN()
+        //const image = document.getElementById('canvasClen1');
+        result = await model.executeAsync(canvasClen1);
+        // console.log(result)
+        //console.log(result[0][0]) //Accede al elemento 0 del array en un objeto
+        pasa = result[0][0];
+        falla = result[0][1];
+        //console.log("Unit pass", pasa)
+        //console.log("Unit fail", falla)
+        if (pasa >= falla) {
+          //Evalua el valor en la posicion 0 que da la redneuronal
+          //console.log("Unit pass" , pass)
+          statusx = "1";
+          console.log("AI Inspection: " + `${statusx == 1 ? "Pass" : "Fail"}`);
+        } else {
+          statusx = "0";
+          console.log("AI Inspection: " + `${statusx == 0 ? "Fail" : "Pass"}`);
+        }
+
+        IAdesition[22] = statusx;
+        break;
+    }
+
+    resolve("resolved");
+  });
 }
 
-
-
 async function loadNN() {
-    return new Promise(async resolve => {
-        setTimeout(function invento() { resolve('resolved') }, 2000)
-    })
+  return new Promise(async (resolve) => {
+    setTimeout(function invento() {
+      resolve("resolved");
+    }, 2000);
+  });
 }
 
 //****************************************************** IA ****************************************
