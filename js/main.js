@@ -2369,7 +2369,7 @@ function Analiza(canvasx, point, maxR, minR, maxG, minG, maxB, minB) {
         (bmin = 112),
         (bmax = 185),
         (criterio = 1),
-        (latapona = 0);
+        (latapona = 100);
     }
     if (point == 2) {
       (rmin = 123),
@@ -2788,6 +2788,7 @@ document.getElementById("menu").addEventListener("change", function () {
       document.getElementById("ruido").textContent = data.ruido;
       document.getElementById("actual").textContent = data.latapona;
       document.getElementById("sugerencia").textContent = data.sugerencia;
+      document.getElementById("cantidad").textContent = data.cantidad;
       document.getElementById("tabla").hidden = false;
     } else {
       alert("No hay datos de evaluacion disponibles");
@@ -2796,12 +2797,26 @@ document.getElementById("menu").addEventListener("change", function () {
   } else {
     document.getElementById("tabla").hidden = true;
   }
+  // Obtener referencias a los elementos
   const inputCantidad = document.getElementById("cantidad");
+  const tdActual = document.getElementById("actual");
 
-  inputCantidad.addEventListener("keyup", function (event) {
+  // Agregar un event listener al input
+  inputCantidad.addEventListener("keypress", (event) => {
     if (event.key === "Enter") {
-      const nuevoValor = inputCantidad.value;
-      localStorage.setItem("latapona", nuevoValor);
+      const nuevoValor = parseInt(inputCantidad.value);
+
+      // Obtener los datos actuales de localStorage
+      let data = JSON.parse(localStorage.getItem("ultimaEvaluacion")) || {};
+
+      // Actualizar el valor de latapona en el objeto
+      data.latapona = nuevoValor;
+
+      // Guardar el objeto actualizado en localStorage
+      localStorage.setItem("ultimaEvaluacion", JSON.stringify(data));
+
+      // Actualizar la interfaz (si es necesario)
+      tdActual.textContent = nuevoValor;
     }
   });
 });
